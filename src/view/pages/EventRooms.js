@@ -6,6 +6,8 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { Button } from '@mui/material';
 
+import dayjs from 'dayjs';
+
 
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -36,14 +38,14 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
     setOpenCreate(true);
   };
 
-  const createChatRoom=async({name='testRoom',cap=10,location='Singapore',pax=1,time=serverTimestamp()})=>{
+  const createChatRoom=async({name,cap,location,time})=>{
 
     //https://firebase.google.com/docs/firestore/manage-data/add-data
     const docRef = await addDoc(collection(db, 'aRooms/'+eventRoom+'/eRooms'), {
       name: name,
       cap: cap,
-      pax: pax,
-      rem: cap-pax,
+      pax: 1,
+      rem: cap-1,
       location:location,
       time:time
     });
@@ -52,7 +54,6 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
 
   //hardcoded, to be changed
   const dateTime="29 Sep 2022";
-  const numOfJoiners=3;
   const activityName="Swimming"
 
   return (
@@ -66,7 +67,14 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
         <EventRoomCreate openCreate={openCreate} setOpenCreate={setOpenCreate} createChatRoom={createChatRoom}/>
         {eRooms.map(eventObject=>(
           <div key={eventObject.id} className="col-md-auto">
-          <EventCard key={eventObject.id} setChatRoom={setChatRoom} nameOfEvent={eventObject.name} dateTime={dateTime} numOfJoiners={numOfJoiners} chatRoomId={eventObject.id} thePath={'/aRooms/'+eventRoom+'/eRooms/'+eventObject.id+'/messages'} />
+          <EventCard key={eventObject.id} 
+          setChatRoom={setChatRoom} 
+          nameOfEvent={eventObject.name} 
+          dateTime={dayjs.unix(eventObject.time.seconds).format('DD/MM/YYYY')} 
+          numOfJoiners={eventObject.pax} 
+          capacity={eventObject.cap}
+          chatRoomId={eventObject.id} 
+          thePath={'/aRooms/'+eventRoom+'/eRooms/'+eventObject.id} />
           </div>
         ))}
       </h1>

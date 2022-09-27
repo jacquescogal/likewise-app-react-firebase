@@ -8,7 +8,7 @@ import { useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 
 
-const BasicCard = ({nameOfEvent,dateTime,numOfJoiners,thePath,setChatRoom}) =>{
+const BasicCard = ({nameOfEvent,dateTime,numOfJoiners,capacity,thePath,setChatRoom}) =>{
   
   const navigate=useNavigate();
 
@@ -16,7 +16,7 @@ const BasicCard = ({nameOfEvent,dateTime,numOfJoiners,thePath,setChatRoom}) =>{
     <Card sx={{display:'flex',minWidth: 50, ':hover':{boxShadow:'10'}, marginTop:'6px'}}>
       <CardContent>
         <h1>{nameOfEvent}</h1>
-        <p>{dateTime}, {numOfJoiners}/8 joiners</p>
+        <p>{dateTime}, {numOfJoiners}/{capacity} joiners</p>
       </CardContent>
       <CardActions>
         <Button size="small" variant="outlined" onClick={()=>{setChatRoom(thePath);navigate('/home/chatroom')}}>Join</Button>
