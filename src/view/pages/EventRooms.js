@@ -13,10 +13,13 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
 import EventRoomCreate from '../components/EventRoomCreate';
+import EventRoomJoin from '../components/EventRoomJoin';
 
 const EventRooms = ({eventRoom,setChatRoom}) => {
   const [eRooms,setERooms]=useState([]);
   const [openCreate,setOpenCreate]=useState(false);
+  const [openJoin,setOpenJoin]=useState(false);
+  const [eventCard,setEventCard]=useState(null);
 
   useEffect(()=>{
     if (eventRoom===''){
@@ -65,16 +68,26 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
         <AddIcon style={{fill:'white'}}/>
       </Fab>
         <EventRoomCreate openCreate={openCreate} setOpenCreate={setOpenCreate} createChatRoom={createChatRoom}/>
+        <EventRoomJoin openJoin={openJoin} setOpenJoin={setOpenJoin}
+        eventCard={eventCard}
+        setEventCard={setEventCard}
+        setChatRoom={setChatRoom}/>
         {eRooms.map(eventObject=>(
           <div key={eventObject.id} className="col-md-auto">
           <EventCard key={eventObject.id} 
           setChatRoom={setChatRoom} 
           nameOfEvent={eventObject.name} 
-          dateTime={dayjs.unix(eventObject.time.seconds).format('DD/MM/YYYY')} 
+          date={dayjs.unix(eventObject.time.seconds).format('DD/MM/YYYY')} 
+          time={dayjs.unix(eventObject.time.seconds).format('hh:mm A')}
           numOfJoiners={eventObject.pax} 
           capacity={eventObject.cap}
+          location={eventObject.location}
+          pax={eventObject.pax}
+          cap={eventObject.cap}
           chatRoomId={eventObject.id} 
-          thePath={'/aRooms/'+eventRoom+'/eRooms/'+eventObject.id} />
+          thePath={'/aRooms/'+eventRoom+'/eRooms/'+eventObject.id}
+          setOpenJoin={setOpenJoin}
+          setEventCard={setEventCard} />
           </div>
         ))}
       </h1>
