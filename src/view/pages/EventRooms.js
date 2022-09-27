@@ -5,6 +5,7 @@ import { db } from '../../firebase-config';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Button } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
 import dayjs from 'dayjs';
 
@@ -60,6 +61,8 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
   const activityName="Swimming"
 
   return (
+    <div>
+      {(eRooms)?
     <menu>
     <div>
       <h1>
@@ -93,6 +96,16 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
       </h1>
     </div>
     </menu>
+:<div
+style={{
+    position: 'absolute', left: '60%', top: '50%',
+    transform: 'translate(-50%, -50%)'
+}}
+>
+  <p>loading...</p>
+  <CircularProgress color="secondary" size={50} thickness={5}/>
+</div>}
+</div>
   )
 }
 
