@@ -9,6 +9,7 @@ import {storage} from '../../firebase-config'
 import {ref,getDownloadURL} from 'firebase/storage'
 import { Grow } from '@mui/material';
 import { useEffect, useState } from 'react';
+import {Link} from '@mui/material';
 
 const BasicCard = ({nameOfEvent,numOfEvents,setEventRoom,imageOfEvent,timer}) =>{
 
@@ -26,6 +27,7 @@ const BasicCard = ({nameOfEvent,numOfEvents,setEventRoom,imageOfEvent,timer}) =>
   let navigate=useNavigate();
   return (
     <Grow in={appear}>
+      <Link to onClick= {()=>{setEventRoom(nameOfEvent);navigate('/home/eventrooms')}}>
     <Card sx={{display:'flex',flexDirection:'column',minHeight:325,maxHeight:300,minWidth:250,maxWidth:250, ':hover':{boxShadow:'10'}, marginTop:1}}>
       <CardContent>
       <img style = {{width: 225, height:200,position:'relative',top:-20}} src = {imageOfEvent} alt = "" />
@@ -36,6 +38,7 @@ const BasicCard = ({nameOfEvent,numOfEvents,setEventRoom,imageOfEvent,timer}) =>
         <Button size="small" onClick={()=>{setEventRoom(nameOfEvent);navigate('/home/eventrooms')}}>Go to</Button>
       </CardActions>
       </Card>
+      </Link>
     </Grow>
   );
 
