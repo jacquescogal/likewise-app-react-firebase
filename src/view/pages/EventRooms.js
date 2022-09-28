@@ -15,12 +15,17 @@ import AddIcon from '@mui/icons-material/Add';
 
 import EventRoomCreate from '../components/EventRoomCreate';
 import EventRoomJoin from '../components/EventRoomJoin';
+import { useNavigate } from 'react-router-dom';
+import { getAuth } from 'firebase/auth';
 
 const EventRooms = ({eventRoom,setChatRoom}) => {
   const [eRooms,setERooms]=useState([]);
   const [openCreate,setOpenCreate]=useState(false);
   const [openJoin,setOpenJoin]=useState(false);
   const [eventCard,setEventCard]=useState(null);
+  const user=getAuth().currentUser
+
+  const navigate=useNavigate();
 
   useEffect(()=>{
     if (eventRoom===''){
@@ -48,11 +53,17 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
     const docRef = await addDoc(collection(db, 'aRooms/'+eventRoom+'/eRooms'), {
       name: name,
       cap: cap,
-      pax: 1,
-      rem: cap-1,
+      pax: 0,
+      rem: cap,
       location:location,
       time:time
     });
+    const docRefSub = await setDoc(doc(db, 'aRooms/'+eventRoom+'/eRooms/'+docRef.id+'/users',user.email), { //use Reference?
+      name: user.email,
+      role: 'owner'
+    });
+    setChatRoom('aRooms/'+eventRoom+'/eRooms/'+docRef.id)
+    navigate('/home/chatroom')
 
   }
 
