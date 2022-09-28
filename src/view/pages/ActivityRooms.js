@@ -34,11 +34,12 @@ const ActivityRooms = ({setEventRoom}) => {
   return (
     <Box sx={{marginLeft:"20px"}}>
     <div > 
-    <Box sx={{ flexGrow: 1, height: '80px'}}>
+    <Box sx={{ flexGrow: 1, height: '150px'}}>
       <AppBar position="static">
         <Toolbar>
           <Typography height= '80px'>
-          <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}>Activity Rooms</h1>
+          <h1 style={{marginTop:"10px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}>Activity Rooms</h1>
+          <h4 style={{marginLeft:"50px", marginTop:"50px",backgroundColor: "white",padding:"10px"}}>Please select an activity of interest below.</h4>
           </Typography>
         </Toolbar>
       </AppBar>
