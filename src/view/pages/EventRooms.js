@@ -15,7 +15,6 @@ import EventRoomCreate from '../components/EventRoomCreate';
 import EventRoomJoin from '../components/EventRoomJoin';
 import { useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
-
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
