@@ -2,6 +2,7 @@
 import fireBase, { db } from './firebase-config'
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification,sendPasswordResetEmail} from 'firebase/auth'
 import 'firebase/auth'
+import { updateProfile } from 'firebase/auth';
 
 //Routing libs
 import {
@@ -129,6 +130,10 @@ const App = () =>{
     .then((response)=>
     {console.log('what');
     console.log(response);
+
+    updateProfile(auth.currentUser, {
+      displayName: username, photoURL: imageUrl
+    })
 
       setDoc(doc(db,'users',auth.currentUser.email),{
         imageUrl:imageUrl,

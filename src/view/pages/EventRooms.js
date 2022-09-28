@@ -7,20 +7,41 @@ import { useState } from 'react';
 import { Button } from '@mui/material';
 import { CircularProgress } from '@mui/material';
 
-import dayjs from 'dayjs';
-
 
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
 import EventRoomCreate from '../components/EventRoomCreate';
 import EventRoomJoin from '../components/EventRoomJoin';
+import { useNavigate } from 'react-router-dom';
+import { getAuth } from 'firebase/auth';
+
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+
+import "typeface-raleway";
+
+
+//date picker
+import dayjs from 'dayjs';
+import TextField from '@mui/material/TextField';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 
 const EventRooms = ({eventRoom,setChatRoom}) => {
   const [eRooms,setERooms]=useState([]);
   const [openCreate,setOpenCreate]=useState(false);
   const [openJoin,setOpenJoin]=useState(false);
   const [eventCard,setEventCard]=useState(null);
+  const user=getAuth().currentUser
+
+  const [value, setValue] = React.useState(dayjs());
+
+  const navigate=useNavigate();
 
   useEffect(()=>{
     if (eventRoom===''){
@@ -48,11 +69,17 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
     const docRef = await addDoc(collection(db, 'aRooms/'+eventRoom+'/eRooms'), {
       name: name,
       cap: cap,
-      pax: 1,
-      rem: cap-1,
+      pax: 0,
+      rem: cap,
       location:location,
       time:time
     });
+    const docRefSub = await setDoc(doc(db, 'aRooms/'+eventRoom+'/eRooms/'+docRef.id+'/users',user.email), { //use Reference?
+      name: user.email,
+      role: 'owner'
+    });
+    setChatRoom('aRooms/'+eventRoom+'/eRooms/'+docRef.id)
+    navigate('/home/chatroom')
 
   }
 
@@ -61,15 +88,42 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
   const activityName="Swimming"
 
   return (
+    <Box sx={{marginLeft:"20px"}}>
+      <Box sx={{ flexGrow: 1, height: '80px'}}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography height= '80px'>
+          <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}> Events for: {activityName} 
+          <Fab size="small" color="primary" aria-label="add" sx={{marginLeft:'20px'}} onClick={handleClickOpen}>
+            <AddIcon style={{fill:'white'}}/>
+          </Fab>
+        </h1>
+        </Typography>
+  
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DatePicker
+        label="Filter by date"
+        value={value}
+        onChange={(newValue) => {
+          setValue(newValue);
+        }}
+        renderInput={({ inputRef, inputProps, InputProps }) => (
+          //how to change color
+          <Box sx={{ display: 'flex', alignItems: 'center', marginLeft:"100px", marginTop:"8px" }}>
+            <input ref={inputRef} {...inputProps} sx={{color:'white'}}/>
+            {InputProps?.endAdornment}
+          </Box>
+        )}
+      />
+    </LocalizationProvider>
+
+        </Toolbar>
+      </AppBar>
+    </Box>
     <div>
       {(eRooms)?
     <menu>
     <div>
-      <h1>
-        Events for: {activityName}
-        <Fab size="small" color="primary" aria-label="add" sx={{marginTop:'4px', marginLeft:'4px'}} onClick={handleClickOpen}>
-        <AddIcon style={{fill:'white'}}/>
-      </Fab>
         <EventRoomCreate openCreate={openCreate} setOpenCreate={setOpenCreate} createChatRoom={createChatRoom}/>
         <EventRoomJoin openJoin={openJoin} setOpenJoin={setOpenJoin}
         eventCard={eventCard}
@@ -93,8 +147,8 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
           setEventCard={setEventCard} />
           </div>
         ))}
-      </h1>
     </div>
+    
     </menu>
 :<div
 style={{
@@ -106,6 +160,7 @@ style={{
   <CircularProgress color="secondary" size={50} thickness={5}/>
 </div>}
 </div>
+</Box>
   )
 }
 
