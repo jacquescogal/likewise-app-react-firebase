@@ -6,6 +6,9 @@ import { auth } from '../../firebase-config'
 import { db } from '../../firebase-config'
 import ProfilePic from '../components/ProfilePic'
 import { AirportShuttleTwoTone, NotListedLocation } from '@mui/icons-material'
+import Button from '@mui/material/Button';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+
 
 const Profile = () => {
 
@@ -52,6 +55,8 @@ const Profile = () => {
     <div>
       <h1>Profile</h1>
 
+
+      <Button sx={{minWidth:'200px', justifyContent: "flex-start", color:'orange',':hover':{color:'primary.main',bgcolor:'lightblue'}}} onClick={()=>navigate('EditProfile')} startIcon={<AccountBoxIcon sx={{ fill:'white','&:hover':{fill:'primary.main'} }}/>}>Profile</Button>
       <section>
       </section>
       <ProfilePic />

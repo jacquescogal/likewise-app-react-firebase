@@ -15,7 +15,6 @@ export default function ProfilePic() {
 
   function handleClick() {
     upload(photo, currentUser, setLoading);
-    window.location.reload(true);
   }
 
   useEffect(() => {
