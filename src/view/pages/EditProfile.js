@@ -6,6 +6,11 @@ import { auth } from '../../firebase-config'
 import { db } from '../../firebase-config'
 import ProfilePic from '../components/ProfilePic'
 
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 const EditProfile = () => {
 
   //refer to registration for date picker/gender picker/year picker etc.
@@ -23,6 +28,8 @@ const EditProfile = () => {
     course:'',
     studyYear:''
   })
+
+  const [gender,setGender]=useState();
 
 
   const docRef = doc(db, "users", auth.currentUser.email);
@@ -75,7 +82,26 @@ const EditProfile = () => {
       <section>
        Gender:
       <p style={{minHeight:'25px',backgroundColor: "white", border:"1px solid orange",borderRadius: '5px', borderRight : '300px'}} >
-      {profileInfo.gender}
+
+      {/* Gender Picker */}
+      <FormControl sx={{ m: 1, minWidth: 120 ,maxWidth:300}}>
+        <InputLabel id="gender">Gender</InputLabel>
+        <Select
+          labelId="gender"
+          id="genderSelect"
+          value={profileInfo.gender}
+          label="gender"
+          onChange={event=>{setGender(event.target.value);}}
+        >
+          <MenuItem value="">
+            Please pick your gender
+          </MenuItem>
+          <MenuItem value={'Male'}>Male</MenuItem>
+          <MenuItem value={'Female'}>Female</MenuItem>
+          <MenuItem value={'Prefer not to say'}>Prefer not to say</MenuItem>
+        </Select>
+      </FormControl>
+
       </p></section>
 
       <section>
