@@ -9,6 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
 
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function EventRoomCreate({openJoin,setOpenJoin,eventCard,setChatRoom}) {
     const navigate=useNavigate();
@@ -49,7 +50,10 @@ export default function EventRoomCreate({openJoin,setOpenJoin,eventCard,setChatR
       </Stack>
         </DialogContent>
         <DialogActions>
-            <Button onClick={()=>{setChatRoom(eventCard.path);navigate('/home/chatroom')}}>Join</Button>
+          {(eventCard.cap-eventCard.pax>0)?
+            <Button onClick={()=>{setChatRoom(eventCard.path);navigate('/home/chatroom')}}>Join</Button>:
+            <Button disabled onClick={()=>{setChatRoom(eventCard.path);navigate('/home/chatroom')}}>Join</Button>
+          }
           <Button onClick={handleClose}>Cancel</Button>
         </DialogActions>
       </Dialog>:<div></div>}

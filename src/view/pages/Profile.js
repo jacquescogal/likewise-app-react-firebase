@@ -53,7 +53,7 @@ const Profile = () => {
   return (
     <menu>
     <div>
-      <h1>Profile</h1>
+    <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '50px', color:'#ffad01'}}>Profile</h1>
 
 
       <Button sx={{minWidth:'200px', justifyContent: "flex-start", color:'orange',':hover':{color:'primary.main',bgcolor:'lightblue'}}} onClick={()=>navigate('EditProfile')} startIcon={<AccountBoxIcon sx={{ fill:'white','&:hover':{fill:'primary.main'} }}/>}>Profile</Button>
@@ -63,7 +63,7 @@ const Profile = () => {
 
       <section>
        Username:
-      <p style={{minHeight:'25px',backgroundColor: "white", border:"1px solid orange",borderRadius: '5px', borderRight : '300px'}} >
+       <p style={{minHeight:'25px',backgroundColor: "white", border:"1px solid orange", borderRadius: '5px', borderRight : '300px'}} >
       {profileInfo.username}
       </p></section>
 
