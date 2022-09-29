@@ -37,7 +37,7 @@ export function useAuth() {
 
   return currentUser;
 }
-
+//hello
 
 // Storage
 export async function upload(file, currentUser, setLoading) {
@@ -46,10 +46,21 @@ export async function upload(file, currentUser, setLoading) {
   setLoading(true);
   
   const snapshot = await uploadBytes(fileRef, file);
-  const imageUrl = await getDownloadURL(fileRef);
+  const photoURL = await getDownloadURL(fileRef);
+  let navigate = useNavigate();
+ 
 
-  updateProfile(currentUser, {imageUrl});
+  updateProfile(currentUser, {photoURL});
   
+
+  const userRef = doc(db,'users', currentUser.email);
+  await updateDoc(userRef, {
+    imageUrl:'profilepics/' + currentUser.uid + '.png'
+  });
+
   setLoading(false);
   alert("Uploaded file!");
+
+
+  
 }
