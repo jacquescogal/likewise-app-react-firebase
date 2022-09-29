@@ -19,6 +19,7 @@ import Onboard from './view/pages/Onboard';
 import ResetPassword from './view/pages/ResetPassword';
 import EventRooms from "./view/pages/EventRooms";
 import ChatRoom from './view/pages/ChatRoom';
+import EditProfile from './view/pages/EditProfile';
 
 import MyRooms from "./view/pages/MyRooms";
 import ActivityRooms from "./view/pages/ActivityRooms";
@@ -52,6 +53,14 @@ const App = () =>{
   const [DOB,setDOB]=useState('')
   const [course,setCourse]=useState('')
   const [studyYear,setStudyYear]=useState('')
+
+  const [loggedIn, setLoggedIn] = useState(null);
+
+  useEffect(() => {
+    const loggedUser = localStorage.getItem('user');
+    setLoggedIn(Boolean(loggedUser));
+  }, []);
+
 
   let navigate=useNavigate();
 
@@ -186,12 +195,16 @@ const App = () =>{
                 <Route path="MyRooms" element={<MyRooms />}/>
                 <Route path="Profile" element={<Profile />}/>
                 <Route path="ChatRoom" element={<ChatRoom chatRoom={chatRoom}/>}/>
+                <Route path="Profile/EditProfile" element={<EditProfile />}/>
               </Route>
             </Route>
             <Route path="*" element={<p>There's nothing here: 404!</p>} />
         </Routes>
+      
       </div>
   );
+
+  
 }
 
 const ProtectedRoute=({children, user})=>{

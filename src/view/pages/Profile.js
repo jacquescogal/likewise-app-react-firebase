@@ -10,11 +10,13 @@ import Button from '@mui/material/Button';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 
+
 const Profile = () => {
 
   //refer to registration for date picker/gender picker/year picker etc.
   
   let navigate = useNavigate();
+  
 
   //profile hashmap
   const [profileInfo,setProfileInfo]=useState({
@@ -28,10 +30,9 @@ const Profile = () => {
     studyYear:''
   })
 
-
   const docRef = doc(db, "users", auth.currentUser.email);
   useEffect(()=>{
-    getDoc(doc(db, "users", auth.currentUser.email)).then(docSnap => {
+    getDoc(docRef).then(docSnap => {
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
         setProfileInfo({...docSnap.data(),email:auth.currentUser.email,password:'password123'})
@@ -49,16 +50,17 @@ const Profile = () => {
         navigate('/');
       },(reason)=>console.log(reason))
   }
-
+  
   return (
     <menu>
     <div>
       <h1>Profile</h1>
 
 
-      <Button sx={{minWidth:'200px', justifyContent: "flex-start", color:'orange',':hover':{color:'primary.main',bgcolor:'lightblue'}}} onClick={()=>navigate('EditProfile')} startIcon={<AccountBoxIcon sx={{ fill:'white','&:hover':{fill:'primary.main'} }}/>}>Profile</Button>
+      <Button sx={{minWidth:'200px', justifyContent: "flex-start", color:'orange',':hover':{color:'primary.main',bgcolor:'lightblue'}}} onClick={()=>navigate('EditProfile')} startIcon={<AccountBoxIcon sx={{ fill:'white','&:hover':{fill:'primary.main'} }}/>}>Edit Profile</Button>
       <section>
       </section>
+      
       <ProfilePic />
 
       <section>

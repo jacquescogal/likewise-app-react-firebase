@@ -1,7 +1,7 @@
 //firebase import (To be hidden later)
 import { initializeApp } from "firebase/app";
 import {getAuth, updateProfile, onAuthStateChanged} from 'firebase/auth'
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { useEffect, useState } from "react";
 
@@ -46,10 +46,19 @@ export async function upload(file, currentUser, setLoading) {
   setLoading(true);
   
   const snapshot = await uploadBytes(fileRef, file);
-  const imageUrl = await getDownloadURL(fileRef);
+  const photoURL = await getDownloadURL(fileRef);
 
-  updateProfile(currentUser, {imageUrl});
+ 
+
+  updateProfile(currentUser, {photoURL});
   
+
+  const userRef = doc(db,'users', currentUser.email);
+  await updateDoc(userRef, {
+    imageUrl:'profilepics/' + currentUser.uid + '.png'
+  });
+
   setLoading(false);
   alert("Uploaded file!");
+  
 }
