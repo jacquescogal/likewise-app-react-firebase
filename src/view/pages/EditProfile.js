@@ -6,7 +6,7 @@ import { auth } from '../../firebase-config'
 import { db } from '../../firebase-config'
 import ProfilePic from '../components/ProfilePic'
 
-const Profile = () => {
+const EditProfile = () => {
 
   //refer to registration for date picker/gender picker/year picker etc.
   
@@ -49,7 +49,7 @@ const Profile = () => {
   return (
     <menu>
     <div>
-      <h1>Profile</h1>
+      <h1>Edit Profile</h1>
 
       <section>
       </section>
@@ -98,11 +98,13 @@ const Profile = () => {
 
       <br></br>
       <div>
-        <button onClick={()=>handleLogout()}>Logout</button>
+        <button>Save</button>
+        <br></br>
+        <button onClick={()=> navigate(-1)}>Cancel</button>
       </div>
     </div>
     </menu>
   )
 }
 
-export default Profile
+export default EditProfile

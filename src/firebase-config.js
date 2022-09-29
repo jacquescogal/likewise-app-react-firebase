@@ -4,6 +4,7 @@ import {getAuth, updateProfile, onAuthStateChanged} from 'firebase/auth'
 import { getFirestore } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { useEffect, useState } from "react";
+import { doc,getDoc,updateDoc } from 'firebase/firestore'
 
 
 
@@ -47,7 +48,6 @@ export async function upload(file, currentUser, setLoading) {
   
   const snapshot = await uploadBytes(fileRef, file);
   const photoURL = await getDownloadURL(fileRef);
-  let navigate = useNavigate();
  
 
   updateProfile(currentUser, {photoURL});
