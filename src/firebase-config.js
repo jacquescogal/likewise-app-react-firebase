@@ -8,14 +8,16 @@ import { useEffect, useState } from "react";
 
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_CONFIG_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_CONFIG_AUTH_DOAMIN,
-  projectId: process.env.REACT_APP_FIREBASE_CONFIG_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_CONFIG_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_CONFIG_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_CONFIG_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_CONFIG_MEASUREMENT_ID
+  apiKey: "AIzaSyCo8EKUud6UN4HdPc7Osw4zvIJmiY7WnCo",
+  authDomain: "codetherapy-8eba4.firebaseapp.com",
+  projectId: "codetherapy-8eba4",
+  storageBucket: "codetherapy-8eba4.appspot.com",
+  messagingSenderId: "862928657004",
+  appId: "1:862928657004:web:c636362ab62b9455f35649",
+  measurementId: "G-XSHX49R593"
 };
+
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

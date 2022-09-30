@@ -92,7 +92,7 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
       <Box sx={{ flexGrow: 1, height: '80px'}}>
       <AppBar position="static">
         <Toolbar>
-          <Typography height= '80px'>
+          <Typography height= '80px' >
           <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}> Events for: {activityName} 
           <Fab size="small" color="primary" aria-label="add" sx={{marginLeft:'20px'}} onClick={handleClickOpen}>
             <AddIcon style={{fill:'white'}}/>
