@@ -33,7 +33,7 @@ const BasicCard = ({nameOfEvent,numOfEvents,setEventRoom,imageOfEvent,timer}) =>
         <h2>{numOfEvents}</h2>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={()=>{setEventRoom(nameOfEvent);navigate('/home/eventrooms')}}>Go to</Button>
+        <Button size="small" onClick={()=>{setEventRoom(nameOfEvent);localStorage.setItem('eventRoom',nameOfEvent);navigate('/home/eventrooms')}}>Go to</Button>
       </CardActions>
       </Card>
     </Grow>

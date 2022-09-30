@@ -6,14 +6,16 @@ import { auth } from '../../firebase-config'
 import { db } from '../../firebase-config'
 import ProfilePic from '../components/ProfilePic'
 import { AirportShuttleTwoTone, NotListedLocation } from '@mui/icons-material'
+import { CircularProgress } from '@mui/material'
 
 const Profile = () => {
 
   //refer to registration for date picker/gender picker/year picker etc.
   
   let navigate = useNavigate();
+  const [user,setUser]=useState(null);
 
-  //profile hashmap
+  //profile hashmap 
   const [profileInfo,setProfileInfo]=useState({
     imageUrl:'',
     username:'',
@@ -25,30 +27,38 @@ const Profile = () => {
     studyYear:''
   })
 
-
-  const docRef = doc(db, "users", auth.currentUser.email);
   useEffect(()=>{
-    getDoc(doc(db, "users", auth.currentUser.email)).then(docSnap => {
+    if (!user){
+      console.log('wait')
+      auth.onAuthStateChanged(user=>{
+        setUser(user)
+      })}
+    else{
+    getDoc(doc(db, "users", user.email)).then(docSnap => {
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
-        setProfileInfo({...docSnap.data(),email:auth.currentUser.email,password:'password123'})
+        setProfileInfo({...docSnap.data(),email:user.email,password:'password123'})
         console.log(docSnap.data().DOB.toString())
       } else {
         console.log("No such document!");
       }
     })
-  },[])
+  }
+  },[user])
 
   const handleLogout = () => {
       const auth=getAuth();
       auth.signOut().then((value)=>{
         console.log(value)
         navigate('/');
+        localStorage.clear();
       },(reason)=>console.log(reason))
   }
 
   return (
+    
     <menu>
+      {(user)?
     <div>
     <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '50px', color:'#ffad01'}}>Profile</h1>
 
@@ -101,7 +111,15 @@ const Profile = () => {
       <div>
         <button onClick={()=>handleLogout()}>Logout</button>
       </div>
-    </div>
+    </div>:<div
+    style={{
+        position: 'absolute', left: '60%', top: '50%',
+        transform: 'translate(-50%, -50%)'
+    }}
+    >
+      <p>loading...</p>
+      <CircularProgress color="secondary" size={50} thickness={5}/>
+    </div>}
     </menu>
   )
 }

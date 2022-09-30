@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ActivityCard from '../components/ActivityCard'
 import {query,collection,orderBy,onSnapshot} from 'firebase/firestore';
-import { db } from '../../firebase-config';
+import { auth, db } from '../../firebase-config';
 import { useEffect } from 'react';
 import { CircularProgress } from '@mui/material';
 

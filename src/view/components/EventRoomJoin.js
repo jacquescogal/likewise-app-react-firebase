@@ -51,8 +51,8 @@ export default function EventRoomCreate({openJoin,setOpenJoin,eventCard,setChatR
         </DialogContent>
         <DialogActions>
           {(eventCard.cap-eventCard.pax>0)?
-            <Button onClick={()=>{setChatRoom(eventCard.path);navigate('/home/chatroom')}}>Join</Button>:
-            <Button disabled onClick={()=>{setChatRoom(eventCard.path);navigate('/home/chatroom')}}>Join</Button>
+            <Button onClick={()=>{setChatRoom(eventCard.path);localStorage.setItem('chatRoom',eventCard.path);navigate('/home/chatroom')}}>Join</Button>:
+            <Button disabled onClick={()=>{setChatRoom(eventCard.path);localStorage.setItem('chatRoom',eventCard.path);navigate('/home/chatroom')}}>Join</Button>
           }
           <Button onClick={handleClose}>Cancel</Button>
         </DialogActions>

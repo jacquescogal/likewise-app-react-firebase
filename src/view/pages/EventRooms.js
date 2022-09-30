@@ -82,9 +82,6 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
 
   }
 
-  //hardcoded, to be changed
-  const dateTime="29 Sep 2022";
-  const activityName="Swimming"
 
   return (
     <Box sx={{marginLeft:"20px"}}>
@@ -92,7 +89,7 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
       <AppBar position="static">
         <Toolbar>
           <Typography height= '80px'>
-          <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}> Events for: {activityName} 
+          <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}> Events for: {eventRoom} 
           <Fab size="small" color="primary" aria-label="add" sx={{marginLeft:'20px'}} onClick={handleClickOpen}>
             <AddIcon style={{fill:'white'}}/>
           </Fab>
