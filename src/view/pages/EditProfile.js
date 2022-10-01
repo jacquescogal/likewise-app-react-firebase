@@ -68,13 +68,13 @@ const EditProfile = () => {
 
   async function saveProfile(){
     const userRef = doc(db,'users', currentUser.email);
-  await updateDoc(userRef, {
-    username: username,
-    DOB: DOB,
-    gender: gender,
-    studyYear: studyYear,
-    course: course
-  });
+    await updateDoc(userRef, {
+      username: username?username:profileInfo.username,
+      DOB: DOB?DOB:profileInfo.DOB,
+      gender: gender?gender:profileInfo.gender,
+      studyYear: studyYear?studyYear:profileInfo.studyYear,
+      course: course?course:profileInfo.course
+    });
   navigate(-1);
 
   }
@@ -118,7 +118,7 @@ const EditProfile = () => {
           label="gender"
           onChange={event=>{setGender(event.target.value);}}
         >
-          <MenuItem value="">
+          <MenuItem value=''>
             Please pick your gender
           </MenuItem>
           <MenuItem value={'Male'}>Male</MenuItem>
