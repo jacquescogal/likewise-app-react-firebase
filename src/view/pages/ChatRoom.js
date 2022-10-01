@@ -24,6 +24,7 @@ import Stack from '@mui/material/Stack';
 import { Card, Paper } from '@mui/material';
 
 import dayjs from 'dayjs';
+import { toast } from 'react-toastify';
 
 const ChatRoom = ({chatRoom}) => {
   const navigate = useNavigate();
@@ -53,10 +54,20 @@ const ChatRoom = ({chatRoom}) => {
     getDoc(doc(db, chatRoomArr.slice(0,-1).join('/'), chatRoomID)).then(docSnap => {
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
-        setRoomInfo({...docSnap.data()})
+        setRoomInfo({...docSnap.data(),roomUID:chatRoomID})
         console.log(docSnap.data())
       } else {
         console.log("No such document!")}});
+    const unsub=onSnapshot(doc(db, chatRoomArr.slice(0,-1).join('/'), chatRoomID),(doc)=>{
+      if(doc.exists()){
+        console.log("fine")
+      }
+      else{
+        unsub();
+        toast('Someone has deleted the room')
+        navigate('/home/myRooms')
+      }
+    })
    }},[chatRoom])
 
   return (
@@ -72,7 +83,8 @@ const ChatRoom = ({chatRoom}) => {
       <CircularProgress color="secondary" size={50} thickness={5}/>
     </div>:
       <div>
-      <ChatRoomBar roomName={roomInfo.name} 
+      <ChatRoomBar roomUID={roomInfo.roomUID}
+      roomName={roomInfo.name} 
       roomDate={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('DD/MM/YYYY'):'loading...'}
       roomTime={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('hh:mm A'):'loading...'}
       roomLocation={roomInfo.location}

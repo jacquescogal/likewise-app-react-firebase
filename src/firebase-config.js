@@ -4,8 +4,7 @@ import {getAuth, updateProfile, onAuthStateChanged} from 'firebase/auth'
 import { getFirestore } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { useEffect, useState } from "react";
-import { doc,getDoc,updateDoc } from 'firebase/firestore'
-
+import { updateDoc,doc  } from "firebase/firestore";
 
 
 const firebaseConfig = {
@@ -38,7 +37,7 @@ export function useAuth() {
 
   return currentUser;
 }
-//hello
+
 
 // Storage
 export async function upload(file, currentUser, setLoading) {
@@ -48,19 +47,12 @@ export async function upload(file, currentUser, setLoading) {
   
   const snapshot = await uploadBytes(fileRef, file);
   const photoURL = await getDownloadURL(fileRef);
- 
+  await updateDoc(doc(db,'users',currentUser.email),{
+    imageURL:photoURL
+  });
 
   updateProfile(currentUser, {photoURL});
   
-
-  const userRef = doc(db,'users', currentUser.email);
-  await updateDoc(userRef, {
-    imageUrl:'profilepics/' + currentUser.uid + '.png'
-  });
-
   setLoading(false);
   alert("Uploaded file!");
-
-
-  
 }

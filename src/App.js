@@ -57,6 +57,15 @@ const App = () =>{
 
   let navigate=useNavigate();
 
+  useEffect(()=>{
+    if (localStorage.getItem('eventRoom')){
+      setEventRoom(localStorage.getItem('eventRoom'))
+    }
+    if (localStorage.getItem('chatRoom')){
+      setChatRoom(localStorage.getItem('chatRoom'))
+    }
+  },[])
+
   
 
   
@@ -70,6 +79,7 @@ const App = () =>{
             console.log(auth.currentUser);
             setUser(user);
             navigate('/Home/ActivityRooms');
+            localStorage.setItem('user',JSON.stringify(user))
           }
           else{
             toast.error("Please verify your Email");
@@ -185,7 +195,7 @@ const App = () =>{
               <Route path="Register" element={<Register setEmail={setEmail} email={email} setPassword={setPassword} handleAction={handleRegister} setUsername={setUsername} setImageUrl={setImageUrl} setGender={setGender} setDOB={setDOB} setCourse={setCourse} setStudyYear={setStudyYear} course={course} studyYear={studyYear} DOB={DOB} gender={gender}/>}/>
               <Route path="ResetPassword" element={<ResetPassword setEmail={setEmail} handleReset={handlePasswordReset}/>}/>
             </Route>
-            <Route element={<ProtectedRoute user={user}/>}>
+            <Route element={<ProtectedRoute user={setUser}/>}>
               <Route path="/Home" element={<Home />}>
                 <Route path="ActivityRooms" element={<ActivityRooms setEventRoom={setEventRoom}/>}/>
                 <Route path="EventRooms" element={<EventRooms setChatRoom={setChatRoom} eventRoom={eventRoom} chatRoom={chatRoom}/>}/>
@@ -201,9 +211,8 @@ const App = () =>{
   );
 }
 
-const ProtectedRoute=({children, user})=>{
-  if (!user || !user.emailVerified){
-    console.log('What')
+const ProtectedRoute=({children, setUser})=>{
+  if (!localStorage.getItem('user')){
     return <Navigate to={'/'} replace />;
   }
   else{
