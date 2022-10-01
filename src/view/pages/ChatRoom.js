@@ -53,7 +53,7 @@ const ChatRoom = ({chatRoom}) => {
     getDoc(doc(db, chatRoomArr.slice(0,-1).join('/'), chatRoomID)).then(docSnap => {
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
-        setRoomInfo({...docSnap.data()})
+        setRoomInfo({...docSnap.data(),roomUID:chatRoomID})
         console.log(docSnap.data())
       } else {
         console.log("No such document!")}});
@@ -72,7 +72,8 @@ const ChatRoom = ({chatRoom}) => {
       <CircularProgress color="secondary" size={50} thickness={5}/>
     </div>:
       <div>
-      <ChatRoomBar roomName={roomInfo.name} 
+      <ChatRoomBar roomUID={roomInfo.roomUID}
+      roomName={roomInfo.name} 
       roomDate={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('DD/MM/YYYY'):'loading...'}
       roomTime={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('hh:mm A'):'loading...'}
       roomLocation={roomInfo.location}
