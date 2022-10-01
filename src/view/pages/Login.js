@@ -1,4 +1,5 @@
 import Button from "../components/common/Button";
+import Button_ from "../components/common/Button_";
 import Stack from '@mui/material/Stack';
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
@@ -28,6 +29,9 @@ const Login = ({setEmail, setPassword, handleAction, handleReset}) => {
       <TextField label="E-mail" onChange={e=>setEmail(e.target.value)}/>
       <TextField label="Password" onChange={e=>setPassword(e.target.value)} type='password'/>
       <Button label="Confirm Login" style={{alignSelf:'center'}} handleAction={handleAction} />
+      <Button_ variant="outline-info" label="Forgot password?" handleAction={()=>
+                    {navigate('/ResetPassword');
+                    }}/>
       </Stack>
     </div>
   )
