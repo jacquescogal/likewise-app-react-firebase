@@ -17,8 +17,13 @@ import ManIcon from '@mui/icons-material/Man';
 import WomanIcon from '@mui/icons-material/Woman';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { collection, getDocs,getDoc, deleteDoc,doc, updateDoc, increment} from 'firebase/firestore';
+import { db } from '../../firebase-config';
+import {useNavigate } from 'react-router-dom';
 
 const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap})=> {
+  const navigate=useNavigate();
+
   const [state, setState] = React.useState({
     right: false
   });
@@ -31,12 +36,30 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap})=> {
     setState({ ...state, [anchor]: open });
   };
 
+  const handleDelete = async () =>{
+    const eventRoom=localStorage.getItem('eventRoom')
+    const chatRoom=localStorage.getItem('chatRoom')
+    const chatRoomKey=chatRoom.split('/').slice(-1)[0]
+    const chatRoomUsers=collection(db,chatRoom+'/users')
+    const chatRoomUsersSnapshot=await getDocs(chatRoomUsers)
+    console.log(chatRoom)
+    chatRoomUsersSnapshot.forEach(async (document)=>{
+      console.log('users/'+document.id+'/joinedRooms',chatRoomKey)
+      deleteDoc(doc(db,'users/'+document.id+'/joinedRooms',chatRoomKey))
+      deleteDoc(doc(db,chatRoom+'/users',document.id))
+    })
+    deleteDoc(doc(db,'aRooms/'+eventRoom+'/eRooms',chatRoomKey))
+    await updateDoc(doc(db,'aRooms',eventRoom),{
+      cap:increment(-1)
+    })
+    navigate('/home/MyRooms')
+  }
+
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      onClose={toggleDrawer(anchor, false)}
     >
       <List>
       <ListItemText primary='Event Details:' sx={{marginLeft:'10px'}}/>
@@ -74,11 +97,16 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap})=> {
             </ListItemIcon>
             <ListItemText primary='Ann'/> 
         </ListItem>
-        <ListItem>
-            <ListItemIcon>
-                <ManIcon/>
-            </ListItemIcon>
-            <ListItemText primary='Dave'/> 
+        <ListItem >
+        <Button  variant="outlined"sx={{
+          bgcolor:'#E22727',
+          color:'white',
+                      ':hover': {
+                        bgcolor: '#D50000', // theme.palette.primary.main
+                        color: 'white'
+                      },
+                    }}
+                    onClick={handleDelete}>Delete</Button>
         </ListItem>
       </List>
     </Box>
