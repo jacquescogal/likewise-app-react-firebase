@@ -6,6 +6,10 @@ import { auth } from '../../firebase-config'
 import { db } from '../../firebase-config'
 import ProfilePic from '../components/ProfilePic'
 import { AirportShuttleTwoTone, NotListedLocation } from '@mui/icons-material'
+
+import Button from '@mui/material/Button';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import EditProfile from './EditProfile';
 import { CircularProgress } from '@mui/material'
 
 const Profile = () => {
@@ -62,8 +66,9 @@ const Profile = () => {
     <div>
     <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '50px', color:'#ffad01'}}>Profile</h1>
 
-      <section>
-      </section>
+
+      <Button sx={{minWidth:'200px', justifyContent: "flex-start",marginLeft:'950px', color:'orange',':hover':{color:'primary.main',bgcolor:'lightblue'}}} onClick={()=>navigate('EditProfile')} startIcon={<AccountBoxIcon sx={{ fill:'white','&:hover':{fill:'primary.main'} }}/>}>Edit Profile</Button>
+   
       <ProfilePic />
 
       <section>
