@@ -24,6 +24,7 @@ import Stack from '@mui/material/Stack';
 import { Card, Paper } from '@mui/material';
 
 import dayjs from 'dayjs';
+import { toast } from 'react-toastify';
 
 const ChatRoom = ({chatRoom}) => {
   const navigate = useNavigate();
@@ -57,6 +58,16 @@ const ChatRoom = ({chatRoom}) => {
         console.log(docSnap.data())
       } else {
         console.log("No such document!")}});
+    const unsub=onSnapshot(doc(db, chatRoomArr.slice(0,-1).join('/'), chatRoomID),(doc)=>{
+      if(doc.exists()){
+        console.log("fine")
+      }
+      else{
+        unsub();
+        toast('Someone has deleted the room')
+        navigate('/home/myRooms')
+      }
+    })
    }},[chatRoom])
 
   return (
