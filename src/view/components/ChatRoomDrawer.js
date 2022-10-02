@@ -42,11 +42,16 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap})=> {
     const chatRoomKey=chatRoom.split('/').slice(-1)[0]
     const chatRoomUsers=collection(db,chatRoom+'/users')
     const chatRoomUsersSnapshot=await getDocs(chatRoomUsers)
+    const chatRoomMessages=collection(db,chatRoom+'/messages')
+    const chatRoomMessagesSnapshot=await getDocs(chatRoomMessages)
     console.log(chatRoom)
-    chatRoomUsersSnapshot.forEach(async (document)=>{
+    chatRoomUsersSnapshot.forEach( (document)=>{
       console.log('users/'+document.id+'/joinedRooms',chatRoomKey)
       deleteDoc(doc(db,'users/'+document.id+'/joinedRooms',chatRoomKey))
       deleteDoc(doc(db,chatRoom+'/users',document.id))
+    })
+    chatRoomMessagesSnapshot.forEach( (document)=>{
+      deleteDoc(doc(db,chatRoom+'/messages',document.id))
     })
     deleteDoc(doc(db,'aRooms/'+eventRoom+'/eRooms',chatRoomKey))
     await updateDoc(doc(db,'aRooms',eventRoom),{
