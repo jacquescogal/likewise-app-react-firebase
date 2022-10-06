@@ -68,6 +68,8 @@ setUsername,setImageUrl,gender,setGender,DOB,setDOB,course,setCourse,studyYear,s
           label="Date of Birth"
           inputFormat="DD/MM/YYYY"
           value={(DOB!=='')?DOB:'01/01/2022'}
+          minDate={'01/01/1985'}
+          maxDate={'01/01/2005'} 
           onChange={e=>{setDOB(dayjs(e.$d.toString()).format('MM/DD/YYYY'));console.log(dayjs(e.$d.toString()).format('MM/DD/YYYY'));}}
           renderInput={(params) => <TextField {...params} />}
         />
