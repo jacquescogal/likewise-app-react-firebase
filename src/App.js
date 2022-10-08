@@ -190,10 +190,11 @@ const App = () =>{
       <div className="App">
         <ToastContainer/>
         <Routes>
+        <Route path="/ResetPassword" element={<ResetPassword setEmail={setEmail} handleReset={handlePasswordReset}/>}>
+            </Route> 
             <Route path='/' element={<Onboard />}>
               <Route path="Login" element={<Login setEmail={setEmail} setPassword={setPassword} handleAction={handleLogin}/>}/>
               <Route path="Register" element={<Register setEmail={setEmail} email={email} setPassword={setPassword} handleAction={handleRegister} setUsername={setUsername} setImageUrl={setImageUrl} setGender={setGender} setDOB={setDOB} setCourse={setCourse} setStudyYear={setStudyYear} course={course} studyYear={studyYear} DOB={DOB} gender={gender}/>}/>
-              <Route path="ResetPassword" element={<ResetPassword setEmail={setEmail} handleReset={handlePasswordReset}/>}/>
             </Route>
             <Route element={<ProtectedRoute user={setUser}/>}>
               <Route path="/Home" element={<Home />}>

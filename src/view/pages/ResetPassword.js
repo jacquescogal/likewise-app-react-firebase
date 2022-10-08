@@ -15,7 +15,7 @@ const ResetPassword = ({setEmail, handleReset}) => {
         paddingTop: 0
       }} >
         <Stack spacing={2}>
-        <b style={{alignSelf:'center', fontSize:40}}>Reset Password</b>
+        <b style={{alignSelf:'center', fontSize:20}}>Reset Your Password Here</b>
         <TextField label="E-mail" onChange={e=>setEmail(e.target.value)}/>
         <Button label="Reset Password" style={{alignSelf:'center'}} handleAction={handleReset} />     
         </Stack>
