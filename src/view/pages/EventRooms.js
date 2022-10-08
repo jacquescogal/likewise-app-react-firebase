@@ -1,6 +1,6 @@
 import React from 'react'
 import EventCard from '../components/EventCard'
-import {query,collection,orderBy,onSnapshot,doc,setDoc,addDoc, serverTimestamp, increment,updateDoc, FieldPath} from 'firebase/firestore';
+import {query,collection,orderBy,onSnapshot,doc,setDoc,addDoc, serverTimestamp, increment,updateDoc, FieldPath, getDoc} from 'firebase/firestore';
 import { db } from '../../firebase-config';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -58,6 +58,7 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
       console.log(eRooms);
       setERooms(eRooms);
     })
+    return unsubscribe
   }},[eventRoom])
 
   const handleClickOpen = () => {
@@ -75,8 +76,11 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
       location:location,
       time:time
     });
+    const userSnap=await getDoc(doc(db,'users/',user.email))
+    const userData=userSnap.data()
     await setDoc(doc(db, 'aRooms/'+eventRoom+'/eRooms/'+docRef.id+'/users',user.email), { //use Reference?
       userRef: doc(db,'users',user.email),
+      name: userData.username,
       role: 'owner'
     });
     await setDoc(doc(db,'users/'+user.email+'/joinedRooms',docRef.id),{

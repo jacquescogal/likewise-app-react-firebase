@@ -35,6 +35,8 @@ const ChatRoom = ({chatRoom}) => {
     name:'',
     time:null
   })
+  const [userArr,setUserArr]=useState(null)
+  const [currentUserName,setCurrentUserName]=useState('');
 
   useEffect(()=>{
     if (chatRoom===''){
@@ -49,13 +51,23 @@ const ChatRoom = ({chatRoom}) => {
       })
       setMessages(messages);
     })
+    let userArr=[]
+    const unsubscribeUsers=onSnapshot(collection(db,chatRoom+'/users'),(collectionSnapshot)=>{
+        collectionSnapshot.forEach((doc)=>{
+          let docData=doc.data()
+          userArr.push({id:doc.id,name:docData.name,ref:docData.userRef,role:docData.role})
+          if (doc.id===auth.currentUser.email){
+            setCurrentUserName(docData.name)
+          }
+        })
+        setUserArr(userArr)
+      })
     const chatRoomArr=chatRoom.split('/');
     const chatRoomID=chatRoomArr[chatRoomArr.length-1]
     getDoc(doc(db, chatRoomArr.slice(0,-1).join('/'), chatRoomID)).then(docSnap => {
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
         setRoomInfo({...docSnap.data(),roomUID:chatRoomID})
-        console.log(docSnap.data())
       } else {
         console.log("No such document!")}});
     const unsub=onSnapshot(doc(db, chatRoomArr.slice(0,-1).join('/'), chatRoomID),(doc)=>{
@@ -63,12 +75,13 @@ const ChatRoom = ({chatRoom}) => {
         console.log("fine")
       }
       else{
-        unsub();
         toast('Someone has deleted the room')
         navigate('/home/myRooms')
       }
     })
+    return unsub
    }},[chatRoom])
+
 
   return (
     
@@ -89,7 +102,8 @@ const ChatRoom = ({chatRoom}) => {
       roomTime={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('hh:mm A'):'loading...'}
       roomLocation={roomInfo.location}
       roomPax={roomInfo.pax}
-      roomCap={roomInfo.cap}/>
+      roomCap={roomInfo.cap}
+      roomUsers={userArr}/>
       ChatRoom
       <div style={{width:'100%',display:'flex',flexDirection:'column',marginTop:'25px'}}>
         <Paper>
@@ -99,7 +113,7 @@ const ChatRoom = ({chatRoom}) => {
       ))}
       <span ref={messageScroll}></span>
       </Paper>
-      <SendMessage scroll={scroll} messageScroll={messageScroll} chatRoom={chatRoom+'/messages'}/>
+      <SendMessage scroll={scroll} messageScroll={messageScroll} chatRoom={chatRoom+'/messages'} currentUserName={currentUserName}/>
       </Paper>
       <span ref={scroll}></span>
       </div>

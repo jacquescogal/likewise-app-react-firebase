@@ -28,6 +28,7 @@ const ActivityRooms = ({setEventRoom}) => {
       console.log(aRooms);
       setARooms(aRooms);
     })
+    return unsubscribe
   },[])
 
   
