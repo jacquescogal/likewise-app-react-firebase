@@ -20,8 +20,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { collection, getDocs,getDoc, deleteDoc,doc, updateDoc, increment} from 'firebase/firestore';
 import { db } from '../../firebase-config';
 import {useNavigate } from 'react-router-dom';
+import CircleIcon from '@mui/icons-material/Circle';
 
-const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap})=> {
+const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap,roomUsers})=> {
   const navigate=useNavigate();
 
   const [state, setState] = React.useState({
@@ -90,18 +91,17 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap})=> {
       <Divider />
       <List>
       <ListItemText sx={{marginLeft:'10px'}}>Attendees ({roomPax}/{roomCap}) :</ListItemText>
-      <ListItem>
-            <ListItemIcon>
-                <ManIcon sx={{fill:'#ffad01'}}/>
-            </ListItemIcon>
-            <ListItemText primary='Andrei (Owner)'/> 
-        </ListItem>
-        <ListItem>
-            <ListItemIcon>
-                <WomanIcon/>
-            </ListItemIcon>
-            <ListItemText primary='Ann'/> 
-        </ListItem>
+      {(roomUsers)?roomUsers.map(userObject=>{
+        return <ListItem key={userObject.id}>
+        <ListItemIcon>
+          {(userObject.role==='owner')?
+            <CircleIcon sx={{fill:'#ffad01'}}/>:
+            <CircleIcon sx={{fill:'black'}}/>
+      }
+        </ListItemIcon>
+        <ListItemText primary={userObject.name} secondary={userObject.role}/> 
+    </ListItem>
+      }):<div></div>}
         <ListItem >
         <Button  variant="outlined"sx={{
           bgcolor:'#E22727',

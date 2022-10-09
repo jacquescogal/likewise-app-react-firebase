@@ -24,11 +24,16 @@ export default function EventRoomCreate({openJoin,setOpenJoin,eventCard,setChatR
   };
 
   const updatePax= async ()=>{
+    const userRef=doc(db,eventCard.path+'/users',user.email)
     const roomRef=doc(db,'aRooms/'+eventRoom+'/eRooms',eventCard.eventID)
-    const docSnap=await getDoc(roomRef)
+    const userSnap=await getDoc(doc(db,'users/',user.email))
+    const userData=userSnap.data()
+    const docSnap=await getDoc(userRef)
     if (!docSnap.exists()){
+    console.log(userData)
     await setDoc(doc(db, eventCard.path+'/users',user.email), { //use Reference?
       userRef: doc(db,'users',user.email),
+      name: userData.username,
       role: 'member'
     });
     await setDoc(doc(db,'users/'+user.email+'/joinedRooms',roomRef.id),{

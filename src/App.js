@@ -200,7 +200,7 @@ const App = () =>{
               <Route path="/Home" element={<Home />}>
                 <Route path="ActivityRooms" element={<ActivityRooms setEventRoom={setEventRoom}/>}/>
                 <Route path="EventRooms" element={<EventRooms setChatRoom={setChatRoom} eventRoom={eventRoom} chatRoom={chatRoom}/>}/>
-                <Route path="MyRooms" element={<MyRooms />}/>
+                <Route path="MyRooms" element={<MyRooms setChatRoom={setChatRoom}/>}/>
                 <Route path="Profile" element={<Profile />}/>
                 <Route path="ChatRoom" element={<ChatRoom chatRoom={chatRoom}/>}/>
                 <Route path="Profile/EditProfile" element={<EditProfile />}/>
