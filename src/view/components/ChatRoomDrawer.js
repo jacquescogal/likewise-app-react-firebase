@@ -19,8 +19,9 @@ import CircleIcon from '@mui/icons-material/Circle';
 import { getAuth } from 'firebase/auth';
 import { useState,useEffect } from 'react';
 import { onSnapshot } from 'firebase/firestore';
+import MapWidget from './common/MapWidget';
 
-const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap,roomUsers})=> {
+const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPlaceID,roomPax,roomCap,roomUsers})=> {
   const navigate=useNavigate();
   const [ownerStatus,setOwnerStatus]=useState(null);
   const [state, setState] = useState({
@@ -120,7 +121,7 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap,roomUsers
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 300 }}
       role="presentation"
       onClose={toggleDrawer(anchor, false)}
     >
@@ -145,6 +146,7 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap,roomUsers
             <ListItemText primary='Location' secondary={roomLocation}/> {/*put location text here*/}
         </ListItem>
       </List>
+      <MapWidget placeID={roomPlaceID}/>
       <Divider />
       <List>
       <ListItemText sx={{marginLeft:'10px'}}>Attendees ({roomPax}/{roomCap}) :</ListItemText>
