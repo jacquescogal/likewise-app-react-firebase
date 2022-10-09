@@ -9,8 +9,11 @@ import {storage} from '../../firebase-config'
 import {ref,getDownloadURL} from 'firebase/storage'
 import { Grow } from '@mui/material';
 import { useEffect, useState } from 'react';
+
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase-config';
+
+import {Link} from '@mui/material';
 
 const BasicCard = ({nameOfEvent,setEventRoom,imageOfEvent,timer}) =>{
 
@@ -37,7 +40,8 @@ const BasicCard = ({nameOfEvent,setEventRoom,imageOfEvent,timer}) =>{
   let navigate=useNavigate();
   return (
     <Grow in={appear}>
-    <Card sx={{display:'flex',flexDirection:'column',minHeight:325,maxHeight:300,minWidth:250,maxWidth:250, ':hover':{boxShadow:'10'}, marginTop:1}}
+      <Link to onClick= {()=>{setEventRoom(nameOfEvent);navigate('/home/eventrooms')}}>
+      <Card sx={{display:'flex',flexDirection:'column',minHeight:325,maxHeight:300,minWidth:250,maxWidth:250, ':hover':{boxShadow:'10'}, marginTop:1}}
     onClick={()=>{setEventRoom(nameOfEvent);localStorage.setItem('eventRoom',nameOfEvent);navigate('/home/eventrooms')}}>
       <CardContent>
       <img style = {{width: 225, height:200,position:'relative',top:-20}} src = {imageOfEvent} alt = "" />
@@ -45,6 +49,7 @@ const BasicCard = ({nameOfEvent,setEventRoom,imageOfEvent,timer}) =>{
         {(numOfEvents)?<h5 style={{p:-10}}>{numOfEvents} rooms</h5>:<h5 style={{p:-10}}>Loading</h5>}
       </CardContent>
       </Card>
+      </Link>
     </Grow>
   );
 
