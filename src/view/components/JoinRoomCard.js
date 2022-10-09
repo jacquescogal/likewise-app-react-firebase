@@ -74,12 +74,12 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity}) => {
     {(chatRoomData)?
     <Grow in={appear}>
 
-    <Card sx={{display:'flex',flexDirection:'column',minHeight:500,maxHeight:500,minWidth:400,maxWidth:400, ':hover':{boxShadow:'10'}, marginTop:1 }}
+    <Card sx={{display:'flex',flexDirection:'column',minHeight:500,maxHeight:800,minWidth:400,maxWidth:400, ':hover':{boxShadow:'10'}, marginTop:1 }}
     onClick={()=>{setChatRoom(chatRoomPath);localStorage.setItem('chatRoom',chatRoomPath);navigate('/home/chatroom')}}>
     <CardMedia style = {{ height: 0, paddingTop: '56%'}}
       media="picture"
       alt="Contemplative Reptile"
-      image="https://firebasestorage.googleapis.com/v0/b/codetherapy-8eba4.appspot.com/o/swimming%20(1).jpeg?alt=media&token=b7bab194-7986-4b48-b818-98686adfc9d9"
+      image={`${process.env.PUBLIC_URL}/logo.png`}
       title="Contemplative Reptile"
     />
       <CardContent>
