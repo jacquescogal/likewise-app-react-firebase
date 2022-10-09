@@ -93,7 +93,7 @@ const EditProfile = () => {
       <section>
        Username:
       <p style={{minHeight:'25px',backgroundColor: "white", border:"1px solid orange",borderRadius: '5px', borderRight : '300px'}} >
-      <TextField id="standard-basic" value={""} onChange={e=>setUsername(e.target.value)}/>
+      <TextField id="standard-basic" value={username?username:profileInfo.username} onChange={e=>setUsername(e.target.value)}/>
       </p></section>
 
       <section>

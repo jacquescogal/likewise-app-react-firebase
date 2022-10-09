@@ -49,8 +49,7 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity}) => {
         const unsubscribe=async()=>{
             let docData= await getDoc(chatRoomRef);
         setChatRoomData({...docData.data()});
-        setActivity({...docData.data().activity});
-        console.log(...docData.data().activity);
+        setActivity(docData.data().activity);
         setChatRoomPath(chatRoomRef._key.path.segments.splice(5).join('/'));
         }
         return unsubscribe
