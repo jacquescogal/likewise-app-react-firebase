@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { GoogleMap, Marker } from "@react-google-maps/api";
+import { GoogleMap, MarkerF } from "@react-google-maps/api";
 import { useEffect } from "react";
 
 const MapWidget = (props) => {
-  const[center, setCenter] = useState({
-    lat: -3.745,
-    lng: -38.523
-  })
+  const[center, setCenter] = useState(null);
 
   const containerStyle = {
     width: '300px',
@@ -21,16 +18,12 @@ const MapWidget = (props) => {
       {placeId:props.placeID},
       (results, status) => {
         if (status == 'OK') {
-          console.log(results[0]);
+          console.log(results[0].geometry.location);
           setCenter(results[0].geometry.location);
         }
       }
     )
   })
-
-  const onLoad = marker => {
-    console.log('marker: ', marker)
-  }
 
   return(
     <GoogleMap
@@ -38,10 +31,7 @@ const MapWidget = (props) => {
       center={center}
       zoom={16}
     >
-      <Marker
-        onLoad = {onLoad}
-        position = {center}
-      />
+      <MarkerF position = {center}/>
     </GoogleMap>
   )
 }
