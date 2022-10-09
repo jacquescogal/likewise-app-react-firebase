@@ -5,29 +5,43 @@ import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import PlaceIcon from '@mui/icons-material/Place';
-import ManIcon from '@mui/icons-material/Man';
-import WomanIcon from '@mui/icons-material/Woman';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { collection, getDocs,getDoc, deleteDoc,doc, updateDoc, increment} from 'firebase/firestore';
 import { db } from '../../firebase-config';
 import {useNavigate } from 'react-router-dom';
 import CircleIcon from '@mui/icons-material/Circle';
+import { getAuth } from 'firebase/auth';
+import { useState,useEffect } from 'react';
+import { onSnapshot } from 'firebase/firestore';
 
 const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap,roomUsers})=> {
   const navigate=useNavigate();
-
-  const [state, setState] = React.useState({
+  const [ownerStatus,setOwnerStatus]=useState(null);
+  const [state, setState] = useState({
     right: false
   });
+
+  useEffect(()=>{
+    const chatRoom=localStorage.getItem('chatRoom')
+    const unsubscribe = async ()=>{
+      const user=getAuth().currentUser
+      onSnapshot(doc(db,chatRoom+'/users/'+user.email),docSnap=>{
+        if (docSnap.data().role=='owner'){
+          setOwnerStatus(true)
+        }
+        else{
+          setOwnerStatus(false)
+        }
+      })
+    }
+    return unsubscribe
+  },[])
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -59,6 +73,48 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap,roomUsers
       cap:increment(-1)
     })
     navigate('/home/MyRooms')
+  }
+
+  const handleLeave = async () =>{
+    const chatRoom=localStorage.getItem('chatRoom')
+    const chatRoomKey=chatRoom.split('/').slice(-1)[0]
+    const user=getAuth().currentUser
+    console.log('users/'+user.email+'/joinedRooms',chatRoomKey)
+    deleteDoc(doc(db,'users/'+user.email+'/joinedRooms',chatRoomKey))
+    deleteDoc(doc(db,chatRoom+'/users',user.email))
+    await updateDoc(doc(db,chatRoom),{
+      pax:increment(-1),
+      rem:increment(1)
+    })
+    navigate('/home/MyRooms')
+  }
+
+  const drawerButtonState=()=>{
+    if (ownerStatus==null){
+      return <Button  variant="outlined" disabled>Loading</Button>
+    }
+    else if (ownerStatus==false){
+      return <Button  variant="outlined" sx={{
+        bgcolor:'#E22727',
+        color:'white',
+                    ':hover': {
+                      bgcolor: '#D50000', // theme.palette.primary.main
+                      color: 'white'
+                    },
+                  }}
+                  onClick={handleLeave}>Leave</Button>
+    }
+    else if (ownerStatus==true){
+      return <Button  variant="outlined" sx={{
+        bgcolor:'#E22727',
+        color:'white',
+                    ':hover': {
+                      bgcolor: '#D50000', // theme.palette.primary.main
+                      color: 'white'
+                    },
+                  }}
+                  onClick={handleDelete}>Delete</Button>
+    }
   }
 
   const list = (anchor) => (
@@ -103,15 +159,7 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap,roomUsers
     </ListItem>
       }):<div></div>}
         <ListItem >
-        <Button  variant="outlined"sx={{
-          bgcolor:'#E22727',
-          color:'white',
-                      ':hover': {
-                        bgcolor: '#D50000', // theme.palette.primary.main
-                        color: 'white'
-                      },
-                    }}
-                    onClick={handleDelete}>Delete</Button>
+        {drawerButtonState()}
         </ListItem>
       </List>
     </Box>

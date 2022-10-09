@@ -13,10 +13,12 @@ import { toast } from 'react-toastify';
 import {query,collection,orderBy,onSnapshot,doc,setDoc,addDoc, serverTimestamp, increment,updateDoc, FieldPath, getDoc} from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { db } from '../../firebase-config';
+import { useEffect,useState } from 'react';
 
-export default function EventRoomCreate({openJoin,setOpenJoin,eventCard,setChatRoom,eventRoom}) {
+export default function EventRoomJoin({openJoin,setOpenJoin,eventCard,setChatRoom,eventRoom}) {
     const navigate=useNavigate();
     const user=getAuth().currentUser
+    const [joinedRoomSize,setJoinedRoomSize]=useState(null);
 
 
   const handleClose = () => {
@@ -49,6 +51,32 @@ export default function EventRoomCreate({openJoin,setOpenJoin,eventCard,setChatR
     }
   };
 
+  useEffect(()=>{ 
+    const unsubscribe = async ()=>{
+      const user=getAuth().currentUser
+      onSnapshot(collection(db,'users/'+user.email+'/joinedRooms'),collectionSnap=>{
+        setJoinedRoomSize(collectionSnap.size)
+        console.log(collectionSnap.size)
+      })
+    }
+    return unsubscribe
+  },[])
+
+
+  let joinButtonState=()=>{
+    if (joinedRoomSize!=null & joinedRoomSize==3){
+      return <Button disabled onClick={()=>{setChatRoom(eventCard.path);localStorage.setItem('chatRoom',eventCard.path);navigate('/home/chatroom')}}>Already in 3 rooms</Button>
+    }
+    else if (joinedRoomSize!=null & eventCard.cap-eventCard.pax>0){
+      return <Button onClick={()=>{updatePax();setChatRoom(eventCard.path);localStorage.setItem('chatRoom',eventCard.path);navigate('/home/chatroom')}}>Join</Button>
+    }
+    else if (joinedRoomSize!=null & eventCard.cap-eventCard.pax<=0){
+      return <Button disabled onClick={()=>{setChatRoom(eventCard.path);localStorage.setItem('chatRoom',eventCard.path);navigate('/home/chatroom')}}>Room Full</Button>
+    }
+  else{
+    return <Button >Loading</Button>
+  }}
+
   return (
     <div>
         {(eventCard)?
@@ -76,10 +104,7 @@ export default function EventRoomCreate({openJoin,setOpenJoin,eventCard,setChatR
       </Stack>
         </DialogContent>
         <DialogActions>
-          {(eventCard.cap-eventCard.pax>0)?
-            <Button onClick={()=>{updatePax();setChatRoom(eventCard.path);localStorage.setItem('chatRoom',eventCard.path);navigate('/home/chatroom')}}>Join</Button>:
-            <Button disabled onClick={()=>{setChatRoom(eventCard.path);localStorage.setItem('chatRoom',eventCard.path);navigate('/home/chatroom')}}>Join</Button>
-          }
+          {joinButtonState()}
           <Button onClick={handleClose}>Cancel</Button>
         </DialogActions>
       </Dialog>:<div></div>}
