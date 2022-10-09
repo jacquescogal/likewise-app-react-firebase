@@ -24,6 +24,7 @@ import ChatRoom from './view/pages/ChatRoom';
 import MyRooms from "./view/pages/MyRooms";
 import ActivityRooms from "./view/pages/ActivityRooms";
 import Profile from "./view/pages/Profile";
+import EditProfile from "./view/pages/EditProfile";
 
 //Hooks
 import { useEffect, useState } from 'react';
@@ -56,6 +57,15 @@ const App = () =>{
 
   let navigate=useNavigate();
 
+  useEffect(()=>{
+    if (localStorage.getItem('eventRoom')){
+      setEventRoom(localStorage.getItem('eventRoom'))
+    }
+    if (localStorage.getItem('chatRoom')){
+      setChatRoom(localStorage.getItem('chatRoom'))
+    }
+  },[])
+
   
 
   
@@ -69,6 +79,7 @@ const App = () =>{
             console.log(auth.currentUser);
             setUser(user);
             navigate('/Home/ActivityRooms');
+            localStorage.setItem('user',JSON.stringify(user))
           }
           else{
             toast.error("Please verify your Email");
@@ -179,18 +190,20 @@ const App = () =>{
       <div className="App">
         <ToastContainer/>
         <Routes>
+        <Route path="/ResetPassword" element={<ResetPassword setEmail={setEmail} handleReset={handlePasswordReset}/>}>
+            </Route> 
             <Route path='/' element={<Onboard />}>
               <Route path="Login" element={<Login setEmail={setEmail} setPassword={setPassword} handleAction={handleLogin}/>}/>
               <Route path="Register" element={<Register setEmail={setEmail} email={email} setPassword={setPassword} handleAction={handleRegister} setUsername={setUsername} setImageUrl={setImageUrl} setGender={setGender} setDOB={setDOB} setCourse={setCourse} setStudyYear={setStudyYear} course={course} studyYear={studyYear} DOB={DOB} gender={gender}/>}/>
-              <Route path="ResetPassword" element={<ResetPassword setEmail={setEmail} handleReset={handlePasswordReset}/>}/>
             </Route>
-            <Route element={<ProtectedRoute user={user}/>}>
+            <Route element={<ProtectedRoute user={setUser}/>}>
               <Route path="/Home" element={<Home />}>
                 <Route path="ActivityRooms" element={<ActivityRooms setEventRoom={setEventRoom}/>}/>
                 <Route path="EventRooms" element={<EventRooms setChatRoom={setChatRoom} eventRoom={eventRoom} chatRoom={chatRoom}/>}/>
-                <Route path="MyRooms" element={<MyRooms />}/>
+                <Route path="MyRooms" element={<MyRooms setChatRoom={setChatRoom}/>}/>
                 <Route path="Profile" element={<Profile />}/>
                 <Route path="ChatRoom" element={<ChatRoom chatRoom={chatRoom}/>}/>
+                <Route path="Profile/EditProfile" element={<EditProfile />}/>
               </Route>
             </Route>
             <Route path="*" element={<p>There's nothing here: 404!</p>} />
@@ -199,9 +212,8 @@ const App = () =>{
   );
 }
 
-const ProtectedRoute=({children, user})=>{
-  if (!user || !user.emailVerified){
-    console.log('What')
+const ProtectedRoute=({children, setUser})=>{
+  if (!localStorage.getItem('user')){
     return <Navigate to={'/'} replace />;
   }
   else{

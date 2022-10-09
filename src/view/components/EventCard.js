@@ -8,18 +8,18 @@ import { useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 
 
-const BasicCard = ({nameOfEvent,date,time,location,pax,cap,numOfJoiners,capacity,thePath,setOpenJoin,setEventCard}) =>{
+const BasicCard = ({eventID,nameOfEvent,date,time,location,pax,cap,numOfJoiners,capacity,thePath,setOpenJoin,setEventCard}) =>{
   
   const navigate=useNavigate();
 
   return (
-    <Card sx={{display:'flex',minWidth: 50, ':hover':{boxShadow:'10'}, marginTop:'15px', fill:'#cd853f'}}>
+    <Card sx={{display:'flex',minWidth: 50, ':hover':{boxShadow:'10'}, marginTop:'15px', fill:'#cd853f', marginLeft:'-40px'}}>
       <CardContent>
         <h1>{nameOfEvent}</h1>
         <p>{date}, {numOfJoiners}/{capacity} joiners</p>
       </CardContent>
       <CardActions>
-        <Button size="small" variant="outlined" onClick={()=>{setOpenJoin(true);setEventCard({name:nameOfEvent,date:date,time:time,location:location,pax:pax,cap:cap,path:thePath})}}>Join</Button>
+        <Button size="small" variant="outlined" onClick={()=>{setOpenJoin(true);setEventCard({eventID:eventID,name:nameOfEvent,date:date,time:time,location:location,pax:pax,cap:cap,path:thePath})}}>Join</Button>
       </CardActions>
     </Card>
   );
