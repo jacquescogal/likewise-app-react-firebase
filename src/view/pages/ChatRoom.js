@@ -101,6 +101,7 @@ const ChatRoom = ({chatRoom}) => {
       roomDate={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('DD/MM/YYYY'):'loading...'}
       roomTime={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('hh:mm A'):'loading...'}
       roomLocation={roomInfo.location}
+      roomPlaceID={roomInfo.placeid}
       roomPax={roomInfo.pax}
       roomCap={roomInfo.cap}
       roomUsers={userArr}/>
