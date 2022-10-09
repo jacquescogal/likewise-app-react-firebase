@@ -11,10 +11,16 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import FeedbackFormCreate from '../components/FeedbackFormCreate';
+import Snackbar from '@mui/material/Snackbar'
 
 const ActivityRooms = ({setEventRoom}) => {
 
   const [aRooms,setARooms]=useState(null);
+  const [feedbackFormCreate, setFeedbackFormCreate]=useState(false);
 
   useEffect(()=>{
     const q = query(collection(db, 'aRooms'),orderBy('cap','desc'))
@@ -31,19 +37,33 @@ const ActivityRooms = ({setEventRoom}) => {
     return unsubscribe
   },[])
 
-  
+  const handleClickOpen = () => {
+    setFeedbackFormCreate(true);
+  };
+
   return (
     <Box sx={{marginLeft:"20px"}}>
     <div > 
-    <Box sx={{ flexGrow: 1, height: '80px'}}>
+    <Box sx={{ flexGrow: 1, height: '180px'}}>
       <AppBar position="static">
         <Toolbar>
           <Typography height= '80px'>
-          <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}>Activity Rooms</h1>
+          <h1 style={{marginTop:"10px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}>Activity Rooms</h1>
+          {/* {feedbackSuccessMessage && <Snackbar open={feedbackSuccessMessage} message={feedbackSuccessMessage} />} */}
+          <Fab size="small" color="primary" aria-label="add" sx={{marginLeft:'1250px',marginTop:'15px'}} onClick={handleClickOpen}>
+            <EditIcon style={{fill:'white'}}/>
+          </Fab>
+          {/* <h5 style={{marginLeft:"1100px", marginTop:"0px",backgroundColor: "white",padding:"0px"}}>Add feedback</h5> */}
+          <h4 style={{marginLeft:"5px", marginTop:"0px",backgroundColor: "white",padding:"0px"}}>Please select an activity of interest below.</h4>
+          
+          
           </Typography>
         </Toolbar>
       </AppBar>
     </Box>
+    <div>
+        <FeedbackFormCreate feedbackFormCreate={feedbackFormCreate} setFeedbackFormCreate={setFeedbackFormCreate}/>
+    </div>
       {(aRooms)?
     <div className="container-fluid d-flex justify-content-center" style={{minWidth:1000,color:'orange',bgcolor:'orange'}}>
       <div className="row">

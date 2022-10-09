@@ -149,7 +149,6 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
           <EventCard key={eventObject.id} 
           eventID={eventObject.id}
           setChatRoom={setChatRoom} 
-          nameOfEvent={eventObject.name} 
           date={dayjs.unix(eventObject.time.seconds).format('DD/MM/YYYY')} 
           time={dayjs.unix(eventObject.time.seconds).format('hh:mm A')}
           numOfJoiners={eventObject.pax} 
@@ -157,10 +156,12 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
           location={eventObject.location}
           pax={eventObject.pax}
           cap={eventObject.cap}
+          nameOfEvent={eventObject.name}
           chatRoomId={eventObject.id} 
           thePath={'/aRooms/'+eventRoom+'/eRooms/'+eventObject.id}
           setOpenJoin={setOpenJoin}
-          setEventCard={setEventCard} />
+          setEventCard={setEventCard} 
+          />
           </div>
         ))}
     </div>
