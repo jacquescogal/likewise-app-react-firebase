@@ -1,11 +1,12 @@
 import React from 'react'
 import EventCard from '../components/EventCard'
-import {query,collection,orderBy,onSnapshot,doc,setDoc,addDoc, serverTimestamp} from 'firebase/firestore';
+import {query,collection,orderBy,onSnapshot,doc,setDoc,addDoc, serverTimestamp, increment,updateDoc, FieldPath, getDoc} from 'firebase/firestore';
 import { db } from '../../firebase-config';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Button } from '@mui/material';
 import { CircularProgress } from '@mui/material';
+import { Firestore } from 'firebase/firestore';
 
 
 import Fab from '@mui/material/Fab';
@@ -15,13 +16,12 @@ import EventRoomCreate from '../components/EventRoomCreate';
 import EventRoomJoin from '../components/EventRoomJoin';
 import { useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
-
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import "typeface-raleway";
+
 
 
 //date picker
@@ -30,6 +30,8 @@ import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { StayCurrentLandscapeTwoTone } from '@mui/icons-material';
+import { async } from '@firebase/util';
 
 
 const EventRooms = ({eventRoom,setChatRoom}) => {
@@ -57,6 +59,7 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
       console.log(eRooms);
       setERooms(eRooms);
     })
+    return unsubscribe
   }},[eventRoom])
 
   const handleClickOpen = () => {
@@ -74,18 +77,29 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
       location:location,
       time:time
     });
-    const docRefSub = await setDoc(doc(db, 'aRooms/'+eventRoom+'/eRooms/'+docRef.id+'/users',user.email), { //use Reference?
-      name: user.email,
+    const userSnap=await getDoc(doc(db,'users/',user.email))
+    const userData=userSnap.data()
+    await setDoc(doc(db, 'aRooms/'+eventRoom+'/eRooms/'+docRef.id+'/users',user.email), { //use Reference?
+      userRef: doc(db,'users',user.email),
+      name: userData.username,
       role: 'owner'
     });
+    await setDoc(doc(db,'users/'+user.email+'/joinedRooms',docRef.id),{
+      roomRef:docRef
+    })
+    await updateDoc(docRef,{
+      pax: increment(1),
+      rem: increment(-1)
+    })
+    const activityRoomRef=await doc(db,'aRooms',eventRoom)
+    await updateDoc(activityRoomRef,{
+      cap: increment(1)
+    });
     setChatRoom('aRooms/'+eventRoom+'/eRooms/'+docRef.id)
+    localStorage.setItem('chatRoom','aRooms/'+eventRoom+'/eRooms/'+docRef.id)
     navigate('/home/chatroom')
-
   }
 
-  //hardcoded, to be changed
-  const dateTime="29 Sep 2022";
-  const activityName="Swimming"
 
   return (
     <Box sx={{marginLeft:"20px"}}>
@@ -93,7 +107,7 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
       <AppBar position="static">
         <Toolbar>
           <Typography height= '80px'>
-          <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}> Events for: {activityName} 
+          <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}> Events for: {eventRoom} 
           <Fab size="small" color="primary" aria-label="add" sx={{marginLeft:'20px'}} onClick={handleClickOpen}>
             <AddIcon style={{fill:'white'}}/>
           </Fab>
@@ -128,10 +142,12 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
         <EventRoomJoin openJoin={openJoin} setOpenJoin={setOpenJoin}
         eventCard={eventCard}
         setEventCard={setEventCard}
-        setChatRoom={setChatRoom}/>
+        setChatRoom={setChatRoom}
+        eventRoom={eventRoom}/>
         {eRooms.map(eventObject=>(
           <div key={eventObject.id} className="col-md-auto">
           <EventCard key={eventObject.id} 
+          eventID={eventObject.id}
           setChatRoom={setChatRoom} 
           date={dayjs.unix(eventObject.time.seconds).format('DD/MM/YYYY')} 
           time={dayjs.unix(eventObject.time.seconds).format('hh:mm A')}

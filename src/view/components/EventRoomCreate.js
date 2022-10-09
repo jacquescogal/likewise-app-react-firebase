@@ -24,6 +24,10 @@ import { DateTimePicker } from '@mui/x-date-pickers';
 import { useState } from 'react';
 import { serverTimestamp } from 'firebase/firestore';
 import { toast } from 'react-toastify';
+import { getAuth } from 'firebase/auth';
+import { db } from '../../firebase-config';
+import { useEffect } from 'react';
+import { onSnapshot,collection } from 'firebase/firestore';
 
 export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom}) {
 
@@ -31,13 +35,24 @@ export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom
     const [roomName,setRoomName]=useState('')
     const [location,setLocation]=useState('')
     const [dateTime,setDateTime]=useState({value:null,error:null})
+    const [joinedRoomSize,setJoinedRoomSize]=useState(null);
+
+    useEffect(()=>{ 
+      const unsubscribe = async ()=>{
+        const user=getAuth().currentUser
+        onSnapshot(collection(db,'users/'+user.email+'/joinedRooms'),collectionSnap=>{
+          setJoinedRoomSize(collectionSnap.size)
+          console.log(collectionSnap.size)
+        })
+      }
+      return unsubscribe
+    },[])
 
   const handleClose = () => {
     setOpenCreate(false);
   };
 
   const handleCreate = () => {
-    
     let pass=true
     console.log(dateTime.error)
     if (dateTime.error===true){
@@ -58,6 +73,18 @@ export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom
         createChatRoom({name:roomName,cap:cap,location:location,time:dateTime.value.$d})
     }
   };
+
+  let createButtonState=()=>{
+    if (joinedRoomSize!=null & joinedRoomSize==3){
+      return <Button disabled onClick={handleCreate}>Already in 3 rooms</Button>
+    }
+    else if (joinedRoomSize!=null){
+      return <Button onClick={handleCreate}>Create</Button>
+    }
+  else{
+    return <Button disabled>Loading</Button>
+  }}
+
 
   return (
     <div>
@@ -95,10 +122,10 @@ export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom
       <MobileDateTimePicker
       disablePast
       minutesStep={15}
-minDateTime={dayjs().add(1, 'day').subtract(dayjs().hour(),'hour')}
-views={['month','day','hours','minutes']}
-defaultCalendarMonth={dayjs()}
-onChange={e=>{setDateTime({value:e,error:false});console.log('changed');}}
+      minDateTime={dayjs().add(1, 'day').subtract(dayjs().hour(),'hour')}
+      views={['month','day','hours','minutes']}
+      defaultCalendarMonth={dayjs()}
+      onChange={e=>{setDateTime({value:e,error:false});console.log('changed');}}
           value={dateTime.value}
           label="Date & Time of Event"
           inputFormat="YYYY/MM/DD hh:mm a"
@@ -132,7 +159,8 @@ onChange={e=>{setDateTime({value:e,error:false});console.log('changed');}}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleCreate}>Create</Button>
+          {createButtonState()}
+          {/* <Button onClick={handleCreate}>Create</Button> */}
         </DialogActions>
       </Dialog>
     </div>

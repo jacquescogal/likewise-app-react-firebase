@@ -18,8 +18,8 @@
   position: fixed; 
   z-index: 1; 
   top: 0; 
-  left: 0; 
-  background-color:#ffad01; 
+  left: 10; 
+  background-color:#FBBA51; 
   transition: .5s ease; 
   overflow-x: hidden; 
   display: flex; 
@@ -71,4 +71,21 @@
   border-width: 5px;
   border-color: gray;
   border-style: outset;
+}
+
+.avatar_sidebar {
+  vertical-align: middle;
+  width: 150px;
+  height: 150px;
+  margin-left: 30px;
+  margin-top: 5px;
+  border-radius: 70%;
+  border-width: 5px;
+  border-color: rgb(249, 251, 251);
+  border-style: outset;
+}
+
+
+.likewise_logo{
+  margin-left: 30px;
 }

@@ -4,7 +4,7 @@ import {getAuth, updateProfile, onAuthStateChanged} from 'firebase/auth'
 import { getFirestore } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { useEffect, useState } from "react";
-
+import { updateDoc,doc  } from "firebase/firestore";
 
 
 const firebaseConfig = {
@@ -47,6 +47,9 @@ export async function upload(file, currentUser, setLoading) {
   
   const snapshot = await uploadBytes(fileRef, file);
   const photoURL = await getDownloadURL(fileRef);
+  await updateDoc(doc(db,'users',currentUser.email),{
+    imageURL:photoURL
+  });
 
   updateProfile(currentUser, {photoURL});
   

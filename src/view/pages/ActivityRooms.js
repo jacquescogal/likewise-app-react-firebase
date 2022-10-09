@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ActivityCard from '../components/ActivityCard'
 import {query,collection,orderBy,onSnapshot} from 'firebase/firestore';
-import { db } from '../../firebase-config';
+import { auth, db } from '../../firebase-config';
 import { useEffect } from 'react';
 import { CircularProgress } from '@mui/material';
 
@@ -34,6 +34,7 @@ const ActivityRooms = ({setEventRoom}) => {
       console.log(aRooms);
       setARooms(aRooms);
     })
+    return unsubscribe
   },[])
 
   const handleClickOpen = () => {
@@ -69,7 +70,7 @@ const ActivityRooms = ({setEventRoom}) => {
         {aRooms.map(activityObject=>(
           <div key={activityObject.id} className="col-md-auto">
           <ActivityCard key={activityObject.id} nameOfEvent= {activityObject.id} 
-            imageOfEvent = {activityObject.imageUrl} setEventRoom={setEventRoom} timer={activityObject.timer}/>
+            imageOfEvent = {activityObject.imageUrl} setEventRoom={setEventRoom} timer={activityObject.timer} numOfEvents={activityObject.cap}/>
           </div>
         ))}
       </div>
