@@ -9,10 +9,13 @@ import {storage} from '../../firebase-config'
 import {ref,getDownloadURL} from 'firebase/storage'
 import { Grow } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { db } from '../../firebase-config';
 
-const BasicCard = ({nameOfEvent,numOfEvents,setEventRoom,imageOfEvent,timer}) =>{
+const BasicCard = ({nameOfEvent,setEventRoom,imageOfEvent,timer}) =>{
 
   const [appear,setAppear]=useState(false);
+  const [numOfEvents,setNumOfEvents]=useState(null);
 
   useEffect(()=>{
     const timeout=setTimeout(()=>{
@@ -20,6 +23,14 @@ const BasicCard = ({nameOfEvent,numOfEvents,setEventRoom,imageOfEvent,timer}) =>
     },timer)
     return ()=>clearTimeout(timeout)
   },[appear])
+
+  useEffect(()=>{
+    const unsubscribe=()=>{onSnapshot(collection(db,'aRooms/'+nameOfEvent+'/eRooms'),collectionSnap=>{
+      console.log('aRooms/'+nameOfEvent+'/eRooms')
+      setNumOfEvents(collectionSnap.size)
+    })}
+    return unsubscribe
+  },[])
 
 
  
@@ -31,7 +42,7 @@ const BasicCard = ({nameOfEvent,numOfEvents,setEventRoom,imageOfEvent,timer}) =>
       <CardContent>
       <img style = {{width: 225, height:200,position:'relative',top:-20}} src = {imageOfEvent} alt = "" />
         <h1>{nameOfEvent}</h1>
-        <h5 style={{p:-10}}>{numOfEvents} rooms</h5>
+        {(numOfEvents)?<h5 style={{p:-10}}>{numOfEvents} rooms</h5>:<h5 style={{p:-10}}>Loading</h5>}
       </CardContent>
       </Card>
     </Grow>

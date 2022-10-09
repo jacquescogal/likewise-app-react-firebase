@@ -50,7 +50,7 @@ const ActivityRooms = ({setEventRoom}) => {
         {aRooms.map(activityObject=>(
           <div key={activityObject.id} className="col-md-auto">
           <ActivityCard key={activityObject.id} nameOfEvent= {activityObject.id} 
-            imageOfEvent = {activityObject.imageUrl} setEventRoom={setEventRoom} timer={activityObject.timer} numOfEvents={activityObject.cap}/>
+            imageOfEvent = {activityObject.imageUrl} setEventRoom={setEventRoom} timer={activityObject.timer}/>
           </div>
         ))}
       </div>

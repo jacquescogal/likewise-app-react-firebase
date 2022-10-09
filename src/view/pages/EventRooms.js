@@ -34,7 +34,7 @@ import { StayCurrentLandscapeTwoTone } from '@mui/icons-material';
 import { async } from '@firebase/util';
 
 
-const EventRooms = ({eventRoom,setChatRoom}) => {
+const EventRooms = ({eventRoom,setChatRoom,isLoaded}) => {
   const [eRooms,setERooms]=useState([]);
   const [openCreate,setOpenCreate]=useState(false);
   const [openJoin,setOpenJoin]=useState(false);
@@ -66,7 +66,7 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
     setOpenCreate(true);
   };
 
-  const createChatRoom=async({name,cap,location,time})=>{
+  const createChatRoom=async({name,cap,location,time,placeid})=>{
 
     //https://firebase.google.com/docs/firestore/manage-data/add-data
     const docRef = await addDoc(collection(db, 'aRooms/'+eventRoom+'/eRooms'), {
@@ -75,6 +75,7 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
       pax: 0,
       rem: cap,
       location:location,
+      placeid:placeid,
       time:time
     });
     const userSnap=await getDoc(doc(db,'users/',user.email))
