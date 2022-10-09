@@ -232,8 +232,9 @@ export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <MobileDateTimePicker
                 disablePast
-                minutesStep={15}
-                minDateTime={dayjs().add(1, 'day').subtract(dayjs().hour(),'hour')}
+                minutesStep={5}
+                minDate={dayjs().add(1,'day')}
+                // minDateTime={dayjs().add(1, 'day').subtract(dayjs().hour(),'hour').subtract(dayjs().minute(),'minute').subtract(dayjs().second(),'second')}
                 views={['month','day','hours','minutes']}
                 defaultCalendarMonth={dayjs()}
                 onChange={e=>{setDateTime({value:e,error:false});console.log('changed');}}
