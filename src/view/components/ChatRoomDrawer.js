@@ -120,7 +120,7 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPlaceID,roomPax,roomC
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 300 }}
       role="presentation"
       onClose={toggleDrawer(anchor, false)}
     >
