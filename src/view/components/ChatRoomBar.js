@@ -9,7 +9,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import Box from '@mui/material/Box';
 import ChatRoomDrawer from './ChatRoomDrawer'
 
-const ChatRoomBar = ({roomUID,roomName,roomDate,roomTime,roomLocation,roomPax,roomCap,roomUsers}) => {
+const ChatRoomBar = ({roomUID,roomName,roomDate,roomTime,roomLocation,roomPlaceID,roomPax,roomCap,roomUsers}) => {
   const navigate = useNavigate();
   return (
     <div className="chatRoomBar" style={{backgroundColor:'#ffad01', display:'flex',alignItems:'center',height:'50px',width:'80%',position:'absolute',left:'20%',top:'0'}}>
@@ -19,6 +19,7 @@ const ChatRoomBar = ({roomUID,roomName,roomDate,roomTime,roomLocation,roomPax,ro
         roomDate={roomDate} 
         roomTime={roomTime} 
         roomLocation={roomLocation}
+        roomPlaceID={roomPlaceID}
         roomCap={roomCap}
         roomPax={roomPax}
         roomUsers={roomUsers}/>
