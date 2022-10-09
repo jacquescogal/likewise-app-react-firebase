@@ -1,6 +1,6 @@
 //firebase API
 import fireBase, { db } from './firebase-config'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification,sendPasswordResetEmail} from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification,sendPasswordResetEmail, updatePassword} from 'firebase/auth'
 import 'firebase/auth'
 import { updateProfile } from 'firebase/auth';
 
@@ -18,6 +18,7 @@ import Register from "./view/pages/Register";
 import Home from "./view/pages/Home";
 import Onboard from './view/pages/Onboard';
 import ResetPassword from './view/pages/ResetPassword';
+import ChangePassword from './view/pages/ChangePassword';
 import EventRooms from "./view/pages/EventRooms";
 import ChatRoom from './view/pages/ChatRoom';
 
@@ -142,6 +143,7 @@ const App = () =>{
     {console.log('what');
     console.log(response);
 
+
     updateProfile(auth.currentUser, {
       displayName: username, photoURL: imageUrl
     })
@@ -184,13 +186,17 @@ const App = () =>{
       })
   }
 
+  
+
 
   return(
       <div className="App">
         <ToastContainer/>
         <Routes>
+            <Route path="/ChangePassword" element={<ChangePassword />}>
+            </Route>
             <Route path="/ResetPassword" element={<ResetPassword setEmail={setEmail} handleReset={handlePasswordReset}/>}>
-            </Route> 
+            </Route>
             <Route path='/' element={<Onboard />}>
               <Route path="Login" element={<Login setEmail={setEmail} setPassword={setPassword} handleAction={handleLogin}/>}/>
               <Route path="Register" element={<Register setEmail={setEmail} email={email} setPassword={setPassword} handleAction={handleRegister} setUsername={setUsername} setImageUrl={setImageUrl} setGender={setGender} setDOB={setDOB} setCourse={setCourse} setStudyYear={setStudyYear} course={course} studyYear={studyYear} DOB={DOB} gender={gender}/>}/>
