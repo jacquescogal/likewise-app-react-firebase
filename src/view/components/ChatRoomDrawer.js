@@ -32,7 +32,8 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap,roomUsers
     const unsubscribe = async ()=>{
       const user=getAuth().currentUser
       onSnapshot(doc(db,chatRoom+'/users/'+user.email),docSnap=>{
-        if (docSnap.data().role=='owner'){
+        console.log(docSnap.exists())
+        if (docSnap.exists() && docSnap.data().role=='owner'){
           setOwnerStatus(true)
         }
         else{

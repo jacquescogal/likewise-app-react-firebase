@@ -43,7 +43,7 @@ const MyRooms = ({setChatRoom}) => {
       <AppBar position="static">
         <Toolbar>
           <Typography height= '80px'>
-          <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}>Activity Rooms</h1>
+          <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}>My Rooms</h1>
           </Typography>
         </Toolbar>
       </AppBar>
