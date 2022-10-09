@@ -27,6 +27,8 @@ import ActivityRooms from "./view/pages/ActivityRooms";
 import Profile from "./view/pages/Profile";
 import EditProfile from "./view/pages/EditProfile";
 
+
+
 //Hooks
 import { useEffect, useState } from 'react';
 
@@ -39,7 +41,20 @@ import { Outlet ,Navigate} from 'react-router-dom';
 //adding Doc to firestore
 import { doc, setDoc } from "firebase/firestore"; 
 
+//google map api
+import { useLoadScript } from '@react-google-maps/api';
+
 const App = () =>{
+
+   //load google map script
+   const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    libraries: ["places"],
+  });
+
+  if (loadError) {
+    console.log("Google maps API was not able to load.")
+  }
   
   const [user,setUser]=useState('');
   const [eventRoom,setEventRoom]=useState('');
@@ -204,8 +219,8 @@ const App = () =>{
             <Route element={<ProtectedRoute user={setUser}/>}>
               <Route path="/Home" element={<Home />}>
                 <Route path="ActivityRooms" element={<ActivityRooms setEventRoom={setEventRoom}/>}/>
-                <Route path="EventRooms" element={<EventRooms setChatRoom={setChatRoom} eventRoom={eventRoom} chatRoom={chatRoom}/>}/>
-                <Route path="MyRooms" element={<MyRooms />}/>
+                <Route path="EventRooms" element={<EventRooms setChatRoom={setChatRoom} eventRoom={eventRoom} chatRoom={chatRoom} isLoaded={isLoaded}/>}/>
+                <Route path="MyRooms" element={<MyRooms setChatRoom={setChatRoom}/>}/>
                 <Route path="Profile" element={<Profile />}/>
                 <Route path="ChatRoom" element={<ChatRoom chatRoom={chatRoom}/>}/>
                 <Route path="Profile/EditProfile" element={<EditProfile />}/>

@@ -30,7 +30,6 @@
 
 .sideBar img{
   align-self:center;
-  padding-bottom: 20px;
 }
 
 .sideBar hr{
@@ -74,15 +73,13 @@
 }
 
 .avatar_sidebar {
-  vertical-align: middle;
   width: 150px;
   height: 150px;
   margin-left: 30px;
   margin-top: 5px;
-  border-radius: 70%;
+  border-radius: 50%;
   border-width: 5px;
   border-color: rgb(249, 251, 251);
-  border-style: outset;
 }
 
 

@@ -22,7 +22,7 @@ const ChatMessage = ({message,messageScroll}) => {
   return (
     <div  style={{display:'flex',flexDirection:'column',width:'100%'}}>
       {(uid===message.uid)?
-      <h2 style={{alignSelf:'flex-end'}}>{message.name}</h2>:<h2 style={{alignSelf:'flex-start'}}>{message.name}</h2>
+      <h2 style={{alignSelf:'flex-end',marginBottom:15}}>{message.name}</h2>:<h2 style={{alignSelf:'flex-start',marginBottom:25}}>{message.name}</h2>
       }
         {(uid===message.uid)?
         <div  style={{display:'flex',flexDirection:'row-reverse',alignItems:'flex-start',width:'100%'}}>
