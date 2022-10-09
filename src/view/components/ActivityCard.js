@@ -9,6 +9,7 @@ import {storage} from '../../firebase-config'
 import {ref,getDownloadURL} from 'firebase/storage'
 import { Grow } from '@mui/material';
 import { useEffect, useState } from 'react';
+import {Link} from '@mui/material';
 
 const BasicCard = ({nameOfEvent,numOfEvents,setEventRoom,imageOfEvent,timer}) =>{
 
@@ -34,6 +35,7 @@ const BasicCard = ({nameOfEvent,numOfEvents,setEventRoom,imageOfEvent,timer}) =>
         <h5 style={{p:-10}}>{numOfEvents} rooms</h5>
       </CardContent>
       </Card>
+      </Link>
     </Grow>
   );
 
