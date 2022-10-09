@@ -82,7 +82,7 @@ const EditProfile = () => {
   return (
     <menu>
     <div>
-      <h1>Edit Profile</h1>
+    <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '50px', color:'#ffad01'}}>Edit Profile</h1>
 
       <section>
       </section>

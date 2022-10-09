@@ -37,7 +37,8 @@ export default function EventRoomCreate({openJoin,setOpenJoin,eventCard,setChatR
       role: 'member'
     });
     await setDoc(doc(db,'users/'+user.email+'/joinedRooms',roomRef.id),{
-      roomRef:roomRef
+      roomRef:roomRef,
+      activity:eventRoom
     })
     await updateDoc(roomRef,{
       pax: increment(1),

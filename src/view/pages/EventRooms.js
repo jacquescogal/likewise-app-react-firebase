@@ -74,7 +74,8 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
       pax: 0,
       rem: cap,
       location:location,
-      time:time
+      time:time,
+      activity:eventRoom
     });
     const userSnap=await getDoc(doc(db,'users/',user.email))
     const userData=userSnap.data()
@@ -84,7 +85,8 @@ const EventRooms = ({eventRoom,setChatRoom}) => {
       role: 'owner'
     });
     await setDoc(doc(db,'users/'+user.email+'/joinedRooms',docRef.id),{
-      roomRef:docRef
+      roomRef:docRef,
+      activity:eventRoom
     })
     await updateDoc(docRef,{
       pax: increment(1),
