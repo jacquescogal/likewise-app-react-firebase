@@ -4,20 +4,18 @@ import {getAuth, updateProfile, onAuthStateChanged} from 'firebase/auth'
 import { getFirestore } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { useEffect, useState } from "react";
-
+import { updateDoc,doc  } from "firebase/firestore";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCo8EKUud6UN4HdPc7Osw4zvIJmiY7WnCo",
-  authDomain: "codetherapy-8eba4.firebaseapp.com",
-  projectId: "codetherapy-8eba4",
-  storageBucket: "codetherapy-8eba4.appspot.com",
-  messagingSenderId: "862928657004",
-  appId: "1:862928657004:web:c636362ab62b9455f35649",
-  measurementId: "G-XSHX49R593"
+  apiKey: process.env.REACT_APP_FIREBASE_CONFIG_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_CONFIG_AUTH_DOAMIN,
+  projectId: process.env.REACT_APP_FIREBASE_CONFIG_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_CONFIG_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_CONFIG_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_CONFIG_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_CONFIG_MEASUREMENT_ID
 };
-
-
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -49,6 +47,9 @@ export async function upload(file, currentUser, setLoading) {
   
   const snapshot = await uploadBytes(fileRef, file);
   const photoURL = await getDownloadURL(fileRef);
+  await updateDoc(doc(db,'users',currentUser.email),{
+    imageURL:photoURL
+  });
 
   updateProfile(currentUser, {photoURL});
   
