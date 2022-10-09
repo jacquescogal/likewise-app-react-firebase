@@ -1,8 +1,8 @@
 
 
-const MapWidget = () => {
+const MapWidget = (props) => {
   return(
-    <h1>This is the map widget</h1>
+    <h1>Room PlaceID is {props.placeID}</h1>
   )
 }
 

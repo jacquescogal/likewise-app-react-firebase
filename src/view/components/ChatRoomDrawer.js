@@ -21,7 +21,7 @@ import { useState,useEffect } from 'react';
 import { onSnapshot } from 'firebase/firestore';
 import MapWidget from './common/MapWidget';
 
-const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap,roomUsers})=> {
+const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPlaceID,roomPax,roomCap,roomUsers})=> {
   const navigate=useNavigate();
   const [ownerStatus,setOwnerStatus]=useState(null);
   const [state, setState] = useState({
@@ -145,7 +145,7 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPax,roomCap,roomUsers
             <ListItemText primary='Location' secondary={roomLocation}/> {/*put location text here*/}
         </ListItem>
       </List>
-      <MapWidget/>
+      <MapWidget placeID={roomPlaceID}/>
       <Divider />
       <List>
       <ListItemText sx={{marginLeft:'10px'}}>Attendees ({roomPax}/{roomCap}) :</ListItemText>
