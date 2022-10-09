@@ -48,7 +48,7 @@ export async function upload(file, currentUser, setLoading) {
   const snapshot = await uploadBytes(fileRef, file);
   const photoURL = await getDownloadURL(fileRef);
   await updateDoc(doc(db,'users',currentUser.email),{
-    imageURL:photoURL
+    imageUrl:photoURL
   });
 
   updateProfile(currentUser, {photoURL});

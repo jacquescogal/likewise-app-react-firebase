@@ -24,7 +24,7 @@ const SideBar = () => {
     if (currentUser){
     onSnapshot(doc(db,'users/'+currentUser.email),docSnap=>{
       const docData=docSnap.data()
-      setPhotoURL(docData.imageURL)
+      setPhotoURL(docData.imageUrl)
     })
   }}, [currentUser])
 

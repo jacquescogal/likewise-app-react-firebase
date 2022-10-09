@@ -26,7 +26,7 @@ export default function ProfilePic() {
       const docSnap=getDoc(docRef).then(doc=>{
         console.log('hello')
         console.log(doc.data())
-        setPhotoURL(doc.data().imageURL)
+        setPhotoURL(doc.data().imageUrl)
       })
     }
   }, [loading])
