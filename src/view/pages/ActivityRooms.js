@@ -50,7 +50,7 @@ const ActivityRooms = ({setEventRoom}) => {
           <Typography height= '80px'>
           <h1 style={{marginTop:"10px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}>Activity Rooms</h1>
           {/* {feedbackSuccessMessage && <Snackbar open={feedbackSuccessMessage} message={feedbackSuccessMessage} />} */}
-          <Fab size="small" color="primary" aria-label="add" sx={{marginLeft:'1250px',marginTop:'15px'}} onClick={handleClickOpen}>
+          <Fab size="small" color="primary" aria-label="add" sx={{marginRight:'10px',marginTop:'15px'}} onClick={handleClickOpen}>
             <EditIcon style={{fill:'white'}}/>
           </Fab>
           {/* <h5 style={{marginLeft:"1100px", marginTop:"0px",backgroundColor: "white",padding:"0px"}}>Add feedback</h5> */}
