@@ -76,7 +76,7 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded}) => {
       pax: 0,
       rem: cap,
       location:location,
-      activity:eventRoom
+      activity:eventRoom,
       placeid:placeid,
       time:time
     });
