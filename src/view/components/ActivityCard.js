@@ -46,7 +46,7 @@ const BasicCard = ({nameOfEvent,setEventRoom,imageOfEvent,timer}) =>{
       <CardContent>
       <img style = {{width: 225, height:200,position:'relative',top:-20}} src = {imageOfEvent} alt = "" />
         <h1>{nameOfEvent}</h1>
-        {(numOfEvents)?<h5 style={{p:-10}}>{numOfEvents} rooms</h5>:<h5 style={{p:-10}}>Loading</h5>}
+        {(numOfEvents)?<h5 style={{p:-10}}>{numOfEvents} rooms</h5>:<h5 style={{p:-10}}>0 rooms</h5>}
       </CardContent>
       </Card>
       </Link>
