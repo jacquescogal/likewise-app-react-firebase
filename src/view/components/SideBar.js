@@ -8,7 +8,8 @@ import ForumIcon from '@mui/icons-material/Forum';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import Box from '@mui/material/Box';
 import { useEffect, useState } from "react";
-import { useAuth, upload } from '../../firebase-config';
+import { useAuth, upload, db } from '../../firebase-config';
+import {doc,onSnapshot} from "firebase/firestore";
 
 const SideBar = () => {
   const navigate = useNavigate();
@@ -20,10 +21,12 @@ const SideBar = () => {
 
 
   useEffect(() => {
-    if (currentUser?.photoURL) {
-      setPhotoURL(currentUser.photoURL);
-    }
-  }, [currentUser])
+    if (currentUser){
+    onSnapshot(doc(db,'users/'+currentUser.email),docSnap=>{
+      const docData=docSnap.data()
+      setPhotoURL(docData.imageURL)
+    })
+  }}, [currentUser])
 
 
 

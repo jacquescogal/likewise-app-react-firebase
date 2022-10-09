@@ -76,6 +76,7 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded}) => {
       pax: 0,
       rem: cap,
       location:location,
+      activity:eventRoom,
       placeid:placeid,
       time:time
     });
@@ -87,7 +88,8 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded}) => {
       role: 'owner'
     });
     await setDoc(doc(db,'users/'+user.email+'/joinedRooms',docRef.id),{
-      roomRef:docRef
+      roomRef:docRef,
+      activity:eventRoom
     })
     await updateDoc(docRef,{
       pax: increment(1),

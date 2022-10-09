@@ -31,6 +31,7 @@ const MyRooms = ({setChatRoom}) => {
       })
       setJoinedRooms(joinedRooms)
     })
+
   }
   },[user])
 
@@ -52,7 +53,7 @@ const MyRooms = ({setChatRoom}) => {
       <div className="row">
         {joinedRooms.map(joinRoomObject=>{
           return <div key={joinRoomObject.id} className="col-md-auto">
-          <JoinRoomCard key={joinRoomObject.id} chatRoomRef={joinRoomObject.roomRef} setChatRoom={setChatRoom}/>
+          <JoinRoomCard key={joinRoomObject.id} chatRoomRef={joinRoomObject.roomRef} setChatRoom={setChatRoom} activity={joinRoomObject.activity}/>
           </div>
 })}
       </div>

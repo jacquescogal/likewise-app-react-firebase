@@ -6,6 +6,7 @@ import { useAuth,auth } from '../../firebase-config'
 import { db } from '../../firebase-config'
 import ProfilePic from '../components/ProfilePic'
 import TextField from '@mui/material/TextField';
+import Button from "../components/common/Button";
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -66,6 +67,7 @@ const EditProfile = () => {
       },(reason)=>console.log(reason))
   }
 
+
   async function saveProfile(){
     const userRef = doc(db,'users', currentUser.email);
     await updateDoc(userRef, {
@@ -82,7 +84,7 @@ const EditProfile = () => {
   return (
     <menu>
     <div>
-      <h1>Edit Profile</h1>
+    <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '50px', color:'#ffad01'}}>Edit Profile</h1>
 
       <section>
       </section>
@@ -91,15 +93,18 @@ const EditProfile = () => {
       <section>
        Username:
       <p style={{minHeight:'25px',backgroundColor: "white", border:"1px solid orange",borderRadius: '5px', borderRight : '300px'}} >
-      <TextField id="standard-basic" value={username?username:profileInfo.username} onChange={e=>setUsername(e.target.value)}/>
+      <TextField id="standard-basic" value={""} onChange={e=>setUsername(e.target.value)}/>
       </p></section>
 
       <section>
-       Password:
-      <input value={profileInfo.password} readOnly={true} disabled={true} style={{minHeight:'100%',minWidth:'100%',backgroundColor: "white", border:"1px solid orange",borderRadius: '5px', borderRight : '300px'}} type='password' >
-      </input></section>
+       <Button label="Change Password" handleAction={()=>
+                    {navigate('/ChangePassword');
+                    }}/>
+
+      </section>
 
       <section>
+
        School Email:
       <p style={{minHeight:'25px',backgroundColor: "white", border:"1px solid orange",borderRadius: '5px', borderRight : '300px'}} >
       {profileInfo.email}
