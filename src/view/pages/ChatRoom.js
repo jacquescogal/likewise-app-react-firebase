@@ -26,7 +26,7 @@ import { Card, Paper } from '@mui/material';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 
-const ChatRoom = ({chatRoom}) => {
+const ChatRoom = ({chatRoom,setLoading}) => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const scroll = useRef()
@@ -40,6 +40,7 @@ const ChatRoom = ({chatRoom}) => {
 
   useEffect(()=>{
     if (chatRoom===''){
+      setLoading(true)
       console.log('wait for it')
     }
     else if(chatRoom!==''){
@@ -67,6 +68,7 @@ const ChatRoom = ({chatRoom}) => {
     getDoc(doc(db, chatRoomArr.slice(0,-1).join('/'), chatRoomID)).then(docSnap => {
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
+        setLoading(false)
         setRoomInfo({...docSnap.data(),roomUID:chatRoomID})
       } else {
         console.log("No such document!")}});
@@ -86,14 +88,7 @@ const ChatRoom = ({chatRoom}) => {
   return (
     
     <div style={{display:'flex',flexDirection:'column',backgroundColor:'black'}}>
-      {(!roomInfo.time)?<div
-    style={{
-        position: 'absolute', left: '60%', top: '50%',
-        transform: 'translate(-50%, -50%)'
-    }}
-    >
-      <p>loading...</p>
-      <CircularProgress color="secondary" size={50} thickness={5}/>
+      {(!roomInfo.time)?<div>
     </div>:
       <div>
       <ChatRoomBar roomUID={roomInfo.roomUID}

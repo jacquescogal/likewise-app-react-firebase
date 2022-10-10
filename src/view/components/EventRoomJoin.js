@@ -15,7 +15,7 @@ import { getAuth } from 'firebase/auth';
 import { db } from '../../firebase-config';
 import { useEffect,useState } from 'react';
 
-export default function EventRoomJoin({openJoin,setOpenJoin,eventCard,setChatRoom,eventRoom}) {
+export default function EventRoomJoin({openJoin,setOpenJoin,eventCard,setChatRoom,eventRoom,setLoading}) {
     const navigate=useNavigate();
     const user=getAuth().currentUser
     const [joinedRoomSize,setJoinedRoomSize]=useState(null);
@@ -26,6 +26,7 @@ export default function EventRoomJoin({openJoin,setOpenJoin,eventCard,setChatRoo
   };
 
   const updatePax= async ()=>{
+    setLoading(true)
     const userRef=doc(db,eventCard.path+'/users',user.email)
     const roomRef=doc(db,'aRooms/'+eventRoom+'/eRooms',eventCard.eventID)
     const userSnap=await getDoc(doc(db,'users/',user.email))
@@ -49,11 +50,12 @@ export default function EventRoomJoin({openJoin,setOpenJoin,eventCard,setChatRoo
     else{
       console.log('already in')
     }
+    setLoading(false)
   };
 
   useEffect(()=>{ 
     const unsubscribe = async ()=>{
-      const user=getAuth().currentUser
+      const user=localStorage.getItem('user')
       onSnapshot(collection(db,'users/'+user.email+'/joinedRooms'),collectionSnap=>{
         setJoinedRoomSize(collectionSnap.size)
         console.log(collectionSnap.size)

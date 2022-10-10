@@ -34,7 +34,7 @@ import { StayCurrentLandscapeTwoTone } from '@mui/icons-material';
 import { async } from '@firebase/util';
 
 
-const EventRooms = ({eventRoom,setChatRoom,isLoaded}) => {
+const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading}) => {
   const [eRooms,setERooms]=useState([]);
   const [openCreate,setOpenCreate]=useState(false);
   const [openJoin,setOpenJoin]=useState(false);
@@ -49,6 +49,7 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded}) => {
   useEffect(()=>{
     if (eventRoom===''){
       console.log('Wait for event room state update')
+      setLoading(true)
     }
     else{
     const q = query(collection(db, 'aRooms/'+eventRoom+'/eRooms'),orderBy('time','asc'))
@@ -58,6 +59,7 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded}) => {
         eRooms.push({...doc.data(),id:doc.id})
       })
       console.log(eRooms);
+      setLoading(false)
       setERooms(eRooms);
     })
     return unsubscribe
@@ -68,6 +70,7 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded}) => {
   };
 
   const createChatRoom=async({name,cap,location,time,placeid})=>{
+    setLoading(true)
 
     //https://firebase.google.com/docs/firestore/manage-data/add-data
     const docRef = await addDoc(collection(db, 'aRooms/'+eventRoom+'/eRooms'), {
@@ -99,6 +102,7 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded}) => {
     await updateDoc(activityRoomRef,{
       cap: increment(1)
     });
+    setLoading(false)
     setChatRoom('aRooms/'+eventRoom+'/eRooms/'+docRef.id)
     localStorage.setItem('chatRoom','aRooms/'+eventRoom+'/eRooms/'+docRef.id)
     navigate('/home/chatroom')
@@ -138,7 +142,7 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded}) => {
         <Toolbar>
           <Typography height= '80px'>
           <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}> Events for: {eventRoom} 
-          <Fab size="small" color="primary" aria-label="add" sx={{marginLeft:'20px'}} onClick={handleClickOpen}>
+          <Fab size="small" color="primary" aria-label="add" sx={{marginLeft:'20px'}} onClick={()=>{handleClickOpen();console.log(window.google)}}>
             <AddIcon style={{fill:'white'}}/>
           </Fab>
         </h1>
@@ -188,26 +192,20 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded}) => {
       {(eRooms)?
     <menu>
     <div>
-        <EventRoomCreate openCreate={openCreate} setOpenCreate={setOpenCreate} createChatRoom={createChatRoom}/>
+        <EventRoomCreate openCreate={openCreate} setOpenCreate={setOpenCreate} createChatRoom={createChatRoom} google={window.google}/>
         <EventRoomJoin openJoin={openJoin} setOpenJoin={setOpenJoin}
         eventCard={eventCard}
         setEventCard={setEventCard}
         setChatRoom={setChatRoom}
-        eventRoom={eventRoom}/>
+        eventRoom={eventRoom}
+        setLoading={setLoading}/>
         {eRooms.map(eventObject=>(
           filterRender(eventObject)
         ))}
     </div>
     
     </menu>
-:<div
-style={{
-    position: 'absolute', left: '60%', top: '50%',
-    transform: 'translate(-50%, -50%)'
-}}
->
-  <p>loading...</p>
-  <CircularProgress color="secondary" size={50} thickness={5}/>
+:<div>
 </div>}
 </div>
 </Box>

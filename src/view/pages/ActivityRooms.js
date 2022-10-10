@@ -17,12 +17,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import FeedbackFormCreate from '../components/FeedbackFormCreate';
 import Snackbar from '@mui/material/Snackbar'
 
-const ActivityRooms = ({setEventRoom}) => {
+const ActivityRooms = ({setEventRoom,setLoading}) => {
 
   const [aRooms,setARooms]=useState(null);
   const [feedbackFormCreate, setFeedbackFormCreate]=useState(false);
 
   useEffect(()=>{
+    setLoading(true)
     const q = query(collection(db, 'aRooms'),orderBy('cap','desc'))
     let t=0
     const unsubscribe = onSnapshot(q, (QuerySnapshot)=>{
@@ -32,6 +33,7 @@ const ActivityRooms = ({setEventRoom}) => {
         t+=0.25;
       })
       console.log(aRooms);
+      setLoading(false)
       setARooms(aRooms);
     })
     return unsubscribe
@@ -80,8 +82,6 @@ const ActivityRooms = ({setEventRoom}) => {
         transform: 'translate(-50%, -50%)'
     }}
     >
-      <p>loading...</p>
-      <CircularProgress color="secondary" size={50} thickness={5}/>
     </div>}
     </div>
 

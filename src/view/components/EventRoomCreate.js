@@ -36,7 +36,7 @@ import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 
-export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom,isLoaded}) {
+export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom,isLoaded,google}) {
 
     const [cap,setCap]=useState(2)
     const [roomName,setRoomName]=useState('')
@@ -51,7 +51,7 @@ export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom
     
     useEffect(()=>{ 
       const unsubscribe = async ()=>{
-        const user=getAuth().currentUser
+        const user=localStorage.getItem('user')
         onSnapshot(collection(db,'users/'+user.email+'/joinedRooms'),collectionSnap=>{
           setJoinedRoomSize(collectionSnap.size)
           console.log(collectionSnap.size)
@@ -63,17 +63,18 @@ export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom
     const fetch = useMemo(
       () =>
         throttle((request, callback) => {
+          if (autocompleteService.current){
           autocompleteService.current.getPlacePredictions(request, callback);
+          }
         }, 200),
-      [],
+      [autocompleteService],
     );
 
     useEffect(() => {
       let active = true;
-
-      if (!autocompleteService.current && window.google) {
+      if (!autocompleteService.current && google) {
         autocompleteService.current =
-          new window.google.maps.places.AutocompleteService();
+          new google.maps.places.AutocompleteService();
       }
       if (!autocompleteService.current) {
         return undefined;
@@ -84,6 +85,7 @@ export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom
         return undefined;
       }
 
+      if (autocompleteService.current){
     fetch({ input: inputValue }, (results) => {
       if (active) {
         let newOptions = [];
@@ -103,7 +105,8 @@ export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom
     return () => {
       active = false;
     };
-  }, [value, inputValue, fetch]);
+  }
+  }, [value, inputValue]);
 
    
 
@@ -113,7 +116,6 @@ export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom
 
   const handleCreate = () => {
     let pass=true
-    console.log(dateTime.error)
     if (dateTime.error===true){
         pass=false
         toast.error('Date needs to be in the future and minute must be in 15 minute intervals only')
@@ -128,7 +130,6 @@ export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom
     }
     if (pass===true){
         setOpenCreate(false);
-        console.log(dateTime.value.$d)
         createChatRoom({name:roomName,cap:cap,location:value.description,placeid:value.place_id,time:dateTime.value.$d})
     }
   };
@@ -176,15 +177,11 @@ export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom
               filterSelectedOptions
               value={value}
               onChange={(event, newValue) => {
-                console.log("onchange running");
                 setOptions(newValue ? [newValue, ...options] : options);
                 setValue(newValue);
-                console.log("new value", newValue);
               }}
               onInputChange={(event, newInputValue) => {
-                console.log("oninputchange running");
                 setInputValue(newInputValue);
-                console.log("new input value", newInputValue);
               }}
               renderInput={(params) => (
                 <TextField {...params} label="Add a location" fullWidth />

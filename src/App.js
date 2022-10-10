@@ -44,6 +44,9 @@ import { doc, setDoc } from "firebase/firestore";
 //google map api
 import { useLoadScript } from '@react-google-maps/api';
 
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
 const App = () =>{
 
    //load google map script
@@ -70,6 +73,7 @@ const App = () =>{
   const [DOB,setDOB]=useState('')
   const [course,setCourse]=useState('')
   const [studyYear,setStudyYear]=useState('')
+  const [loading,setLoading]=useState(false)
 
   let navigate=useNavigate();
 
@@ -86,11 +90,13 @@ const App = () =>{
 
   
   const handleLogin = () =>{
+    setLoading(true)
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
         .then((response) => {
           const user=auth.currentUser;
           console.log(user.emailVerified);
+          setLoading(false)
           if (user.emailVerified){
             console.log(auth.currentUser);
             setUser(user);
@@ -101,6 +107,7 @@ const App = () =>{
             toast.error("Please verify your Email");
           }
         }).catch((error) => {
+          setLoading(false)
           console.log(error)
           if(error.code === 'auth/wrong-password'){
             toast.error('Please check the Password');
@@ -153,6 +160,7 @@ const App = () =>{
       toast.error('Please fill up all required information');
     }
     else {
+      setLoading(true)
       createUserWithEmailAndPassword(auth, email, password)
     .then((response)=>
     {console.log('what');
@@ -176,8 +184,10 @@ const App = () =>{
         toast('Email sent');
         console.log(auth.currentUser.email);
       })
-  toast('Please verify your Email address');}).catch((error) => {
+  toast('Please verify your Email address');
+  setLoading(false);}).catch((error) => {
       console.log(error)
+      setLoading(false);
       if(error.code === 'auth/wrong-password'){
         toast.error('Please check the Password');
       }
@@ -207,6 +217,13 @@ const App = () =>{
   return(
       <div className="App">
         <ToastContainer/>
+        <Backdrop
+        sx={{ color: 'white',bgcolor:'rgba(255, 255, 255, 0.5)', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <p>loading...</p>
+        <CircularProgress color="primary" />
+      </Backdrop>
         <Routes>
             <Route path="/ChangePassword" element={<ChangePassword />}>
             </Route>
@@ -217,12 +234,12 @@ const App = () =>{
               <Route path="Register" element={<Register setEmail={setEmail} email={email} setPassword={setPassword} handleAction={handleRegister} setUsername={setUsername} setImageUrl={setImageUrl} setGender={setGender} setDOB={setDOB} setCourse={setCourse} setStudyYear={setStudyYear} course={course} studyYear={studyYear} DOB={DOB} gender={gender}/>}/>
             </Route>
             <Route element={<ProtectedRoute user={setUser}/>}>
-              <Route path="/Home" element={<Home />}>
-                <Route path="ActivityRooms" element={<ActivityRooms setEventRoom={setEventRoom}/>}/>
-                <Route path="EventRooms" element={<EventRooms setChatRoom={setChatRoom} eventRoom={eventRoom} chatRoom={chatRoom} isLoaded={isLoaded}/>}/>
+              <Route path="/Home" element={<Home/>}>
+                <Route path="ActivityRooms" element={<ActivityRooms setEventRoom={setEventRoom} setLoading={setLoading}/>}/>
+                <Route path="EventRooms" element={<EventRooms setChatRoom={setChatRoom} eventRoom={eventRoom} chatRoom={chatRoom} isLoaded={isLoaded} setLoading={setLoading}/>}/>
                 <Route path="MyRooms" element={<MyRooms setChatRoom={setChatRoom}/>}/>
                 <Route path="Profile" element={<Profile />}/>
-                <Route path="ChatRoom" element={<ChatRoom chatRoom={chatRoom}/>}/>
+                <Route path="ChatRoom" element={<ChatRoom chatRoom={chatRoom} setLoading={setLoading}/>}/>
                 <Route path="Profile/EditProfile" element={<EditProfile />}/>
               </Route>
             </Route>
