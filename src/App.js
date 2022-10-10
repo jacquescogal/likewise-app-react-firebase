@@ -1,5 +1,5 @@
 //firebase API
-import fireBase, { db } from './firebase-config'
+import fireBase, { db, upload } from './firebase-config'
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification,sendPasswordResetEmail, updatePassword} from 'firebase/auth'
 import 'firebase/auth'
 import { updateProfile } from 'firebase/auth';
@@ -73,11 +73,14 @@ const App = () =>{
   const [DOB,setDOB]=useState('')
   const [course,setCourse]=useState('')
   const [studyYear,setStudyYear]=useState('')
+  const [photo, setPhoto] = useState(null);
+  
   const [loading,setLoading]=useState(false)
 
   let navigate=useNavigate();
 
   useEffect(()=>{
+    fetch('https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png').then(r =>r.blob().then(r=>setPhoto(r)))
     if (localStorage.getItem('eventRoom')){
       setEventRoom(localStorage.getItem('eventRoom'))
     }
@@ -172,7 +175,6 @@ const App = () =>{
     })
 
       setDoc(doc(db,'users',auth.currentUser.email),{
-        imageUrl:imageUrl,
         username:username,
         gender:gender,
         DOB:DOB,
@@ -184,6 +186,8 @@ const App = () =>{
         toast('Email sent');
         console.log(auth.currentUser.email);
       })
+
+      upload(photo,auth.currentUser)
   toast('Please verify your Email address');
   setLoading(false);}).catch((error) => {
       console.log(error)
@@ -231,7 +235,7 @@ const App = () =>{
             </Route>
             <Route path='/' element={<Onboard />}>
               <Route path="Login" element={<Login setEmail={setEmail} setPassword={setPassword} handleAction={handleLogin}/>}/>
-              <Route path="Register" element={<Register setEmail={setEmail} email={email} setPassword={setPassword} handleAction={handleRegister} setUsername={setUsername} setImageUrl={setImageUrl} setGender={setGender} setDOB={setDOB} setCourse={setCourse} setStudyYear={setStudyYear} course={course} studyYear={studyYear} DOB={DOB} gender={gender}/>}/>
+              <Route path="Register" element={<Register setEmail={setEmail} email={email} setPassword={setPassword} handleAction={handleRegister} setUsername={setUsername} setImageUrl={setImageUrl} setGender={setGender} setDOB={setDOB} setCourse={setCourse} setStudyYear={setStudyYear} course={course} studyYear={studyYear} DOB={DOB} gender={gender} photo={photo} setPhoto={setPhoto}/>}/>
             </Route>
             <Route element={<ProtectedRoute user={setUser}/>}>
               <Route path="/Home" element={<Home/>}>

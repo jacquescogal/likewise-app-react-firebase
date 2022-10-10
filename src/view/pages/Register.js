@@ -21,13 +21,19 @@ import Select from '@mui/material/Select';
 
 
 const Register = ({email,setEmail, setPassword, handleAction,
-setUsername,setImageUrl,gender,setGender,DOB,setDOB,course,setCourse,studyYear,setStudyYear}) => {
+setUsername,setImageUrl,gender,setGender,DOB,setDOB,course,setCourse,studyYear,setStudyYear,photo,setPhoto}) => {
 
   //Runs once after render
   useEffect(()=>{
     setEmail('');
     setPassword('');
   },[])
+
+  function handleChangePhoto(e) {
+    if (e.target.files[0]) {
+      setPhoto(e.target.files[0])
+    }
+  }
 
   return (
     <div style={{
@@ -160,6 +166,12 @@ setUsername,setImageUrl,gender,setGender,DOB,setDOB,course,setCourse,studyYear,s
           <MenuItem value={'Year 6'}>Year 6</MenuItem>
         </Select>
       </FormControl>
+      <div className="fields">
+      <img src={(photo)?URL.createObjectURL(photo):`${process.env.PUBLIC_URL}/Images/basicProfile.png`} alt="Avatar" className="avatar" />
+      <br></br><br></br>
+      <input type="file" onChange={handleChangePhoto} accept=".png,.jpg,.jpeg"/>
+      
+    </div>
       <Button label="Confirm Register" style={{alignSelf:'center'}} handleAction={e=>{e.preventDefault();handleAction()}} />
       
       </Stack>

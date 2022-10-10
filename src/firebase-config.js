@@ -40,7 +40,7 @@ export function useAuth() {
 
 
 // Storage
-export async function upload(file, currentUser, setLoading) {
+export async function upload(file, currentUser, setLoading=()=>{}) {
   const fileRef = ref(storage, 'profilepics/' + currentUser.uid + '.png');
 
   setLoading(true);

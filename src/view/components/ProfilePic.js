@@ -1,3 +1,4 @@
+import { type } from "@testing-library/user-event/dist/type";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuth, upload, db } from '../../firebase-config';
@@ -13,6 +14,7 @@ export default function ProfilePic() {
   function handleChange(e) {
     if (e.target.files[0]) {
       setPhoto(e.target.files[0])
+      console.log(typeof(photo))
     }
   }
 
@@ -34,9 +36,9 @@ export default function ProfilePic() {
 
   return (
     <div className="fields">
-      <img src={photoURL} alt="Avatar" className="avatar" />
+      <img src={(photo)?URL.createObjectURL(photo):photoURL} alt="Avatar" className="avatar" />
       <br></br><br></br>
-      <input type="file" onChange={handleChange} />
+      <input type="file" onChange={handleChange} accept=".png,.jpg,.jpeg"/>
       <button disabled={loading || !photo} onClick={handleClick}>Upload</button>
       
     </div>
