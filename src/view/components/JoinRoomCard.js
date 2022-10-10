@@ -10,7 +10,7 @@ import {db, storage} from '../../firebase-config'
 import {ref,getDownloadURL} from 'firebase/storage'
 import { Grow } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import dayjs from 'dayjs';
 
 // --- Material Ui Imports --- //
@@ -35,7 +35,6 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity}) => {
     const [appear,setAppear]=useState(false);
     const [chatRoomData,setChatRoomData]=useState(null);
     const [chatRoomPath,setChatRoomPath]=useState(null);
-    const [activity, setActivity] = useState(null);
     const [aRoom, setARoom] = useState(null);
 
     useEffect(()=>{
@@ -49,7 +48,6 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity}) => {
         const unsubscribe=async()=>{
             let docData= await getDoc(chatRoomRef);
         setChatRoomData({...docData.data()});
-        setActivity(docData.data().activity);
         setChatRoomPath(chatRoomRef._key.path.segments.splice(5).join('/'));
         }
         return unsubscribe
@@ -58,12 +56,15 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity}) => {
 
 
     useEffect(()=>{
-        const getA=async()=>{
-           let docDa=await getDoc(db, "aRooms", eActivity);
-            setARoom({...docDa.data()});
-            console.log(docDa.data().imageUrl)
+      getDoc(doc(db, "aRooms", eActivity)).then(docSnap => {
+        if (docSnap.exists()) {
+          console.log("Document data:", docSnap.data());
+          setARoom({...docSnap.data()});
+          console.log(docSnap.data().imageUrl);
+        } else {
+          console.log("No such document!");
         }
-      return getA
+      })
     },[])
  
   
@@ -78,16 +79,16 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity}) => {
     <CardMedia style = {{ height: 0, paddingTop: '56%'}}
       media="picture"
       alt="Contemplative Reptile"
-      image={`${process.env.PUBLIC_URL}/logo.png`}
-      title="Contemplative Reptile"
+      image={(aRoom)?aRoom.imageUrl:`${process.env.PUBLIC_URL}/logo.png`}
+      title={chatRoomData.activity}
     />
       <CardContent>
         {/* Map */}
-        <h1>{chatRoomData.activity}</h1>
         <h1>{chatRoomData.name}</h1>
-        <h2>Joined:{chatRoomData.pax}/{chatRoomData.cap}</h2>
-        <h2>Date:{dayjs.unix(chatRoomData.time.seconds).format('DD/MM/YYYY')}</h2>
-        <h2>Time:{dayjs.unix(chatRoomData.time.seconds).format('hh:mm A')}</h2>
+        <h2>{chatRoomData.activity}</h2>
+        <h3>Joined:{chatRoomData.pax}/{chatRoomData.cap}</h3>
+        <h3>Date:{dayjs.unix(chatRoomData.time.seconds).format('DD/MM/YYYY')}</h3>
+        <h3>Time:{dayjs.unix(chatRoomData.time.seconds).format('hh:mm A')}</h3>
       </CardContent>
       </Card>
 

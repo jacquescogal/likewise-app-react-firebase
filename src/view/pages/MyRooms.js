@@ -53,7 +53,7 @@ const MyRooms = ({setChatRoom}) => {
       <div className="row">
         {joinedRooms.map(joinRoomObject=>{
           return <div key={joinRoomObject.id} className="col-md-auto">
-          <JoinRoomCard key={joinRoomObject.id} chatRoomRef={joinRoomObject.roomRef} setChatRoom={setChatRoom} activity={joinRoomObject.activity}/>
+          <JoinRoomCard key={joinRoomObject.id} chatRoomRef={joinRoomObject.roomRef} setChatRoom={setChatRoom} eActivity={joinRoomObject.activity}/>
           </div>
 })}
       </div>
