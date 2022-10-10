@@ -160,9 +160,6 @@ setUsername,setImageUrl,gender,setGender,DOB,setDOB,course,setCourse,studyYear,s
           <MenuItem value={'Year 6'}>Year 6</MenuItem>
         </Select>
       </FormControl>
-
-      <img src={"https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"} width={200} height={200}></img>
-
       <Button label="Confirm Register" style={{alignSelf:'center'}} handleAction={e=>{e.preventDefault();handleAction()}} />
       
       </Stack>
