@@ -18,29 +18,41 @@ const ChatMessage = ({message,messageScroll}) => {
     setTheMessage(newMessage);
   },[])
 
+  const messageNameShow=()=>{
+    if (uid===message.uid && message.showText===true){
+      return <h2 style={{alignSelf:'flex-end',marginBottom:-5}}>{message.name}</h2>
+    }
+    else if (message.showText===true){
+      return <h2 style={{alignSelf:'flex-start',marginBottom:-5}}>{message.name}</h2>
+    }
+  }
+
 
   return (
     <div  style={{display:'flex',flexDirection:'column',width:'100%'}}>
-      {(uid===message.uid)?
-      <h2 style={{alignSelf:'flex-end',marginBottom:15}}>{message.name}</h2>:<h2 style={{alignSelf:'flex-start',marginBottom:25}}>{message.name}</h2>
-      }
+      {messageNameShow()}
+      
         {(uid===message.uid)?
         <div  style={{display:'flex',flexDirection:'row-reverse',alignItems:'flex-start',width:'100%'}}>
+          {(message.imageUrl && message.showImage)?<img className="img-fluid" src={message.imageUrl} alt="logo" lassName="likewise_logo" height={40} width={40}/>:<div style={{width:40}}></div>}
         <Box
         sx={{ bgcolor:'secondary.main',display:'flex',boxShadow:1,
-        py:1,px:3,borderRadius:'20px',maxWidth:'400px',borderBottomRightRadius:'0',marginBottom:1,marginTop:-2,mx:1}}>
+        py:1,px:3,borderRadius:'20px',maxWidth:'400px',borderBottomRightRadius:'0',marginBottom:-0.5,marginTop:1,mx:1}}>
             <Typography style={{color:'white', wordWrap: "break-word"}} >{theMessage}</Typography>
         </Box>
         </div>
         :
         <div  style={{display:'flex',flexDirection:'row',alignItems:'flex-start',width:'100%'}}>
+          {(message.imageUrl && message.showImage)?<img className="img-fluid" src={message.imageUrl} alt="logo" lassName="likewise_logo" height={40} width={40}/>:<div style={{width:40}}></div>}
         <Box
         sx={{ bgcolor:'primary.main',display:'flex',boxShadow:1,
-        py:1,px:3,borderRadius:'20px',maxWidth:'400px',borderBottomLeftRadius:'0',marginBottom:1,marginTop:-2,mx:1}}>
+        py:1,px:3,borderRadius:'20px',maxWidth:'400px',borderBottomLeftRadius:'0',marginBottom:-0.5,marginTop:1,mx:1}}>
             <Typography style={{color:'white', wordWrap: "break-word"}} >{theMessage}</Typography>
         </Box>
+        
         </div>
         }
+        
     </div>
   )
 }

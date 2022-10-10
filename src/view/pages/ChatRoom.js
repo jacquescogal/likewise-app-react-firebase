@@ -37,6 +37,18 @@ const ChatRoom = ({chatRoom,setLoading}) => {
   })
   const [userArr,setUserArr]=useState(null)
   const [currentUserName,setCurrentUserName]=useState('');
+  const [currentImageUrl,setCurrentImageUrl]=useState(null)
+
+  useEffect(()=>{
+    const unsubscribe = async ()=>{
+      const user=JSON.parse(localStorage.getItem('user'))
+      onSnapshot(doc(db,'users/'+user.email),docSnap=>{
+        setCurrentImageUrl(docSnap.data().imageUrl)
+      })
+    }
+    return unsubscribe
+
+  },[])
 
   useEffect(()=>{
     if (chatRoom===''){
@@ -44,11 +56,36 @@ const ChatRoom = ({chatRoom,setLoading}) => {
       console.log('wait for it')
     }
     else if(chatRoom!==''){
-    const q = query(collection(db, chatRoom+'/messages'),orderBy('timestamp'))
+    const q = query(collection(db, chatRoom+'/messages'),orderBy('timestamp','desc'))
     const unsubscribe = onSnapshot(q, (QuerySnapshot)=>{
       let messages=[]
+      let emailTrack=null
       QuerySnapshot.forEach((doc)=>{
-        messages.push({...doc.data(),id:doc.id})
+        const show=(emailTrack,anEmail)=>{
+          if (emailTrack===anEmail){
+            return false
+          }
+          else{
+            return true
+          }
+        }
+        messages.push({...doc.data(),id:doc.id,showImage:show(emailTrack,doc.data().email)})
+        console.log(emailTrack,doc.data().email)
+        emailTrack=doc.data().email
+      })
+      messages.reverse()
+      emailTrack=null
+      const show=(emailTrack,anEmail)=>{
+        if (emailTrack===anEmail){
+          return false
+        }
+        else{
+          return true
+        }
+      }
+      messages.forEach(messageObject=>{
+        messageObject.showText=show(emailTrack,messageObject.email)
+        emailTrack=messageObject.email
       })
       setMessages(messages);
     })
@@ -109,7 +146,7 @@ const ChatRoom = ({chatRoom,setLoading}) => {
       ))}
       <span ref={messageScroll}></span>
       </Paper>
-      <SendMessage scroll={scroll} messageScroll={messageScroll} chatRoom={chatRoom+'/messages'} currentUserName={currentUserName}/>
+      <SendMessage scroll={scroll} messageScroll={messageScroll} chatRoom={chatRoom+'/messages'} currentUserName={currentUserName} currentImageUrl={currentImageUrl}/>
       </Paper>
       <span ref={scroll}></span>
       </div>

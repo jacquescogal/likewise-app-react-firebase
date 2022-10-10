@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import { useEffect, useRef } from 'react';
 
 
-const SendMessage = ({scroll, messageScroll,chatRoom,currentUserName}) => {
+const SendMessage = ({scroll, messageScroll,chatRoom,currentUserName,currentImageUrl}) => {
     const [value, setValue] = useState('');
 
     const sendMessage = async(e)=>{
@@ -20,6 +20,8 @@ const SendMessage = ({scroll, messageScroll,chatRoom,currentUserName}) => {
         await addDoc(collection(db,chatRoom),{
             text: value,
             name: currentUserName,
+            email: email,
+            imageUrl: currentImageUrl,
             uid,
             timestamp: serverTimestamp()
         })
