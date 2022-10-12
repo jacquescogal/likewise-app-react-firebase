@@ -19,36 +19,54 @@ const ChatMessage = ({message,messageScroll}) => {
   },[])
 
   const messageNameShow=()=>{
-    if (uid===message.uid && message.showText===true){
-      return <h2 style={{alignSelf:'flex-end',marginBottom:-5}}>{message.name}</h2>
+    if (message.showText===true && uid!=message.uid){
+      return <Typography style={{color:'black',marginBottom:-5}} >{message.name}</Typography>
+      
     }
-    else if (message.showText===true){
-      return <h2 style={{alignSelf:'flex-start',marginBottom:-5}}>{message.name}</h2>
-    }
+    // else if (uid===message.uid && message.showText===true){
+    //   return <h5 style={{alignSelf:'flex-end',marginBottom:-5}}>{message.name}</h5>
+    // }
   }
 
 
   return (
     <div  style={{display:'flex',flexDirection:'column',width:'100%'}}>
-      {messageNameShow()}
+      {/* {messageNameShow()} */}
       
         {(uid===message.uid)?
         <div  style={{display:'flex',flexDirection:'row-reverse',alignItems:'flex-start',width:'100%'}}>
-          {(message.imageUrl && message.showImage)?<img className="img-fluid" src={message.imageUrl} alt="logo" lassName="likewise_logo" height={40} width={40}/>:<div style={{width:40}}></div>}
+          {/* {(message.imageUrl && message.showImage)?<img src={message.imageUrl} height={40} width={40} style={{marginTop:40,borderRadius:'50%'}}/>
+          :<div style={{width:40}}></div>} */}
+        {(message.showImage)?
         <Box
         sx={{ bgcolor:'secondary.main',display:'flex',boxShadow:1,
-        py:1,px:3,borderRadius:'20px',maxWidth:'400px',borderBottomRightRadius:'0',marginBottom:-0.5,marginTop:1,mx:1}}>
+        py:0.5,px:3,borderRadius:'10px',maxWidth:'400px',borderBottomRightRadius:'0',marginBottom:0.5,marginTop:1,mx:1}}>
             <Typography style={{color:'white', wordWrap: "break-word"}} >{theMessage}</Typography>
-        </Box>
+        </Box>:<Box
+        sx={{ bgcolor:'secondary.main',display:'flex',boxShadow:1,
+        py:0.5,px:3,borderRadius:'10px',maxWidth:'400px',marginBottom:-0.5,marginTop:1,mx:1,
+        flexDirection:'column'}}>
+          {messageNameShow()}
+            <Typography style={{color:'white', wordWrap: "break-word"}} >{theMessage}</Typography>
+        </Box>}
         </div>
         :
         <div  style={{display:'flex',flexDirection:'row',alignItems:'flex-start',width:'100%'}}>
-          {(message.imageUrl && message.showImage)?<img className="img-fluid" src={message.imageUrl} alt="logo" lassName="likewise_logo" height={40} width={40}/>:<div style={{width:40}}></div>}
+          {(message.imageUrl && message.showImage)?<img src={message.imageUrl} height={40} width={40} style={{marginTop:25,borderRadius:'50%'}}/>
+          :<div style={{width:40}}></div>}
+        {(message.showImage)?
         <Box
         sx={{ bgcolor:'primary.main',display:'flex',boxShadow:1,
-        py:1,px:3,borderRadius:'20px',maxWidth:'400px',borderBottomLeftRadius:'0',marginBottom:-0.5,marginTop:1,mx:1}}>
+        py:0.5,px:3,borderRadius:'10px',maxWidth:'400px',borderBottomLeftRadius:'0',marginBottom:0.5,marginTop:1,mx:1}}>
             <Typography style={{color:'white', wordWrap: "break-word"}} >{theMessage}</Typography>
-        </Box>
+        </Box>:<Box
+        sx={{ bgcolor:'primary.main',display:'flex',boxShadow:1,
+        py:0.5,px:3,borderRadius:'10px',maxWidth:'400px',marginBottom:-0.5,marginTop:1,mx:1,
+        flexDirection:'column'}}>
+          {messageNameShow()}
+            <Typography style={{color:'white', wordWrap: "break-word"}} >{theMessage}</Typography>
+            
+        </Box>}
         
         </div>
         }

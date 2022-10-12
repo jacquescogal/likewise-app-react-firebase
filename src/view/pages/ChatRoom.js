@@ -89,17 +89,6 @@ const ChatRoom = ({chatRoom,setLoading}) => {
       })
       setMessages(messages);
     })
-    let userArr=[]
-    const unsubscribeUsers=onSnapshot(collection(db,chatRoom+'/users'),(collectionSnapshot)=>{
-        collectionSnapshot.forEach((doc)=>{
-          let docData=doc.data()
-          userArr.push({id:doc.id,name:docData.name,ref:docData.userRef,role:docData.role})
-          if (doc.id===auth.currentUser.email){
-            setCurrentUserName(docData.name)
-          }
-        })
-        setUserArr(userArr)
-      })
     const chatRoomArr=chatRoom.split('/');
     const chatRoomID=chatRoomArr[chatRoomArr.length-1]
     getDoc(doc(db, chatRoomArr.slice(0,-1).join('/'), chatRoomID)).then(docSnap => {
@@ -120,6 +109,28 @@ const ChatRoom = ({chatRoom,setLoading}) => {
     })
     return unsub
    }},[chatRoom])
+
+   useEffect(()=>{
+    if (chatRoom!==''){
+    let userArr=[]
+    let userTrack=[]
+    const unsubscribeUsers=onSnapshot(collection(db,chatRoom+'/users'),(collectionSnapshot)=>{
+        collectionSnapshot.forEach((doc)=>{
+          let docData=doc.data()
+          if (!userTrack.includes(doc.id)){
+            userTrack.push(doc.id)
+            userArr.push({id:doc.id,name:docData.name,ref:docData.userRef,role:docData.role})
+            if (doc.id===auth.currentUser.email){
+              setCurrentUserName(docData.name)
+            }
+        }
+        })
+        
+        setUserArr(userArr)
+      })
+      return unsubscribeUsers
+    }
+   },[chatRoom])
 
 
   return (

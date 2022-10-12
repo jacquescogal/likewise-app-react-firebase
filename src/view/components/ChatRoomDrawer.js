@@ -149,7 +149,7 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPlaceID,roomPax,roomC
       <MapWidget placeID={roomPlaceID}/>
       <Divider />
       <List>
-      <ListItemText sx={{marginLeft:'10px'}}>Attendees ({roomPax}/{roomCap}) :</ListItemText>
+      <ListItemText sx={{marginLeft:'10px'}}>Attendees ({roomUsers.length}/{roomCap}) :</ListItemText>
       {(roomUsers)?roomUsers.map(userObject=>{
         return <ListItem key={userObject.id}>
         <ListItemIcon>
