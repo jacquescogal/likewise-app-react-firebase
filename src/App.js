@@ -39,13 +39,14 @@ import userEvent from '@testing-library/user-event';
 import { Outlet ,Navigate} from 'react-router-dom';
 
 //adding Doc to firestore
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, getDoc, setDoc } from "firebase/firestore"; 
 
 //google map api
 import { useLoadScript } from '@react-google-maps/api';
 
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { async } from '@firebase/util';
 
 const App = () =>{
 
@@ -92,10 +93,16 @@ const App = () =>{
   
 
   
-  const handleLogin = () =>{
+  const handleLogin = async () =>{
     setLoading(true)
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
+    const userDocSnap=await getDoc(doc(db,'usernames',email))
+    let loginEmail=email
+    if (userDocSnap.exists()){
+      const userDocData=userDocSnap.data()
+      loginEmail=userDocData.email
+    }
+    signInWithEmailAndPassword(auth, loginEmail, password)
         .then((response) => {
           const user=auth.currentUser;
           console.log(user.emailVerified);
@@ -128,7 +135,7 @@ const App = () =>{
   }
 
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     //Check for new field's existence and that there is no duplicate of username before creating.
     //Add upload of profile photo
     const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
@@ -141,7 +148,12 @@ const App = () =>{
     console.log(DOB);
     console.log(course);
     console.log(studyYear);
-    if(email.indexOf('@e.ntu.edu.sg') === -1) {
+
+    const userDocSnap=await getDoc(doc(db,'usernames',username))
+    if (userDocSnap.exists()){
+      toast.error('username already exists')
+    }
+    else if(email.indexOf('@e.ntu.edu.sg') === -1) {
       toast.error('Only NTU students are allowed to register');
     }
     else if (password.length < 8) {
@@ -180,6 +192,10 @@ const App = () =>{
         DOB:DOB,
         course:course,
         studyYear:studyYear,
+      })
+
+      setDoc(doc(db,'usernames',username),{
+        email:auth.currentUser.email
       })
 
       sendEmailVerification(auth.currentUser).then((value)=>{

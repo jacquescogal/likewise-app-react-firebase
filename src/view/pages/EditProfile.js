@@ -1,7 +1,7 @@
 import { getAuth } from 'firebase/auth'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { doc,getDoc,updateDoc } from 'firebase/firestore'
+import { deleteDoc, doc,getDoc,setDoc,updateDoc } from 'firebase/firestore'
 import { useAuth,auth } from '../../firebase-config'
 import { db } from '../../firebase-config'
 import ProfilePic from '../components/ProfilePic'
@@ -12,6 +12,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+
+import {  toast } from 'react-toastify';
 
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -48,15 +50,17 @@ const EditProfile = () => {
 
   const docRef = doc(db, "users", auth.currentUser.email);
   useEffect(()=>{
-    getDoc(doc(db, "users", auth.currentUser.email)).then(docSnap => {
+    const unsub=()=>{getDoc(doc(db, "users", auth.currentUser.email)).then(docSnap => {
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
         setProfileInfo({...docSnap.data(),email:auth.currentUser.email,password:'password123'})
         console.log(docSnap.data().DOB.toString())
+        setUsername(profileInfo.username)
       } else {
         console.log("No such document!");
       }
-    })
+    })}
+    return unsub
   },[])
 
   const handleLogout = () => {
@@ -69,6 +73,19 @@ const EditProfile = () => {
 
 
   async function saveProfile(){
+    const userDocSnap=await getDoc(doc(db,'usernames',username?username:profileInfo.username))
+    console.log(username,profileInfo.username)
+    if (userDocSnap.exists()){
+      if (!username || username===profileInfo.username){
+        console.log(username,profileInfo.username)
+        console.log('same username')
+      }
+     else{
+        toast.error('username already exists, please change')
+        return
+        }
+    }
+    
     const userRef = doc(db,'users', currentUser.email);
     await updateDoc(userRef, {
       username: username?username:profileInfo.username,
@@ -77,9 +94,17 @@ const EditProfile = () => {
       studyYear: studyYear?studyYear:profileInfo.studyYear,
       course: course?course:profileInfo.course
     });
+    if (username!=profileInfo.username && username!=='' && username!==null){
+      console.log(profileInfo.username)
+      await deleteDoc(doc(db,'usernames',profileInfo.username))
+      await setDoc(doc(db,'usernames',username),{
+        email:auth.currentUser.email
+      })
+  }
   navigate(-1);
 
-  }
+  
+}
 
   return (
     <menu>
