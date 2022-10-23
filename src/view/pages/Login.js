@@ -19,7 +19,18 @@ const Login = ({setEmail, setPassword, handleAction, handleReset}) => {
 
   const [teststring,setTestString] = useState("Hello How are you?");
   const testflaskapi = () => {
-    fetch('http://localhost:5000/smartreply').then(
+    fetch('/smartreply', 
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(teststring),
+      // mode: 'no-cors',
+      // withCredentials: true,  
+      // crossorigin: true,
+    }).then(
       res => res.json()
     ).then(
       res => {
@@ -47,6 +58,7 @@ const Login = ({setEmail, setPassword, handleAction, handleReset}) => {
                     }}/>
       </Stack>
       <Button label="Connect with Flask" handleAction={testflaskapi}></Button>
+      <TextField label="flaskpost" onChange={e=>setTestString(e.target.value)}/>
       <h1>{teststring}</h1>
     </div>
   )

@@ -131,8 +131,9 @@ class SmartReply(Resource):
     #     response.headers.add('Access-Control-Allow-Methods', "*")
     #     return response
 
-    def get(self):
-        answerlist = generate_beam_text("hi do you like to dance", 5, 5, False)
+    def post(self):
+        testString = process(request.json)
+        answerlist = generate_beam_text(testString, 5, 5, False)
         response = jsonify({
             "statusCode": 200,
             "status":"smart replies created",
