@@ -2,7 +2,7 @@ import Button from "../components/common/Button";
 import Button_ from "../components/common/Button_";
 import Stack from '@mui/material/Stack';
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { TextField } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 
@@ -15,6 +15,19 @@ const Login = ({setEmail, setPassword, handleAction, handleReset}) => {
   },[])
 
   let navigate=useNavigate()
+
+
+  const [teststring,setTestString] = useState("Hello How are you?");
+  const testflaskapi = () => {
+    fetch('http://localhost:5000/smartreply').then(
+      res => res.json()
+    ).then(
+      res => {
+        setTestString(res.result[0]);
+        console.log(res);
+      }
+    )
+  }
 
   return (
     <div style={{
@@ -33,6 +46,8 @@ const Login = ({setEmail, setPassword, handleAction, handleReset}) => {
                     {navigate('/ResetPassword');
                     }}/>
       </Stack>
+      <Button label="Connect with Flask" handleAction={testflaskapi}></Button>
+      <h1>{teststring}</h1>
     </div>
   )
 }
