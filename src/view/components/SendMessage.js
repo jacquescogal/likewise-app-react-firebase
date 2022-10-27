@@ -17,18 +17,18 @@ const SendMessage = ({scroll, messageScroll,chatRoom,currentUserName,currentImag
         e.preventDefault()
         const {uid,email} = auth.currentUser
         if (value!=''){
-        await addDoc(collection(db,chatRoom),{
-            text: value,
-            name: currentUserName,
-            email: email,
-            imageUrl: currentImageUrl,
-            uid,
-            timestamp: serverTimestamp()
-        })
-        setValue('')
-        scroll.current.scrollIntoView({behavior:'smooth'})
-        messageScroll.current.scrollIntoView({behavior:'smooth'})
-    }
+          await addDoc(collection(db,chatRoom),{
+              text: value,
+              name: currentUserName,
+              email: email,
+              imageUrl: currentImageUrl,
+              uid,
+              timestamp: serverTimestamp()
+          })
+          setValue('')
+          scroll.current.scrollIntoView({behavior:'smooth'})
+          messageScroll.current.scrollIntoView({behavior:'smooth'})
+        }
     }
 
     useEffect(() => {

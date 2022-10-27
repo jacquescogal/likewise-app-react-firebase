@@ -9,10 +9,10 @@ import { db } from '../../firebase-config';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { getAuth } from 'firebase/auth';
-import { doc,getDoc } from 'firebase/firestore'
+import { doc,getDoc, QuerySnapshot } from 'firebase/firestore'
 import { auth } from '../../firebase-config'
 
-import {query,collection,orderBy,onSnapshot} from 'firebase/firestore';
+import {query,collection,orderBy,onSnapshot,limit} from 'firebase/firestore';
 import { Navigate } from 'react-router-dom';
 
 import ChatMessage from '../components/ChatMessage';
@@ -29,15 +29,16 @@ import { toast } from 'react-toastify';
 const ChatRoom = ({chatRoom,setLoading}) => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
-  const scroll = useRef()
-  const messageScroll = useRef()
+  const scroll = useRef();
+  const messageScroll = useRef();
   const [roomInfo,setRoomInfo]=useState({
     name:'',
     time:null
-  })
-  const [userArr,setUserArr]=useState(null)
+  });
+  const [userArr,setUserArr]=useState(null);
   const [currentUserName,setCurrentUserName]=useState('');
-  const [currentImageUrl,setCurrentImageUrl]=useState(null)
+  const [currentImageUrl,setCurrentImageUrl]=useState(null);
+  const [latestMessage,setLatestMessage]=useState([]);
 
   useEffect(()=>{
     const unsubscribe = async ()=>{
@@ -46,8 +47,7 @@ const ChatRoom = ({chatRoom,setLoading}) => {
         setCurrentImageUrl(docSnap.data().imageUrl)
       })
     }
-    return unsubscribe
-
+    return unsubscribe;
   },[])
 
   useEffect(()=>{
@@ -56,7 +56,8 @@ const ChatRoom = ({chatRoom,setLoading}) => {
       console.log('wait for it')
     }
     else if(chatRoom!==''){
-    const q = query(collection(db, chatRoom+'/messages'),orderBy('timestamp','desc'))
+    const q = query(collection(db, chatRoom+'/messages'),orderBy('timestamp','desc'));
+    let lm = query(collection(db, chatRoom+'/messages'),orderBy('timestamp','desc'), limit(1));
     const unsubscribe = onSnapshot(q, (QuerySnapshot)=>{
       let messages=[]
       let emailTrack=null
@@ -89,6 +90,14 @@ const ChatRoom = ({chatRoom,setLoading}) => {
       })
       setMessages(messages);
     })
+    onSnapshot(lm,(QuerySnapshot)=>{
+      let latestMessage = [];
+      QuerySnapshot.forEach((doc) => {
+        latestMessage.push(doc.data().text)
+      });
+      setLatestMessage(latestMessage);
+    })
+    console.log("latestMessage", latestMessage);
     const chatRoomArr=chatRoom.split('/');
     const chatRoomID=chatRoomArr[chatRoomArr.length-1]
     getDoc(doc(db, chatRoomArr.slice(0,-1).join('/'), chatRoomID)).then(docSnap => {
@@ -108,29 +117,45 @@ const ChatRoom = ({chatRoom,setLoading}) => {
       }
     })
     return unsub
-   }},[chatRoom])
+   }
+  },[chatRoom]);
 
-   useEffect(()=>{
-    if (chatRoom!==''){
-    let userArr=[]
-    let userTrack=[]
-    const unsubscribeUsers=onSnapshot(collection(db,chatRoom+'/users'),(collectionSnapshot)=>{
-        collectionSnapshot.forEach((doc)=>{
-          let docData=doc.data()
-          if (!userTrack.includes(doc.id)){
-            userTrack.push(doc.id)
-            userArr.push({id:doc.id,name:docData.name,ref:docData.userRef,role:docData.role})
-            if (doc.id===auth.currentUser.email){
-              setCurrentUserName(docData.name)
-            }
-        }
-        })
-        
-        setUserArr(userArr)
+  useEffect(()=>{
+  if (chatRoom!==''){
+  let userArr=[]
+  let userTrack=[]
+  const unsubscribeUsers=onSnapshot(collection(db,chatRoom+'/users'),(collectionSnapshot)=>{
+      collectionSnapshot.forEach((doc)=>{
+        let docData=doc.data()
+        if (!userTrack.includes(doc.id)){
+          userTrack.push(doc.id)
+          userArr.push({id:doc.id,name:docData.name,ref:docData.userRef,role:docData.role})
+          if (doc.id===auth.currentUser.email){
+            setCurrentUserName(docData.name)
+          }
+      }
       })
-      return unsubscribeUsers
-    }
-   },[chatRoom])
+      
+      setUserArr(userArr)
+    })
+    return unsubscribeUsers
+  }
+  },[chatRoom]);
+
+  useEffect(() => {
+    let lm = query(collection(db, chatRoom+'/messages'),orderBy('timestamp','desc'), limit(1));
+    onSnapshot(lm,(QuerySnapshot)=>{
+      let latestMessage = [];
+      QuerySnapshot.forEach((doc) => {
+        latestMessage.push(doc.data().text)
+      });
+      setLatestMessage(latestMessage);
+    });
+    console.log("latestMessage", latestMessage);
+  },[messages]);
+
+
+  
 
 
   return (
