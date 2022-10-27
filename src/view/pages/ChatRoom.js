@@ -6,8 +6,7 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 import { db } from '../../firebase-config';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import Button from "../components/common/Button";
 import { getAuth } from 'firebase/auth';
 import { doc,getDoc, QuerySnapshot } from 'firebase/firestore'
 import { auth } from '../../firebase-config'
@@ -38,7 +37,9 @@ const ChatRoom = ({chatRoom,setLoading}) => {
   const [userArr,setUserArr]=useState(null);
   const [currentUserName,setCurrentUserName]=useState('');
   const [currentImageUrl,setCurrentImageUrl]=useState(null);
-  const [latestMessage,setLatestMessage]=useState([]);
+  const [latestMessage,setLatestMessage]=useState('');
+  const [smartReplies,setSmartReplies] = useState([]);
+  const [toSend, setToSend] = useState('');
 
   useEffect(()=>{
     const unsubscribe = async ()=>{
@@ -57,7 +58,6 @@ const ChatRoom = ({chatRoom,setLoading}) => {
     }
     else if(chatRoom!==''){
     const q = query(collection(db, chatRoom+'/messages'),orderBy('timestamp','desc'));
-    let lm = query(collection(db, chatRoom+'/messages'),orderBy('timestamp','desc'), limit(1));
     const unsubscribe = onSnapshot(q, (QuerySnapshot)=>{
       let messages=[]
       let emailTrack=null
@@ -90,14 +90,6 @@ const ChatRoom = ({chatRoom,setLoading}) => {
       })
       setMessages(messages);
     })
-    onSnapshot(lm,(QuerySnapshot)=>{
-      let latestMessage = [];
-      QuerySnapshot.forEach((doc) => {
-        latestMessage.push(doc.data().text)
-      });
-      setLatestMessage(latestMessage);
-    })
-    console.log("latestMessage", latestMessage);
     const chatRoomArr=chatRoom.split('/');
     const chatRoomID=chatRoomArr[chatRoomArr.length-1]
     getDoc(doc(db, chatRoomArr.slice(0,-1).join('/'), chatRoomID)).then(docSnap => {
@@ -142,52 +134,92 @@ const ChatRoom = ({chatRoom,setLoading}) => {
   }
   },[chatRoom]);
 
+  // Function for API call which is used later
+  const fetchSmartReplies = () => {
+    fetch('/smartreply', 
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(latestMessage),
+      // mode: 'no-cors',
+      // withCredentials: true,  
+      // crossorigin: true,
+    }).then(
+      res => res.json()
+      ).then(
+        res => {
+          setSmartReplies(res.result);
+          console.log(smartReplies);
+        }
+      );
+  }
+
+  //Gets smart replies every time there is a new message in the chat
   useEffect(() => {
-    let lm = query(collection(db, chatRoom+'/messages'),orderBy('timestamp','desc'), limit(1));
-    onSnapshot(lm,(QuerySnapshot)=>{
-      let latestMessage = [];
-      QuerySnapshot.forEach((doc) => {
-        latestMessage.push(doc.data().text)
-      });
+    const getSmartReplies = async() => {
+      const smartrep = await fetchSmartReplies();
+    }
+
+    let lm = messages.slice(-1)[0];
+    if (lm) {
+      let latestMessage = lm.text;
+      console.log("latestmessage", latestMessage);
       setLatestMessage(latestMessage);
-    });
-    console.log("latestMessage", latestMessage);
+      getSmartReplies();
+    }
   },[messages]);
 
-
-  
-
-
+  const replaceSendMessageText = (reply) => {
+    console.log("button being clicked");
+    console.log(reply);
+    setToSend(reply);
+  }
   return (
     
     <div style={{display:'flex',flexDirection:'column',backgroundColor:'black'}}>
       {(!roomInfo.time)?<div>
-    </div>:
-      <div>
-      <ChatRoomBar roomUID={roomInfo.roomUID}
-      roomName={roomInfo.name} 
-      roomDate={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('DD/MM/YYYY'):'loading...'}
-      roomTime={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('hh:mm A'):'loading...'}
-      roomLocation={roomInfo.location}
-      roomPlaceID={roomInfo.placeid}
-      roomPax={roomInfo.pax}
-      roomCap={roomInfo.cap}
-      roomUsers={userArr}/>
-      ChatRoom
-      <div style={{width:'100%',display:'flex',flexDirection:'column',marginTop:'25px'}}>
-        <Paper>
-        <Paper style={{width:'100%',height: '500px', overflow: 'auto'}}>
-      {messages.map(message => (
-        <ChatMessage key={message.id} className='message' message={message} messageScroll={messageScroll}></ChatMessage>
-      ))}
-      <span ref={messageScroll}></span>
-      </Paper>
-      <SendMessage scroll={scroll} messageScroll={messageScroll} chatRoom={chatRoom+'/messages'} currentUserName={currentUserName} currentImageUrl={currentImageUrl}/>
-      </Paper>
-      <span ref={scroll}></span>
-      </div>
-      </div>
-}
+        </div>:
+        <div>
+          <ChatRoomBar roomUID={roomInfo.roomUID}
+          roomName={roomInfo.name} 
+          roomDate={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('DD/MM/YYYY'):'loading...'}
+          roomTime={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('hh:mm A'):'loading...'}
+          roomLocation={roomInfo.location}
+          roomPlaceID={roomInfo.placeid}
+          roomPax={roomInfo.pax}
+          roomCap={roomInfo.cap}
+          roomUsers={userArr}/>
+          ChatRoom
+          <div style={{width:'100%',display:'flex',flexDirection:'column',marginTop:'25px'}}>
+            <Paper>
+              <Paper style={{width:'100%',height: '500px', overflow: 'auto'}}>
+                {messages.map(message => (
+                  <ChatMessage key={message.id} className='message' message={message} messageScroll={messageScroll}></ChatMessage>
+                ))}
+                <span ref={messageScroll}></span>
+              </Paper>
+              <div style={{
+                margin: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingTop: 0
+              }} >
+                {smartReplies.map(
+                  reply => (
+                    <Button label={reply} handleAction={() => replaceSendMessageText(reply)}></Button>
+                  )
+                )}
+              </div>
+              <SendMessage scroll={scroll} messageScroll={messageScroll} chatRoom={chatRoom+'/messages'} currentUserName={currentUserName} currentImageUrl={currentImageUrl} toSend={toSend}/>
+            </Paper>
+            <span ref={scroll}></span>
+          </div>
+        </div>
+      }
     </div>
   )
 }

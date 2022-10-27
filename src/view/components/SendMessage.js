@@ -10,8 +10,14 @@ import IconButton from '@mui/material/IconButton';
 import { useEffect, useRef } from 'react';
 
 
-const SendMessage = ({scroll, messageScroll,chatRoom,currentUserName,currentImageUrl}) => {
+const SendMessage = ({scroll, messageScroll,chatRoom,currentUserName,currentImageUrl,toSend}) => {
     const [value, setValue] = useState('');
+
+    useEffect(() => {
+      if(toSend){
+        setValue(toSend);
+      }
+    },[toSend]);
 
     const sendMessage = async(e)=>{
         e.preventDefault()
