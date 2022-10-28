@@ -16,30 +16,6 @@ const Login = ({setEmail, setPassword, handleAction, handleReset}) => {
 
   let navigate=useNavigate()
 
-
-  const [teststring,setTestString] = useState("Hello How are you?");
-  const testflaskapi = () => {
-    fetch('/smartreply', 
-    {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(teststring),
-      // mode: 'no-cors',
-      // withCredentials: true,  
-      // crossorigin: true,
-    }).then(
-      res => res.json()
-    ).then(
-      res => {
-        setTestString(res.result[0]);
-        console.log(res);
-      }
-    )
-  }
-
   return (
     <div style={{
       margin: 'auto',
@@ -57,9 +33,6 @@ const Login = ({setEmail, setPassword, handleAction, handleReset}) => {
                     {navigate('/ResetPassword');
                     }}/>
       </Stack>
-      <Button label="Connect with Flask" handleAction={testflaskapi}></Button>
-      <TextField label="flaskpost" onChange={e=>setTestString(e.target.value)}/>
-      <h1>{teststring}</h1>
     </div>
   )
 }
