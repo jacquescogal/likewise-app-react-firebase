@@ -11,11 +11,15 @@ import { db } from '../../firebase-config';
 import { onSnapshot } from 'firebase/firestore';
 import { CircularProgress } from '@mui/material';
 import JoinRoomCard from '../components/JoinRoomCard';
-const MyRooms = ({setChatRoom}) => {
+const MyRooms = ({setChatRoom,setPageTitle}) => {
   const navigate=useNavigate()
   const [user,setUser]=useState(null);
   const [joinedRooms,setJoinedRooms]=useState(null);
   
+  useEffect(()=>{
+    setPageTitle('My Rooms');
+  },[])
+
   useEffect(()=>{
     if (!user){
       console.log('wait')

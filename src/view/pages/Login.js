@@ -26,8 +26,8 @@ const Login = ({setEmail, setPassword, handleAction, handleReset}) => {
     }} >
       <Stack spacing={2}>
       <b style={{alignSelf:'center', fontSize:40}}>Login</b>
-      <TextField label="E-mail" onChange={e=>setEmail(e.target.value)}/>
-      <TextField label="Password" onChange={e=>setPassword(e.target.value)} type='password'/>
+      <TextField  sx={{ m: 1, minWidth: 120 ,maxWidth:300}} label="E-mail" onChange={e=>setEmail(e.target.value)}/>
+      <TextField  sx={{ m: 1, minWidth: 120 ,maxWidth:300}} label="Password" onChange={e=>setPassword(e.target.value)} type='password'/>
       <Button label="Confirm Login" style={{alignSelf:'center'}} handleAction={handleAction} />
       <Button_ variant="outline-info" label="Forgot password?" handleAction={()=>
                     {navigate('/ResetPassword');

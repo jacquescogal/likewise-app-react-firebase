@@ -34,7 +34,7 @@ import { StayCurrentLandscapeTwoTone } from '@mui/icons-material';
 import { async } from '@firebase/util';
 
 
-const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading}) => {
+const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) => {
   const [eRooms,setERooms]=useState([]);
   const [openCreate,setOpenCreate]=useState(false);
   const [openJoin,setOpenJoin]=useState(false);
@@ -54,6 +54,7 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading}) => {
     else{
     const q = query(collection(db, 'aRooms/'+eventRoom+'/eRooms'),orderBy('time','asc'))
     const unsubscribe = onSnapshot(q, (QuerySnapshot)=>{
+      setPageTitle('Event Rooms')
       let eRooms=[]
       QuerySnapshot.forEach((doc)=>{
         eRooms.push({...doc.data(),id:doc.id})

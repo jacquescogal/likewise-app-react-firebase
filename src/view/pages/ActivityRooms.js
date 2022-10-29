@@ -17,7 +17,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import FeedbackFormCreate from '../components/FeedbackFormCreate';
 import Snackbar from '@mui/material/Snackbar'
 
-const ActivityRooms = ({setEventRoom,setLoading}) => {
+const ActivityRooms = ({setEventRoom,setLoading,setPageTitle}) => {
 
   const [aRooms,setARooms]=useState(null);
   const [feedbackFormCreate, setFeedbackFormCreate]=useState(false);
@@ -27,6 +27,7 @@ const ActivityRooms = ({setEventRoom,setLoading}) => {
     const q = query(collection(db, 'aRooms'),orderBy('cap','desc'))
     let t=0
     const unsubscribe = onSnapshot(q, (QuerySnapshot)=>{
+      setPageTitle('Activity Rooms')
       let aRooms=[]
       QuerySnapshot.forEach((doc)=>{
         aRooms.push({...doc.data(),id:doc.id,timer:t*500})
@@ -44,25 +45,9 @@ const ActivityRooms = ({setEventRoom,setLoading}) => {
   };
 
   return (
-    <Box sx={{marginLeft:"20px"}}>
+    <Box>
     <div > 
-    <Box sx={{ flexGrow: 1, height: '180px'}}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography height= '80px'>
-          <h1 style={{marginTop:"10px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}>Activity Rooms</h1>
-          {/* {feedbackSuccessMessage && <Snackbar open={feedbackSuccessMessage} message={feedbackSuccessMessage} />} */}
-          <Fab size="small" color="primary" aria-label="add" sx={{marginRight:'10px',marginTop:'15px'}} onClick={handleClickOpen}>
-            <EditIcon style={{fill:'white'}}/>
-          </Fab>
-          {/* <h5 style={{marginLeft:"1100px", marginTop:"0px",backgroundColor: "white",padding:"0px"}}>Add feedback</h5> */}
-          <h4 style={{marginLeft:"5px", marginTop:"0px",backgroundColor: "white",padding:"0px"}}>Please select an activity of interest below.</h4>
-          
-          
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </Box>
+    <img class="object-cover w-full h-96 object-center transform duration-700 backdrop-opacity-100  bg-white group-hover:blur-md" src='https://www.ntu.edu.sg/images/default-source/premier-scholarships/rep/programme-thumbnail_rep_1.jpg?sfvrsn=4e16e392_0' />
     <div>
         <FeedbackFormCreate feedbackFormCreate={feedbackFormCreate} setFeedbackFormCreate={setFeedbackFormCreate}/>
     </div>

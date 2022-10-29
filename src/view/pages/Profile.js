@@ -12,7 +12,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import EditProfile from './EditProfile';
 import { CircularProgress } from '@mui/material'
 
-const Profile = () => {
+const Profile = ({setPageTitle}) => {
 
   //refer to registration for date picker/gender picker/year picker etc.
   
@@ -30,6 +30,10 @@ const Profile = () => {
     course:'',
     studyYear:''
   })
+
+  useEffect(()=>{
+    setPageTitle('Profile')
+  },[])
 
   useEffect(()=>{
     if (!user){

@@ -23,7 +23,11 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 
-const EditProfile = () => {
+const EditProfile = ({setPageTitle}) => {
+
+  useState(()=>{
+    setPageTitle('Edit Profile')
+  },[])
 
   //refer to registration for date picker/gender picker/year picker etc.
   

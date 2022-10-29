@@ -1,4 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 /* base styles */
 * {
@@ -6,57 +10,6 @@
   color: #333;
 }
 
-.content {
-  height: 100%;
-  padding: 0px;
-  padding-left: 20%;
-  
-}
-.sideBar {
-  height: 100%;  
-  width: 20%;  
-  position: fixed; 
-  z-index: 1; 
-  top: 0; 
-  left: 10; 
-  background-color:#FBBA51; 
-  transition: .5s ease; 
-  overflow-x: hidden; 
-  display: flex; 
-  flex-direction: column; 
-  align-items: left;
-  justify-content: flex-start;
-}
-
-.sideBar img{
-  align-self:center;
-}
-
-.sideBar hr{
-  color:#ffffff;
-}
-
-.sideBar h1 {
-  color: #ffffff;
-  font-size: 40px;
-}
-.sideBar .sideBarLinks {
-  display: flex;
-  flex-direction: column;
-  padding-top: 20px;
-}
-.sideBar a {
-  text-decoration:underline;
-  padding: 6px;
-  color: #ffffff;
-}
-.sideBar a:hover {
-  text-decoration: none;
-}
-
-.buttonIcon {
-  fill: white;
-}
 
 .fields {
   margin: 50px 0px;
@@ -86,3 +39,4 @@
 .likewise_logo{
   margin-left: 30px;
 }
+
