@@ -2,7 +2,7 @@ import Button from "../components/common/Button";
 import Button_ from "../components/common/Button_";
 import Stack from '@mui/material/Stack';
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { TextField } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 
