@@ -40,13 +40,13 @@ const BasicCard = ({nameOfEvent,setEventRoom,imageOfEvent,timer}) =>{
   let navigate=useNavigate();
   return (
   <Grow in={appear}>
-    <div class="ml-4 mt-4 max-w-xs bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 marginTop: 2 "onClick={()=>{setEventRoom(nameOfEvent);localStorage.setItem('eventRoom',nameOfEvent);navigate('/home/eventrooms')}}>
+    <div class="m-2 mt-2 w-full h-fit bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 marginTop: 2 "onClick={()=>{setEventRoom(nameOfEvent);localStorage.setItem('eventRoom',nameOfEvent);navigate('/home/eventrooms')}}>
         <a href="#">
             <img class="rounded-t-lg" src = {imageOfEvent} alt="" />
         </a>
         <div class="p-6">
             <a href="#">
-            <h1>{nameOfEvent}</h1>        
+            <p class='text-2xl font-semibold'>{nameOfEvent}</p>        
             </a>
             {(numOfEvents)?<h5 style={{p:-10}}>{numOfEvents} rooms</h5>:<h5 style={{p:-10}}>0 rooms</h5>}
         </div>

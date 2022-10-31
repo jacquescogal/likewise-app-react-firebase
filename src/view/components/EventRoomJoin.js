@@ -55,7 +55,7 @@ export default function EventRoomJoin({openJoin,setOpenJoin,eventCard,setChatRoo
 
   useEffect(()=>{ 
     const unsubscribe = async ()=>{
-      const user=localStorage.getItem('user')
+      const user=JSON.parse(localStorage.getItem('user'))
       onSnapshot(collection(db,'users/'+user.email+'/joinedRooms'),collectionSnap=>{
         setJoinedRoomSize(collectionSnap.size)
         console.log(collectionSnap.size)
@@ -66,7 +66,7 @@ export default function EventRoomJoin({openJoin,setOpenJoin,eventCard,setChatRoo
 
 
   let joinButtonState=()=>{
-    if (joinedRoomSize!=null & joinedRoomSize==3){
+    if (joinedRoomSize!=null & joinedRoomSize>=3){
       return <Button disabled onClick={()=>{setChatRoom(eventCard.path);localStorage.setItem('chatRoom',eventCard.path);navigate('/home/chatroom')}}>Already in 3 rooms</Button>
     }
     else if (joinedRoomSize!=null & eventCard.cap-eventCard.pax>0){
