@@ -75,13 +75,13 @@ export default function Navigator(props) {
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText>Home</ListItemText>
+          <span class='font-semibold'>Home</span>
           </ListItemButton>
         </ListItem>
         {categories.map(({ id, children }) => (
           <Box key={id} sx={{ bgcolor: 'rgb(251, 199, 115)' }}>
             <ListItem sx={{ py: 2, px: 3 }}>
-              <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
+            <span class='font-bold'>Directory</span>
               
             </ListItem>
             {children.map(({ id: childId, icon, active }) => (
@@ -96,7 +96,7 @@ export default function Navigator(props) {
                 };setSelect(myObject);(childId==='Home')?navigate('/Home/Main'):
                 navigate('/Home/'+childId.split(' ')[0]+(childId.split(' ')[1]?childId.split(' ')[1]:''))}}>
                   <ListItemIcon>{icon}</ListItemIcon>
-                  <ListItemText>{childId}</ListItemText>
+                  <span class='font-semibold'>{childId}</span>
                 </ListItemButton>
               </ListItem>
             ))}

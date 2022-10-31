@@ -14,13 +14,6 @@ import { createTheme } from '@mui/material/styles';
         contrastText: 'rgba(255,255,255,0.87)',
       },
     },
-    typography: {
-      h5: {
-        fontWeight: 500,
-        fontSize: 26,
-        letterSpacing: 0.5,
-      },
-    },
     shape: {
       borderRadius: 8,
     },
@@ -115,14 +108,6 @@ import { createTheme } from '@mui/material/styles';
             '&.Mui-selected': {
               color: '#fff',
             },
-          },
-        },
-      },
-      MuiListItemText: {
-        styleOverrides: {
-          primary: {
-            fontSize: 14,
-            fontWeight: theme.typography.fontWeightMedium,
           },
         },
       },

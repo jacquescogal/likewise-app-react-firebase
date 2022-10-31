@@ -9,12 +9,14 @@ import Navigator from "../components/Navigator";
 import SideBar from '../components/SideBar';
 import Box from '@mui/material/Box';
 import Copyright from '../components/Copyright'
-import Header from "../components/Heder";
-
+import Header from "../components/Header";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import theme from "../../MUITheme";
 
   
 
   const Home = ({drawerOpen,setDrawerOpen,pageTitle}) =>{
+    const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
 
     const handleDrawerToggle=()=>{
       setDrawerOpen(!drawerOpen);
@@ -25,18 +27,30 @@ import Header from "../components/Heder";
         <Box sx={{ flexShrink: 1, display: 'flex'}}>
         <Box
           component="nav"
-          sx={{ flexShrink: 1  }}
+          sx={{ width: { sm: 256 }, flexShrink: { sm: 0 } }}
         >
-        <Navigator
-              PaperProps={{ style: { width: 256 } }}
-              variant="temporary"
-              open={drawerOpen}
-              onClose={(handleDrawerToggle)}
-              setDrawerOpen={setDrawerOpen}
-            />
+        
+
+{isSmUp ? null : (
+            <Navigator
+            PaperProps={{ style: { width: 256 } }}
+            variant="temporary"
+            open={drawerOpen}
+            onClose={handleDrawerToggle}
+            setDrawerOpen={setDrawerOpen}
+          />
+          )}
+
+          <Navigator
+            PaperProps={{ style: { width: 256 } }}
+            sx={{ display: { sm: 'block', xs: 'none' } }}
+          />
+
+
+
             </Box>
             <Box sx={{ flex: 1, flexShrink: 1, display: 'flex', flexDirection: 'column' }}>
-            <Header setMobileOpen={setDrawerOpen} pageTitle={pageTitle}/>
+            <Header setMobileOpen={setDrawerOpen} pageTitle={pageTitle} isSmUp={isSmUp}/>
           <Outlet/>
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
             <Copyright />

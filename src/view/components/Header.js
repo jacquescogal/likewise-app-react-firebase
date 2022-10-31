@@ -2,19 +2,11 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import HelpIcon from '@mui/icons-material/Help';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { getAuth } from 'firebase/auth'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,7 +16,7 @@ import {doc,onSnapshot} from "firebase/firestore";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-const Header=({setMobileOpen,pageTitle})=> {
+const Header=({setMobileOpen,pageTitle,isSmUp})=> {
   const [anchorEl, setAnchorEl] = useState(null);
   const toOpen = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -33,6 +25,14 @@ const Header=({setMobileOpen,pageTitle})=> {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleLogout = () => {
+    const auth=getAuth();
+    auth.signOut().then((value)=>{
+      console.log(value)
+      navigate('/');
+      localStorage.clear();
+    },(reason)=>console.log(reason))
+}
 
   const navigate=useNavigate();
 
@@ -63,7 +63,7 @@ const Header=({setMobileOpen,pageTitle})=> {
         <Toolbar>
           <Grid container spacing={1} alignItems="center">
             <Grid sx={{ display: 'block'  }} item>
-              <IconButton
+              {isSmUp?null:<IconButton
                 color="inherit"
                 aria-label="open drawer"
                 onClick={()=>{setMobileOpen(true);setMenuPing(false)}}
@@ -71,7 +71,7 @@ const Header=({setMobileOpen,pageTitle})=> {
               >
                 <MenuIcon />
                 {(menuPing==true)?<MenuIcon className='absolute animate-ping'/>:null}
-              </IconButton>
+              </IconButton>}
             </Grid>
             
             <Grid item xs >
@@ -105,8 +105,7 @@ const Header=({setMobileOpen,pageTitle})=> {
         }}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
               
           </Grid>

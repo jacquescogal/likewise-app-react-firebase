@@ -47,7 +47,7 @@ const ActivityRooms = ({setEventRoom,setLoading,setPageTitle}) => {
   return (
     <Box>
     <div > 
-    <img class="object-cover w-full h-96 object-center transform duration-700 backdrop-opacity-100  bg-white group-hover:blur-md" src='https://www.ntu.edu.sg/images/default-source/premier-scholarships/rep/programme-thumbnail_rep_1.jpg?sfvrsn=4e16e392_0' />
+      <ActivityRoomHeader/>
     <div>
         <FeedbackFormCreate feedbackFormCreate={feedbackFormCreate} setFeedbackFormCreate={setFeedbackFormCreate}/>
     </div>
@@ -72,6 +72,72 @@ const ActivityRooms = ({setEventRoom,setLoading,setPageTitle}) => {
 
   </Box>
   )
+}
+
+const ActivityRoomHeader=()=>{
+  return (
+    <div class='flex justify-center'>
+    <div class="relative w-fit h-fit overflow-hidden mx-2.5 mt-2 border border-gray-0 shadow-md group ">
+    <img class="transition ease-in-out object-cover h-96 w-full rounded-tr-lg rounded-bl-lg group-hover:scale-150" src ='https://www.ntu.edu.sg/images/default-source/premier-scholarships/rep/programme-thumbnail_rep_1.jpg?sfvrsn=4e16e392_0' alt = "" />
+    <div class="absolute bg-black/50 text-white w-full h-full transform duration-500 top-[80%] bottom-[90%] content-center group-hover:-inset-y-0 ">
+    <p class="text-white font-semibold">TESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT</p>
+    <p class="font-sans">Description</p>
+    <div class="grid grid-cols-8 grid-rows-1">
+      <div></div>
+    <div class="grid grid-cols-4 grid-rows-2 justify-center col-span-6">
+      <div class="relative w-full justify-center">
+        <div class="absolute border-white border-2 w-full right-0 text-white">Carb</div>
+      </div>
+      <div class="relative w-full justify-center">
+        <div class="border-white border-2 w-full m-auto">Protein</div>
+      </div>
+      <div class="relative w-full justify-center">
+        <div class="border-white border-2 w-full m-auto">Fat</div>
+      </div>
+      <div class="relative w-full justify-center">
+        <div class="absolute border-white border-2 w-full left-0">Calories</div>
+      </div>
+
+      <div class="relative w-full justify-center">
+        <div class="absolute border-white border-2 w-full right-0">test</div> 
+      </div>
+      <div class="relative w-full justify-center">
+        <div class="border-white border-2 w-full m-auto">5g</div>
+      </div>
+      <div class="relative w-full justify-center">
+        <div class="border-white border-2 w-full m-auto">5g</div>
+      </div>
+      <div class="relative w-full justify-center">
+        <div class="absolute border-white border-2 w-full left-0">5kcal</div>
+      </div>
+    </div>
+    <div></div>
+    </div>
+
+    <div class="grid grid-cols-3 grid-rows-2">
+      <div class="row-span-1">
+      <p class="row-span-1 mb-0">Difficulty:</p>
+      5
+      </div>
+      <div class="row-span-1">
+      <p class="row-span-1 mb-0">Time:</p>
+      <span class="font-bold">5</span>
+      </div>
+      <div class="relative row-span-1">
+      <button  class="absolute mt-1 left-0 items-center py-2 px-3 text-md font-medium text-center text-white bg-red-400 rounded-lg hover:bg-red-700"
+      onClick={()=>{}}>
+            Customize
+        </button>
+      </div>
+      
+
+    </div>
+    
+    </div>
+    
+</div>
+</div>
+  );
 }
 
 export default ActivityRooms
