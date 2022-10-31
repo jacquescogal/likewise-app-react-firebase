@@ -39,18 +39,33 @@ const BasicCard = ({nameOfEvent,setEventRoom,imageOfEvent,timer}) =>{
  
   let navigate=useNavigate();
   return (
-    <Grow in={appear}>
-      <Link to onClick= {()=>{setEventRoom(nameOfEvent);navigate('/home/eventrooms')}}>
-      <Card sx={{display:'flex',flexDirection:'column',minHeight:325,maxHeight:300,minWidth:250,maxWidth:250, ':hover':{boxShadow:'10'}, marginTop:1}}
-    onClick={()=>{setEventRoom(nameOfEvent);localStorage.setItem('eventRoom',nameOfEvent);navigate('/home/eventrooms')}}>
-      <CardContent>
-      <img style = {{width: 225, height:200,position:'relative',top:-20}} src = {imageOfEvent} alt = "" />
-        <h1>{nameOfEvent}</h1>
-        {(numOfEvents)?<h5 style={{p:-10}}>{numOfEvents} rooms</h5>:<h5 style={{p:-10}}>0 rooms</h5>}
-      </CardContent>
-      </Card>
-      </Link>
-    </Grow>
+  <Grow in={appear}>
+    <div class="ml-4 mt-4 max-w-xs bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 marginTop: 2 "onClick={()=>{setEventRoom(nameOfEvent);localStorage.setItem('eventRoom',nameOfEvent);navigate('/home/eventrooms')}}>
+        <a href="#">
+            <img class="rounded-t-lg" src = {imageOfEvent} alt="" />
+        </a>
+        <div class="p-6">
+            <a href="#">
+            <h1>{nameOfEvent}</h1>        
+            </a>
+            {(numOfEvents)?<h5 style={{p:-10}}>{numOfEvents} rooms</h5>:<h5 style={{p:-10}}>0 rooms</h5>}
+        </div>
+    </div>
+  </Grow>
+
+
+    // <Grow in={appear}>
+    //   <Link to onClick= {()=>{setEventRoom(nameOfEvent);navigate('/home/eventrooms')}}>
+    //   <Card sx={{display:'flex',flexDirection:'column',minHeight:325,maxHeight:300,minWidth:250,maxWidth:250, ':hover':{boxShadow:'10'}, marginTop:2}}
+    // onClick={()=>{setEventRoom(nameOfEvent);localStorage.setItem('eventRoom',nameOfEvent);navigate('/home/eventrooms')}}>
+    //   <CardContent>
+    //   <img class="rounded-t-lg"  src = {imageOfEvent} alt = "" />
+    //     <h1>{nameOfEvent}</h1>
+    //     {(numOfEvents)?<h5 style={{p:-10}}>{numOfEvents} rooms</h5>:<h5 style={{p:-10}}>0 rooms</h5>}
+    //   </CardContent>
+    //   </Card>
+    //   </Link>
+    // </Grow>
   );
 
   
