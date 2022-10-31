@@ -75,7 +75,7 @@ const Header=({setMobileOpen,pageTitle,isSmUp})=> {
             </Grid>
             
             <Grid item xs >
-              <h1 className='absolute top-0 font-serif '>{pageTitle}</h1>
+              <h1 className='absolute top-0 '>{pageTitle}</h1>
             </Grid>
             
             <Grid item>

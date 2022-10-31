@@ -33,6 +33,12 @@ const MyRooms = ({setChatRoom,setPageTitle}) => {
       collectionSnapshot.forEach((doc)=>{
         joinedRooms.push({...doc.data(),id:doc.id})
       })
+      console.log(joinedRooms.length)
+      while (joinedRooms.length<3){
+        joinedRooms.push(null)
+        console.log(joinedRooms.length)
+      }
+      console.log(joinedRooms.length)
       setJoinedRooms(joinedRooms)
     })
 
@@ -41,27 +47,18 @@ const MyRooms = ({setChatRoom,setPageTitle}) => {
 
 
   return (
-    <Box sx={{marginLeft:"20px"}}>
-    <div > 
-    <Box sx={{ flexGrow: 1, height: '80px'}}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography height= '80px'>
-          <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}>My Rooms</h1>
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </Box>
+    <div class='h-full md:py-10'> 
       {(joinedRooms)?
-    <div className="container-fluid d-flex justify-content-center" style={{minWidth:1000,color:'orange',bgcolor:'orange'}}>
-      <div className="row">
+      <div class="grid grid-cols-1 grid-rows-3 md:grid-cols-3 md:grid-rows-1 justify-around justify-items-center">
         {joinedRooms.map(joinRoomObject=>{
-          return <div key={joinRoomObject.id} className="col-md-auto">
+          return (joinRoomObject===null)?<div class="grid h-96 w-full bg-slate-100 justify-items-center rounded-md border-solid border content-center my-2">
+             <span>Empty</span>
+             </div>:
+          <div key={joinRoomObject.id}>
           <JoinRoomCard key={joinRoomObject.id} chatRoomRef={joinRoomObject.roomRef} setChatRoom={setChatRoom} eActivity={joinRoomObject.activity}/>
           </div>
 })}
-      </div>
-    </div>:<div
+      </div>:<div
     style={{
         position: 'absolute', left: '60%', top: '50%',
         transform: 'translate(-50%, -50%)'
@@ -71,8 +68,6 @@ const MyRooms = ({setChatRoom,setPageTitle}) => {
       <CircularProgress color="secondary" size={50} thickness={5}/>
     </div>}
     </div>
-
-  </Box>
   )
 }
 
