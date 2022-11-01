@@ -59,7 +59,9 @@ const App = () =>{
   if (loadError) {
     console.log("Google maps API was not able to load.")
   }
-  
+
+  const [pageTitle,setPageTitle]=useState('Homepage')
+  const [drawerOpen,setDrawerOpen]=useState(false);
   const [user,setUser]=useState('');
   const [eventRoom,setEventRoom]=useState('');
   const [chatRoom,setChatRoom]=useState('');
@@ -254,13 +256,13 @@ const App = () =>{
               <Route path="Register" element={<Register setEmail={setEmail} email={email} setPassword={setPassword} handleAction={handleRegister} setUsername={setUsername} setImageUrl={setImageUrl} setGender={setGender} setDOB={setDOB} setCourse={setCourse} setStudyYear={setStudyYear} course={course} studyYear={studyYear} DOB={DOB} gender={gender} photo={photo} setPhoto={setPhoto}/>}/>
             </Route>
             <Route element={<ProtectedRoute user={setUser}/>}>
-              <Route path="/Home" element={<Home/>}>
-                <Route path="ActivityRooms" element={<ActivityRooms setEventRoom={setEventRoom} setLoading={setLoading}/>}/>
-                <Route path="EventRooms" element={<EventRooms setChatRoom={setChatRoom} eventRoom={eventRoom} chatRoom={chatRoom} isLoaded={isLoaded} setLoading={setLoading}/>}/>
-                <Route path="MyRooms" element={<MyRooms setChatRoom={setChatRoom}/>}/>
-                <Route path="Profile" element={<Profile />}/>
-                <Route path="ChatRoom" element={<ChatRoom chatRoom={chatRoom} setLoading={setLoading}/>}/>
-                <Route path="Profile/EditProfile" element={<EditProfile />}/>
+              <Route path="/Home" element={<Home setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} pageTitle={pageTitle}/>}>
+                <Route path="ActivityRooms" element={<ActivityRooms setPageTitle={setPageTitle}  setEventRoom={setEventRoom} setLoading={setLoading}/>}/>
+                <Route path="EventRooms" element={<EventRooms setPageTitle={setPageTitle}  setChatRoom={setChatRoom} eventRoom={eventRoom} chatRoom={chatRoom} isLoaded={isLoaded} setLoading={setLoading}/>}/>
+                <Route path="MyRooms" element={<MyRooms setPageTitle={setPageTitle}  setChatRoom={setChatRoom}/>}/>
+                <Route path="Profile" element={<Profile setPageTitle={setPageTitle}  />}/>
+                <Route path="ChatRoom" element={<ChatRoom setPageTitle={setPageTitle}  chatRoom={chatRoom} setLoading={setLoading}/>}/>
+                <Route path="Profile/EditProfile" element={<EditProfile setPageTitle={setPageTitle} />}/>
               </Route>
             </Route>
             <Route path="*" element={<p>There's nothing here: 404!</p>} />

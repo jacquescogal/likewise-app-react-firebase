@@ -21,12 +21,10 @@ import { useState,useEffect } from 'react';
 import { onSnapshot } from 'firebase/firestore';
 import MapWidget from './common/MapWidget';
 
-const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPlaceID,roomPax,roomCap,roomUsers})=> {
+const TemporaryDrawer=({drawerState,setDrawerState,roomDate,roomTime,roomLocation,roomPlaceID,roomPax,roomCap,roomUsers})=> {
   const navigate=useNavigate();
   const [ownerStatus,setOwnerStatus]=useState(null);
-  const [state, setState] = useState({
-    right: false
-  });
+  
 
   useEffect(()=>{
     const chatRoom=localStorage.getItem('chatRoom')
@@ -50,12 +48,12 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPlaceID,roomPax,roomC
       return;
     }
 
-    setState({ ...state, [anchor]: open });
+    setDrawerState({ ...drawerState, [anchor]: open });
   };
 
   const handleDelete = async () =>{
-    const eventRoom=localStorage.getItem('eventRoom')
     const chatRoom=localStorage.getItem('chatRoom')
+    const eventRoom=chatRoom.split('/')[1]
     const chatRoomKey=chatRoom.split('/').slice(-1)[0]
     const chatRoomUsers=collection(db,chatRoom+'/users')
     const chatRoomUsersSnapshot=await getDocs(chatRoomUsers)
@@ -172,18 +170,16 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPlaceID,roomPax,roomC
     <div>
       {
         <React.Fragment key={'right'}>
-            <IconButton
-            size="large"
-            aria-label="menu"
-            
-            onClick={toggleDrawer('right', true)} 
-          >
-            <MenuIcon/>
-          </IconButton>
           <Drawer
             anchor={'right'}
-            open={state['right']}
+            open={drawerState['right']}
             onClose={toggleDrawer('right', false)}
+            PaperProps={{
+              sx: {
+                backgroundColor: "white",
+                color: "red",
+              }
+            }}
           >
             {list('right')}
           </Drawer>

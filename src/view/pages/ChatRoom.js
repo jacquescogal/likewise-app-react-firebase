@@ -25,7 +25,8 @@ import { Card, Paper } from '@mui/material';
 import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 
-const ChatRoom = ({chatRoom,setLoading}) => {
+const ChatRoom = ({chatRoom,setLoading,setPageTitle}) => {
+  
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const scroll = useRef();
@@ -51,6 +52,7 @@ const ChatRoom = ({chatRoom,setLoading}) => {
     return unsubscribe;
   },[])
 
+  
   useEffect(()=>{
     if (chatRoom===''){
       setLoading(true)
@@ -97,6 +99,8 @@ const ChatRoom = ({chatRoom,setLoading}) => {
         console.log("Document data:", docSnap.data());
         setLoading(false)
         setRoomInfo({...docSnap.data(),roomUID:chatRoomID})
+        console.log(docSnap)
+        setPageTitle('Chat Room: '+docSnap.data().name)
       } else {
         console.log("No such document!")}});
     const unsub=onSnapshot(doc(db, chatRoomArr.slice(0,-1).join('/'), chatRoomID),(doc)=>{
@@ -104,28 +108,33 @@ const ChatRoom = ({chatRoom,setLoading}) => {
         console.log("fine")
       }
       else{
-        toast('Someone has deleted the room')
+        toast('The room was deleted by owner.')
         navigate('/home/myRooms')
       }
+      
     })
     return unsub
    }
   },[chatRoom]);
 
-  useEffect(()=>{
-  if (chatRoom!==''){
-  let userArr=[]
-  let userTrack=[]
-  const unsubscribeUsers=onSnapshot(collection(db,chatRoom+'/users'),(collectionSnapshot)=>{
-      collectionSnapshot.forEach((doc)=>{
-        let docData=doc.data()
-        if (!userTrack.includes(doc.id)){
-          userTrack.push(doc.id)
-          userArr.push({id:doc.id,name:docData.name,ref:docData.userRef,role:docData.role})
-          if (doc.id===auth.currentUser.email){
-            setCurrentUserName(docData.name)
-          }
-      }
+
+   useEffect(()=>{
+    if (chatRoom!==''){
+    let userArr=[]
+    let userTrack=[]
+    const unsubscribeUsers=onSnapshot(collection(db,chatRoom+'/users'),(collectionSnapshot)=>{
+        collectionSnapshot.forEach((doc)=>{
+          let docData=doc.data()
+          if (!userTrack.includes(doc.id)){
+            userTrack.push(doc.id)
+            userArr.push({id:doc.id,name:docData.name,ref:docData.userRef,role:docData.role})
+            if (doc.id===auth.currentUser.email){
+              setCurrentUserName(docData.name)
+            }
+        }
+        })
+        setUserArr(userArr)
+
       })
       
       setUserArr(userArr)
@@ -179,47 +188,41 @@ const ChatRoom = ({chatRoom,setLoading}) => {
   }
   return (
     
-    <div style={{display:'flex',flexDirection:'column',backgroundColor:'black'}}>
+    <div class='flex flex-col bg-white'>
       {(!roomInfo.time)?<div>
-        </div>:
+
+    </div>:
+      <div>
+        {(!userArr)?null:
+      <ChatRoomBar roomUID={roomInfo.roomUID}
+      roomName={roomInfo.name} 
+      roomDate={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('DD/MM/YYYY'):'loading...'}
+      roomTime={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('hh:mm A'):'loading...'}
+      roomLocation={roomInfo.location}
+      roomPlaceID={roomInfo.placeid}
+      roomPax={roomInfo.pax}
+      roomCap={roomInfo.cap}
+      roomUsers={userArr}/>}
+      <div class='bg-white'>
         <div>
-          <ChatRoomBar roomUID={roomInfo.roomUID}
-          roomName={roomInfo.name} 
-          roomDate={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('DD/MM/YYYY'):'loading...'}
-          roomTime={(roomInfo.time)?dayjs.unix(roomInfo.time.seconds).format('hh:mm A'):'loading...'}
-          roomLocation={roomInfo.location}
-          roomPlaceID={roomInfo.placeid}
-          roomPax={roomInfo.pax}
-          roomCap={roomInfo.cap}
-          roomUsers={userArr}/>
-          ChatRoom
-          <div style={{width:'100%',display:'flex',flexDirection:'column',marginTop:'25px'}}>
-            <Paper>
-              <Paper style={{width:'100%',height: '500px', overflow: 'auto'}}>
-                {messages.map(message => (
-                  <ChatMessage key={message.id} className='message' message={message} messageScroll={messageScroll}></ChatMessage>
-                ))}
-                <span ref={messageScroll}></span>
-              </Paper>
-              <div style={{
-                margin: 'auto',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingTop: 0
-              }} >
-                {smartReplies.map(
+        <div class='w-full h-[32rem] overflow-auto bg-white'>
+      {messages.map(message => (
+        <ChatMessage key={message.id} className='message' message={message} messageScroll={messageScroll}></ChatMessage>
+      ))}
+      <span ref={messageScroll}></span>
+      </div>
+      {smartReplies.map(
                   reply => (
                     <Button label={reply} handleAction={() => replaceSendMessageText(reply)}></Button>
                   )
                 )}
-              </div>
-              <SendMessage scroll={scroll} messageScroll={messageScroll} chatRoom={chatRoom+'/messages'} currentUserName={currentUserName} currentImageUrl={currentImageUrl} toSend={toSend}/>
-            </Paper>
-            <span ref={scroll}></span>
-          </div>
-        </div>
-      }
+      <SendMessage scroll={scroll} messageScroll={messageScroll} chatRoom={chatRoom+'/messages'} currentUserName={currentUserName} currentImageUrl={currentImageUrl} toSend={toSend}/>
+      </div>
+      <span ref={scroll}></span>
+      </div>
+      </div>
+}
+
     </div>
   )
 }

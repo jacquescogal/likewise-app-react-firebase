@@ -6,16 +6,22 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase-config';
 import { useState,useEffect } from 'react';
-import { collection, doc,getDoc } from 'firebase/firestore';
+import { collection, doc,getDoc, query,where } from 'firebase/firestore';
 import { db } from '../../firebase-config';
 import { onSnapshot } from 'firebase/firestore';
 import { CircularProgress } from '@mui/material';
 import JoinRoomCard from '../components/JoinRoomCard';
-const MyRooms = ({setChatRoom}) => {
+const MyRooms = ({setChatRoom,setPageTitle}) => {
   const navigate=useNavigate()
   const [user,setUser]=useState(null);
   const [joinedRooms,setJoinedRooms]=useState(null);
   
+  const compDate=new Date();
+
+  useEffect(()=>{
+    setPageTitle('My Rooms');
+  },[])
+
   useEffect(()=>{
     if (!user){
       console.log('wait')
@@ -23,41 +29,43 @@ const MyRooms = ({setChatRoom}) => {
         setUser(user)
       })}
     else{
-    const unsubscribe=onSnapshot(collection(db,'users/'+user.email+'/joinedRooms'),(collectionSnapshot)=>{
+    const q=query(collection(db,'users/'+user.email+'/joinedRooms'),where('time','>',compDate))
+    const unsubscribe=onSnapshot(q,(collectionSnapshot)=>{
       console.log('still subscribed')
       let joinedRooms=[]
       collectionSnapshot.forEach((doc)=>{
         joinedRooms.push({...doc.data(),id:doc.id})
       })
+      console.log(joinedRooms.length)
+      while (joinedRooms.length<3){
+        joinedRooms.push(null)
+        console.log(joinedRooms.length)
+      }
+      console.log(joinedRooms.length)
       setJoinedRooms(joinedRooms)
     })
+    return unsubscribe
 
   }
   },[user])
 
 
   return (
-    <Box sx={{marginLeft:"20px"}}>
-    <div > 
-    <Box sx={{ flexGrow: 1, height: '80px'}}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography height= '80px'>
-          <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}>My Rooms</h1>
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </Box>
+    <div class='relative h-full w-full overflow-hidden '> 
+   
+    <div class='abolute top-0 h-full w-full md:py-10 bg-white'> 
+    
       {(joinedRooms)?
-    <div className="container-fluid d-flex justify-content-center" style={{minWidth:1000,color:'orange',bgcolor:'orange'}}>
-      <div className="row">
+      <div class="grid grid-cols-1 grid-rows-3 md:grid-cols-3 md:grid-rows-1 justify-around justify-items-center">
         {joinedRooms.map(joinRoomObject=>{
-          return <div key={joinRoomObject.id} className="col-md-auto">
+          return (joinRoomObject===null)?<div class="grid h-96 w-full bg-slate-100 justify-items-center rounded-md border-solid border content-center my-2">
+             <span>Empty</span>
+             </div>:
+          <div key={joinRoomObject.id}>
           <JoinRoomCard key={joinRoomObject.id} chatRoomRef={joinRoomObject.roomRef} setChatRoom={setChatRoom} eActivity={joinRoomObject.activity}/>
           </div>
 })}
-      </div>
-    </div>:<div
+      </div>:<div
     style={{
         position: 'absolute', left: '60%', top: '50%',
         transform: 'translate(-50%, -50%)'
@@ -67,8 +75,7 @@ const MyRooms = ({setChatRoom}) => {
       <CircularProgress color="secondary" size={50} thickness={5}/>
     </div>}
     </div>
-
-  </Box>
+    </div>
   )
 }
 

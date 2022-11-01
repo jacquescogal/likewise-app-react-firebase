@@ -40,13 +40,14 @@ setUsername,setImageUrl,gender,setGender,DOB,setDOB,course,setCourse,studyYear,s
       margin: 'auto',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      paddingBottom:50
     }} >
       <Stack spacing={1.5}>
       <b style={{alignSelf:'center', fontSize:40}}>Register</b>
-      <TextField label="Username" onChange={e=>setUsername(e.target.value)}/>
-      <TextField label="E-mail" onChange={e=>{setEmail(e.target.value);console.log(email)}}/>
-      <TextField label="Password" onChange={e=>setPassword(e.target.value)} type='password'/>
+      <TextField label="Username" sx={{ m: 1, minWidth: 120 ,maxWidth:300}} onChange={e=>setUsername(e.target.value)}/>
+      <TextField label="E-mail" sx={{ m: 1, minWidth: 120 ,maxWidth:300}} onChange={e=>{setEmail(e.target.value);console.log(email)}}/>
+      <TextField label="Password" sx={{ m: 1, minWidth: 120 ,maxWidth:300}} onChange={e=>setPassword(e.target.value)} type='password'/>
 
       
       {/* Gender Picker */}
@@ -77,7 +78,7 @@ setUsername,setImageUrl,gender,setGender,DOB,setDOB,course,setCourse,studyYear,s
           minDate={'01/01/1985'}
           maxDate={'01/01/2005'} 
           onChange={e=>{setDOB(dayjs(e.$d.toString()).format('MM/DD/YYYY'));console.log(dayjs(e.$d.toString()).format('MM/DD/YYYY'));}}
-          renderInput={(params) => <TextField {...params} />}
+          renderInput={(params) => <TextField {...params} sx={{ m: 1, minWidth: 120 ,maxWidth:300}}/>}
         />
         </LocalizationProvider>
 
@@ -166,13 +167,12 @@ setUsername,setImageUrl,gender,setGender,DOB,setDOB,course,setCourse,studyYear,s
           <MenuItem value={'Year 6'}>Year 6</MenuItem>
         </Select>
       </FormControl>
-      <div className="fields">
-      <img src={(photo)?URL.createObjectURL(photo):`${process.env.PUBLIC_URL}/Images/basicProfile.png`} alt="Avatar" className="avatar" />
-      <br></br><br></br>
+      <div class='grid grid-cols-1 grid-rows-10 gap-2 justify-items-center'>
+      <img class='row-span-4 w-40 h-40 rounded-full' src={(photo)?URL.createObjectURL(photo):`${process.env.PUBLIC_URL}/Images/basicProfile.png`} alt="Avatar" className="avatar" />
       <input type="file" onChange={handleChangePhoto} accept=".png,.jpg,.jpeg"/>
-      
+      <Button class='mb-4' label="Confirm Register" style={{alignSelf:'center'}} handleAction={e=>{e.preventDefault();handleAction()}} />
     </div>
-      <Button label="Confirm Register" style={{alignSelf:'center'}} handleAction={e=>{e.preventDefault();handleAction()}} />
+      
       
       </Stack>
     </div>
