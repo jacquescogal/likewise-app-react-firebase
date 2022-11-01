@@ -212,8 +212,8 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
     
     
     </div>
-    {(filterAvail===false)?<button class='h-fit w-40 rounded-md p-1 bg-white ml-8 mt-8 self-center justify-self-center md:mt-0' onClick={()=>{setFilterAvail(true)}}>❌ With Space Only</button>:
-    <button class='h-fit w-40 rounded-md p-1 bg-orange-400 ml-8 mt-8 self-center justify-self-center md:mt-0 shadow-inner border-2 border-orange-600'  onClick={()=>{setFilterAvail(false)}}>✔️ With Space Only</button>}
+    {(filterAvail===false)?<button class='h-fit w-40 rounded-md p-1 bg-white ml-8 mt-8 self-center justify-self-center md:mt-0' onClick={()=>{setFilterAvail(true)}}>❌ With Availability</button>:
+    <button class='h-fit w-40 rounded-md p-1 bg-orange-400 ml-8 mt-8 self-center justify-self-center md:mt-0 shadow-inner border-2 border-orange-600'  onClick={()=>{setFilterAvail(false)}}>✔️ With Availability</button>}
 
     
 
