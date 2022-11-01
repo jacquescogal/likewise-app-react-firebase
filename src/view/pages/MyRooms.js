@@ -47,7 +47,10 @@ const MyRooms = ({setChatRoom,setPageTitle}) => {
 
 
   return (
-    <div class='h-full md:py-10 bg-slate-100'> 
+    <div class='relative h-full w-full overflow-hidden'> 
+    <img class='absolute top-0 object-fill blur-2 w-full' src='https://images.unsplash.com/photo-1567095761054-7a02e69e5c43?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'></img>
+    <div class='abolute top-0 h-full w-full md:py-10 bg-slate-100'> 
+    
       {(joinedRooms)?
       <div class="grid grid-cols-1 grid-rows-3 md:grid-cols-3 md:grid-rows-1 justify-around justify-items-center">
         {joinedRooms.map(joinRoomObject=>{
@@ -67,6 +70,7 @@ const MyRooms = ({setChatRoom,setPageTitle}) => {
       <p>loading...</p>
       <CircularProgress color="secondary" size={50} thickness={5}/>
     </div>}
+    </div>
     </div>
   )
 }
