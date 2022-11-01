@@ -10,7 +10,7 @@ import { AirportShuttleTwoTone, NotListedLocation } from '@mui/icons-material'
 import Button from '@mui/material/Button';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import EditProfile from './EditProfile';
-import { CircularProgress } from '@mui/material'
+import { Box, CircularProgress } from '@mui/material'
 
 
 const Profile = ({setPageTitle}) => {
@@ -73,44 +73,44 @@ const Profile = ({setPageTitle}) => {
 <body class="bg-center bg-cover w-full h-full pt-20 pb-20 bg-[url('https://images.unsplash.com/photo-1585477281005-b83d4b47eba4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80')]">
     <div class="container mx-auto=">
         <div>
-            <div class="bg-white bg-opacity-50 shadow rounded-lg max-w-lg mx-auto items-center">
                 <div class="flex justify-center">
                 </div>
                 <ProfilePic alt="..."  />
                 <div class="mt-0">
-                    <h1 class="font-bold text-center text-3xl text-gray-900">{profileInfo.username}</h1>
+                <div class="bg-white align-middle	bg-opacity-50 shadow rounded-lg max-w-lg mx-auto items-center">
+                    <h1 class="block font-bold text-center text-3xl text-gray-900"><br></br></h1>
                     <div class="w-full">
                         <div class="mt-5 w-full flex flex-col items-center overflow-hidden text-sm">    
                 <form>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
-                            <label for="first_name" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Username:</label>
+                            <label for="Username" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Username:</label>
                             <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{profileInfo.username}</label>
                         </div>
 
                         <div>
-                            <label for="company" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Year of study:</label>
+                            <label for="Year of Study" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Year of study:</label>
                             <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >{profileInfo.studyYear}</label>
                         </div>  
                         <div>
-                            <label for="website" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Gender:</label>
+                            <label for="Gender" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Gender:</label>
                             <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> {profileInfo.gender}</label>
                         </div>
                         <div>
-                            <label for="visitors" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Date of Birth:</label>
+                            <label for="Date of Birth" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Date of Birth:</label>
                             <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> {profileInfo.DOB}</label>
                         </div>
                     </div>
                     <div class="mb-6">
-                        <label for="email" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Course of Study:</label>
+                        <label for="Course of Study" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Course of Study:</label>
                         <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{profileInfo.course}</label>
                     </div> 
                     <div class="mb-6">
-                        <label for="email" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">School Email:</label>
+                        <label for="School Email" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">School Email:</label>
                         <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{profileInfo.email}</label>
                     </div> 
                     <div class="mb-6">
-                        <label for="password" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Password</label>
+                        <label for="Password" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Password</label>
                         <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >•••••••••</label>
                     </div> 
                     

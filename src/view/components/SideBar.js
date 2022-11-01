@@ -47,11 +47,10 @@ const SideBar = () => {
   <div className="fields">
   <img src={photoURL} alt="Avatar_sidebar" className="avatar_sidebar" />
   <br></br><br></br>      
-  <h1 style={{marginLeft:"20px", fontSize: '20px'}}>Hi, welcome back!</h1>
   </div>
-      <Button sx={{paddingLeft:1, minWidth:'200px', justifyContent: "flex-start", color:'white',fontSize:'20px', fontFamily:"Quicksand", ':hover':{color:'primary.main',bgcolor:'white'}}} onClick={()=>navigate('ActivityRooms')} startIcon={<ExtensionIcon sx={{ fill:'white','&:hover':{fill:'primary.main'}}}/>}>Activity Rooms</Button>
-      <Button sx={{minWidth:'200px', justifyContent: "flex-start", color:'white',fontSize:'20px', fontFamily:"Quicksand", ':hover':{color:'primary.main',bgcolor:'white'}}} onClick={()=>navigate('MyRooms')} startIcon={<ForumIcon sx={{ fill:'white','&:hover':{fill:'primary.main'} }}/>}>My Rooms</Button>
-      <Button sx={{minWidth:'200px', justifyContent: "flex-start", color:'white',fontSize:'20px', fontFamily:"Quicksand", ':hover':{color:'primary.main',bgcolor:'white'}}} onClick={()=>navigate('Profile')} startIcon={<AccountBoxIcon sx={{ fill:'white','&:hover':{fill:'primary.main'} }}/>}>Profile</Button>
+      <Button sx={{paddingLeft:1, minWidth:'200px', justifyContent: "flex-start", color:'white',fontSize:'50px', fontFamily:"Quicksand", ':hover':{color:'primary.main',bgcolor:'white'}}} onClick={()=>navigate('ActivityRooms')} startIcon={<ExtensionIcon sx={{ fill:'white','&:hover':{fill:'primary.main'}}}/>}>Activity Rooms</Button>
+      <Button sx={{minWidth:'200px', justifyContent: "flex-start", color:'white',fontSize:'50px', fontFamily:"Quicksand", ':hover':{color:'primary.main',bgcolor:'white'}}} onClick={()=>navigate('MyRooms')} startIcon={<ForumIcon sx={{ fill:'white','&:hover':{fill:'primary.main'} }}/>}>My Rooms</Button>
+      <Button sx={{minWidth:'200px', justifyContent: "flex-start", color:'white',fontSize:'50px', fontFamily:"Quicksand", ':hover':{color:'primary.main',bgcolor:'white'}}} onClick={()=>navigate('Profile')} startIcon={<AccountBoxIcon sx={{ fill:'white','&:hover':{fill:'primary.main'} }}/>}>Profile</Button>
       </Box>
 </div>
   )

@@ -48,7 +48,7 @@ export default function ProfilePic() {
 						<div class="flex flex-col space-y-10 justify-center items-center -mt-12 w-full">
             <span class=""></span><span class=""></span>
 							<div class="py-2 flex space-x-2">
-								<button class="flex rounded justify-center  max-h-max  focus:outline-none  focus:ring  ounded max-w-max text-gray-900 bg-amber-300 hover:bg-amber-400 px-4 py-1 flex items-center"disabled={loading || !photo} onClick={handleClick}>Upload</button>
+								<button class="flex rounded justify-center max-h-max  focus:outline-none  focus:ring  ounded max-w-max text-gray-900 bg-amber-300 hover:bg-amber-400 px-4 py-1 flex items-center"disabled={loading || !photo} onClick={handleClick}>Upload</button>
                 <input type="file" class="form-control
                     w-full
                     align-top
