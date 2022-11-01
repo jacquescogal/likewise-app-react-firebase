@@ -25,7 +25,7 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPlaceID,roomPax,roomC
   const navigate=useNavigate();
   const [ownerStatus,setOwnerStatus]=useState(null);
   const [state, setState] = useState({
-    right: false
+    right: true
   });
 
   useEffect(()=>{
@@ -184,6 +184,12 @@ const TemporaryDrawer=({roomDate,roomTime,roomLocation,roomPlaceID,roomPax,roomC
             anchor={'right'}
             open={state['right']}
             onClose={toggleDrawer('right', false)}
+            PaperProps={{
+              sx: {
+                backgroundColor: "white",
+                color: "red",
+              }
+            }}
           >
             {list('right')}
           </Drawer>
