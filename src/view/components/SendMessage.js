@@ -12,7 +12,7 @@ import EmojiPicker from 'emoji-picker-react';
 
 
 
-const SendMessage = ({scroll, messageScroll,chatRoom,currentUserName,currentImageUrl}) => {
+const SendMessage = ({scroll, messageScroll,chatRoom,currentUserName,currentImageUrl,toSend}) => {
     const [value, setValue] = useState('');
     const [showPicker,setShowPicker]=useState(false);
 
@@ -25,9 +25,16 @@ const SendMessage = ({scroll, messageScroll,chatRoom,currentUserName,currentImag
     },[])
   
 
+    useEffect(() => {
+      if(toSend){
+        setValue(toSend);
+      }
+    },[toSend]);
+
     const sendMessage = async(e)=>{
         e.preventDefault()
         const {uid,email} = auth.currentUser
+
         if (value.trim()!=''){
         await addDoc(collection(db,chatRoom),{
             text: value,
