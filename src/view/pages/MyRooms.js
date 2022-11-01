@@ -47,7 +47,7 @@ const MyRooms = ({setChatRoom,setPageTitle}) => {
 
 
   return (
-    <div class='h-full md:py-10'> 
+    <div class='h-full md:py-10 bg-slate-100'> 
       {(joinedRooms)?
       <div class="grid grid-cols-1 grid-rows-3 md:grid-cols-3 md:grid-rows-1 justify-around justify-items-center">
         {joinedRooms.map(joinRoomObject=>{

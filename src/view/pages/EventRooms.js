@@ -35,6 +35,9 @@ import { async } from '@firebase/util';
 
 
 const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) => {
+  const[filterAvail,setFilterAvail]=useState(false);
+
+
   const [eRooms,setERooms]=useState([]);
   const [openCreate,setOpenCreate]=useState(false);
   const [openJoin,setOpenJoin]=useState(false);
@@ -110,8 +113,8 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
   }
 
   const filterRender=(eventObject)=>{
-    if (dayjs.unix(eventObject.time.seconds)>=startDateValue & dayjs.unix(eventObject.time.seconds)<=endDateValue){
-    return <div key={eventObject.id} className="col-md-auto">
+    if (dayjs.unix(eventObject.time.seconds)>=startDateValue & dayjs.unix(eventObject.time.seconds)<=endDateValue & filterAvail===false){
+    return <div key={eventObject.id}>
           <EventCard key={eventObject.id} 
           eventID={eventObject.id}
           setChatRoom={setChatRoom} 
@@ -130,6 +133,26 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
           />
           </div>
     }
+    else if (dayjs.unix(eventObject.time.seconds)>=startDateValue & dayjs.unix(eventObject.time.seconds)<=endDateValue & filterAvail===true & eventObject.cap-eventObject.pax>0){
+      return <div key={eventObject.id}>
+            <EventCard key={eventObject.id} 
+            eventID={eventObject.id}
+            setChatRoom={setChatRoom} 
+            date={dayjs.unix(eventObject.time.seconds).format('DD/MM/YYYY')} 
+            time={dayjs.unix(eventObject.time.seconds).format('hh:mm A')}
+            numOfJoiners={eventObject.pax} 
+            capacity={eventObject.cap}
+            location={eventObject.location}
+            pax={eventObject.pax}
+            cap={eventObject.cap}
+            nameOfEvent={eventObject.name}
+            chatRoomId={eventObject.id} 
+            thePath={'/aRooms/'+eventRoom+'/eRooms/'+eventObject.id}
+            setOpenJoin={setOpenJoin}
+            setEventCard={setEventCard} 
+            />
+            </div>
+      }
     else{
       return
     }
@@ -137,19 +160,15 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
 
 
   return (
-    <Box sx={{marginLeft:"20px"}}>
-      <Box sx={{ flexGrow: 1, height: '80px'}}>
+    <>
       <AppBar position="static">
-        <Toolbar>
-          <Typography height= '80px'>
-          <h1 style={{marginTop:"12px", fontFamily:"serif", fontWeight: 'bold', fontSize: '45px', color:'white'}}> Events for: {eventRoom} 
-          <Fab size="small" color="primary" aria-label="add" sx={{marginLeft:'20px'}} onClick={()=>{handleClickOpen();console.log(window.google)}}>
-            <AddIcon style={{fill:'white'}}/>
-          </Fab>
-        </h1>
-        </Typography>
-  
+        <div class='md:flex md:justify-start grid pb-2 bg-orange-300'>
+          <p class='ml-8 text-white text-5xl font-semibold'>{eventRoom} 
+        </p>
+        <div class='grid grid-rows-2 grid-cols-1 h-12 justify-items-center'>
+          <span>Start Date</span>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
+         
       <DatePicker
         minDate={dayjs().subtract(dayjs().hour(),'hour').subtract(dayjs().minute(),'minute').subtract(dayjs().second(),'second').subtract(dayjs().millisecond(),'millisecond')}
         maxDate={endDateValue}
@@ -161,17 +180,18 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
         renderInput={({ inputRef, inputProps, InputProps }) => (
           //how to change color
           <Box sx={{ display: 'flex', alignItems: 'center', marginLeft:"25px", marginTop:"8px" }}>
-            <input ref={inputRef} {...inputProps} sx={{color:'white'}}/>
+            <input class='h-fit w-24' ref={inputRef} {...inputProps} sx={{color:'white'}}/>
             {InputProps?.endAdornment}
           </Box>
         )}
       />
     </LocalizationProvider>
-
+    </div>
+    <div class='grid grid-rows-2 grid-cols-1 h-12 justify-items-center'>
+          <span >End Date</span>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         minDate={startDateValue}
-        label="Filter by date"
         value={endDateValue}
         onChange={(newValue) => {
           setEndDateValue(newValue);
@@ -179,16 +199,23 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
         renderInput={({ inputRef, inputProps, InputProps }) => (
           //how to change color
           <Box sx={{ display: 'flex', alignItems: 'center', marginLeft:"25px", marginTop:"8px" }}>
-            <input ref={inputRef} {...inputProps} sx={{color:'white'}}/>
+            <input class='h-fit w-24' ref={inputRef} {...inputProps} sx={{color:'white'}}/>
             {InputProps?.endAdornment}
           </Box>
         )}
       />
     </LocalizationProvider>
+    
+    
+    </div>
+    {(filterAvail===false)?<button class='h-fit w-36 rounded-md p-1 bg-white ml-8 mt-8 self-center justify-self-center md:mt-0' onClick={()=>{setFilterAvail(true)}}>❌ Available Only</button>:
+    <button class='h-fit w-36 rounded-md p-1 bg-orange-400 ml-8 mt-8 self-center justify-self-center md:mt-0 shadow-inner border-2 border-orange-600'  onClick={()=>{setFilterAvail(false)}}>✔️ Available Only</button>}
 
-        </Toolbar>
+    
+
+        </div>
+        
       </AppBar>
-    </Box>
     <div>
       {(eRooms)?
     <menu>
@@ -200,16 +227,21 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
         setChatRoom={setChatRoom}
         eventRoom={eventRoom}
         setLoading={setLoading}/>
+        <div class='grid grid-cols-2 grid-rows-auto gap-1 p-1'>
         {eRooms.map(eventObject=>(
           filterRender(eventObject)
         ))}
+        </div>
     </div>
     
     </menu>
 :<div>
 </div>}
 </div>
-</Box>
+<button class='bg-orange-300 hover:bg-orange-400 p-1 text-black h-fit w-full font-semibold text-center text-2xl hover:shadow-inner' onClick={()=>{handleClickOpen();console.log(window.google)}}>
+          Add Room
+          </button>
+</>
   )
 }
 

@@ -52,21 +52,14 @@ const ActivityRooms = ({setEventRoom,setLoading,setPageTitle}) => {
         <FeedbackFormCreate feedbackFormCreate={feedbackFormCreate} setFeedbackFormCreate={setFeedbackFormCreate}/>
     </div>
       {(aRooms)?
-    <div className="container-fluid d-flex justify-content-center" style={{minWidth:1000,color:'orange',bgcolor:'orange'}}>
-      <div className="row">
+    <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 grid-rows-auto justify-around gap-4 pl-4 pr-8" >
         {aRooms.map(activityObject=>(
           <div key={activityObject.id} className="col-md-auto">
           <ActivityCard key={activityObject.id} nameOfEvent= {activityObject.id} 
             imageOfEvent = {activityObject.imageUrl} setEventRoom={setEventRoom} timer={activityObject.timer}/>
           </div>
         ))}
-      </div>
-    </div>:<div
-    style={{
-        position: 'absolute', left: '60%', top: '50%',
-        transform: 'translate(-50%, -50%)'
-    }}
-    >
+    </div>:<div>
     </div>}
     </div>
 
