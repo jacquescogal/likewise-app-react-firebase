@@ -64,19 +64,6 @@ export default function Navigator(props) {
           <img src={`${process.env.PUBLIC_URL}/logo.png`} height={200} width={200}/>
         </ListItem>
         <ListItem sx={{px:3,color:'#fff'}}>
-        <ListItemButton selected={select['Home']} sx={item} onClick={()=>{const myObject=select;for (const property in myObject){
-                  if (property!='Home'){
-                    myObject[property]=false
-                  }
-                  else{
-                    myObject[property]=true
-                  }
-                };setSelect(myObject);navigate('/'+'Home'.split(' ')[0]+('Home'.split(' ')[1]?'Home'.split(' ')[1]:''))}}>
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <span class='font-semibold'>Home</span>
-          </ListItemButton>
         </ListItem>
         {categories.map(({ id, children }) => (
           <Box key={id} sx={{ bgcolor: 'rgb(251, 199, 115)' }}>
@@ -95,7 +82,7 @@ export default function Navigator(props) {
                 };setSelect(myObject);(childId==='Home')?navigate('/Home/Main'):
                 navigate('/Home/'+childId.split(' ')[0]+(childId.split(' ')[1]?childId.split(' ')[1]:''))}}>
                   <ListItemIcon>{icon}</ListItemIcon>
-                  <span class='font-semibold'>{childId}</span>
+                  <span class='font-semibold text-xl'>{childId}</span>
                 </ListItemButton>
               </ListItem>
             ))}

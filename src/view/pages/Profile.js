@@ -48,6 +48,7 @@ const Profile = ({setPageTitle}) => {
         console.log("Document data:", docSnap.data());
         setProfileInfo({...docSnap.data(),email:user.email,password:'password123'})
         console.log(docSnap.data().DOB.toString())
+        localStorage.setItem('userProfile',JSON.stringify(profileInfo))
       } else {
         console.log("No such document!");
       }
@@ -75,7 +76,7 @@ const Profile = ({setPageTitle}) => {
         <div>
                 <div class="flex justify-center">
                 </div>
-                <ProfilePic alt="..."  />
+                <ProfilePic isEditable={false}/>
                 <div class="mt-0">
                 <div class="bg-white align-middle	bg-opacity-50 shadow rounded-lg max-w-lg mx-auto items-center">
                     <h1 class="block font-bold text-center text-3xl text-gray-900"><br></br></h1>
@@ -84,37 +85,37 @@ const Profile = ({setPageTitle}) => {
                 <form>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
-                            <label for="Username" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Username:</label>
-                            <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{profileInfo.username}</label>
+                            <label for="Username" class="block mb-2 text-lg font-large text-gray-900 ">Username:</label>
+                            <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">{profileInfo.username}</label>
                         </div>
 
                         <div>
-                            <label for="Year of Study" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Year of study:</label>
-                            <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >{profileInfo.studyYear}</label>
+                            <label for="Year of Study" class="block mb-2 text-lg font-large text-gray-900 ">Year of study:</label>
+                            <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >{profileInfo.studyYear}</label>
                         </div>  
                         <div>
-                            <label for="Gender" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Gender:</label>
-                            <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> {profileInfo.gender}</label>
+                            <label for="Gender" class="block mb-2 text-lg font-large text-gray-900 ">Gender:</label>
+                            <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "> {profileInfo.gender}</label>
                         </div>
                         <div>
-                            <label for="Date of Birth" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Date of Birth:</label>
-                            <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"> {profileInfo.DOB}</label>
+                            <label for="Date of Birth" class="block mb-2 text-lg font-large text-gray-900 ">Date of Birth:</label>
+                            <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "> {profileInfo.DOB}</label>
                         </div>
                     </div>
                     <div class="mb-6">
-                        <label for="Course of Study" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Course of Study:</label>
-                        <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{profileInfo.course}</label>
+                        <label for="Course of Study" class="block mb-2 text-lg font-large text-gray-900 ">Course of Study:</label>
+                        <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">{profileInfo.course}</label>
                     </div> 
                     <div class="mb-6">
-                        <label for="School Email" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">School Email:</label>
-                        <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{profileInfo.email}</label>
+                        <label for="School Email" class="block mb-2 text-lg font-large text-gray-900 ">School Email:</label>
+                        <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">{profileInfo.email}</label>
                     </div> 
                     <div class="mb-6">
-                        <label for="Password" class="block mb-2 text-lg font-large text-gray-900 dark:text-gray-300">Password</label>
-                        <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >•••••••••</label>
+                        <label for="Password" class="block mb-2 text-lg font-large text-gray-900">Password</label>
+                        <label class="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " >•••••••••</label>
                     </div> 
                     
-                    <button class="text-gray-900 bg-amber-300	mb-20 hover:bg-amber-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-lg rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={()=>navigate('EditProfile')} startIcon={<AccountBoxIcon sx={{ fill:'white','&:hover':{fill:'primary.main'} }}/>}>Edit Profile</button>      
+                    <button class="text-gray-900 bg-amber-300	mb-20 hover:bg-amber-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-lg rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 text-center" onClick={()=>navigate('EditProfile')} startIcon={<AccountBoxIcon sx={{ fill:'white','&:hover':{fill:'primary.main'} }}/>}>Edit Profile</button>      
                 </form>
 
                         </div>

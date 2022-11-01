@@ -109,7 +109,7 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity}) => {
       <div class="relative group w-full h-96 overflow-hidden bg-black m-auto rounded-xl border-solid border group">
   <img class="object-cover w-full h-full transform duration-700 backdrop-opacity-100 group-hover:scale-150 group-hover:blur" src={(aRoom)?aRoom.imageUrl:`${process.env.PUBLIC_URL}/logo.png`} />
   <div class="absolute w-full h-full shadow-2xl opacity-20 transform duration-500 inset-y-full group-hover:-inset-y-0"></div>
-  <div class="absolute bg-gradient-to-t from-gray-900 w-full h-full transform duration-500 inset-y-3/4 content-center group-hover:-inset-y-0">
+  <div class="absolute bg-gradient-to-t from-gray-900 w-full h-full transform duration-500 inset-y-1/4 content-center group-hover:-inset-y-0">
     <div class="absolute w-full flex place-content-center">
       <p class="transition ease-in-out delay-150 group-hover:-translate-y-1 group-hover:scale-150 font-serif font-bold text-3xl text-center text-white mt-10">{chatRoomData.name}</p>
     </div>
@@ -119,16 +119,27 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity}) => {
     <div class="absolute w-full flex place-content-center mt-24">
       <p class="scale-110 font-sans text-center w-4/5 text-white mt-5">Joined:{chatRoomData.pax}/{chatRoomData.cap}
       <div>
+        
       <span >🙂</span>
       {paxViz()}
       {remViz()}
       </div>
       </p>
     </div>
+
     <div class="absolute w-full flex place-content-center mt-40">
+      <p class="scale-110 font-sans text-center w-4/5 text-white mt-5">{chatRoomData.location}
+      </p>
+    </div>
+
+
+
+    <div class="absolute w-full flex place-content-center mt-52">
     <p class="scale-110 font-sans text-center w-4/5 text-white mt-5">📅:{dayjs.unix(chatRoomData.time.seconds).format('DD/MM/YYYY')}</p>
     <p class="scale-110 font-sans text-center w-4/5 text-white mt-5">⌛:{dayjs.unix(chatRoomData.time.seconds).format('hh:mm A')}</p>
     <div class="absolute w-full flex place-content-center bottom-4">
+      
+      
       </div>
     <button class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 absolute -bottom-12 bg-slate-100 text-black font-bold rounded-lg h-10 w-48 bg-orange-200 hover:bg-orange-400" onClick={()=>{handleCardClick()}}>Enter</button>
     </div>

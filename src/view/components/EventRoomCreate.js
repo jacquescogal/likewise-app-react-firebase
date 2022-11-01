@@ -22,7 +22,7 @@ import { MobileDateTimePicker } from '@mui/x-date-pickers';
 import { DateTimePicker } from '@mui/x-date-pickers';
 
 import { useState } from 'react';
-import { serverTimestamp } from 'firebase/firestore';
+import { serverTimestamp,query,where } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { getAuth } from 'firebase/auth';
 import { db } from '../../firebase-config';
@@ -52,7 +52,9 @@ export default function EventRoomCreate({openCreate,setOpenCreate,createChatRoom
     useEffect(()=>{ 
       const unsubscribe = async ()=>{
         const user=JSON.parse(localStorage.getItem('user'))
-        onSnapshot(collection(db,'users/'+user.email+'/joinedRooms'),collectionSnap=>{
+        const compDate=new Date()
+        const q=query(collection(db,'users/'+user.email+'/joinedRooms'),where('time','>',compDate))
+        onSnapshot(q,collectionSnap=>{
           setJoinedRoomSize(collectionSnap.size)
           console.log(user.email)
           console.log(collectionSnap.size)

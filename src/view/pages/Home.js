@@ -6,7 +6,6 @@ import {
   } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Navigator from "../components/Navigator";
-import SideBar from '../components/SideBar';
 import Box from '@mui/material/Box';
 import Copyright from '../components/Copyright'
 import Header from "../components/Header";

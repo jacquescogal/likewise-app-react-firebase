@@ -1,6 +1,6 @@
 import Button from "../components/common/Button";
 import Stack from '@mui/material/Stack';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { TextField } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify';
@@ -9,6 +9,8 @@ import { EmailAuthProvider } from "firebase/auth";
 import { reauthenticateWithCredential } from "firebase/auth";
 import { updatePassword } from "firebase/auth";
 const ChangePassword = () => {
+
+  const navigate=useNavigate();
 
 
     const [PasswordInfo,setPasswordInfo]=useState({
@@ -68,7 +70,8 @@ const ChangePassword = () => {
         <TextField label="Old Password" onChange={e=>SetCurrentPassword(e.target.value)} type='password'/>
         <TextField label="New Password" onChange={e=>SetNewPassword(e.target.value)} type='password'/>
         <TextField label="Confirm Password" onChange={e=>SetNew2Password(e.target.value)} type='password'/>
-        <Button label="Enter" style={{alignSelf:'center'}} handleAction={handleChange} />     
+        <Button label="Enter" style={{alignSelf:'center'}} handleAction={handleChange} />  
+        <Button label="Cancel" style={{alignSelf:'center'}} handleAction={()=>{navigate('/Home/Profile')}} />     
         </Stack>
       </div>
     )

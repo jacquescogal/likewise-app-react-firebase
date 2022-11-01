@@ -1,12 +1,11 @@
-import { type } from "@testing-library/user-event/dist/type";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuth, upload, db } from '../../firebase-config';
 import { auth } from "../../firebase-config";
 
-export default function ProfilePic() {
+const ProfilePic=({isEditable=true})=> {
   const currentUser = useAuth();
-  const user=auth.currentUser
+  const [user,setUser]=useState(null);
   const [photo, setPhoto] = useState(null);
   const [loading, setLoading] = useState(false);
   const [photoURL, setPhotoURL] = useState("https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png");
@@ -23,15 +22,17 @@ export default function ProfilePic() {
   }
 
   useEffect(() => {
-    if (user) {
+    if (!user){
+      auth.onAuthStateChanged(user=>{
+        setUser(user)
+      })}
+    else if (user) {
       const docRef=doc(db,'users',user.email)
       const docSnap=getDoc(docRef).then(doc=>{
-        console.log('hello')
-        console.log(doc.data())
         setPhotoURL(doc.data().imageUrl)
       })
     }
-  }, [loading])
+  }, [loading,user])
 
 
   return (
@@ -47,7 +48,7 @@ export default function ProfilePic() {
 						</div>
 						<div class="flex flex-col space-y-10 justify-center items-center -mt-12 w-full">
             <span class=""></span><span class=""></span>
-							<div class="py-2 flex space-x-2">
+							{(isEditable)?<div class="py-2 flex space-x-2">
 								<button class="flex rounded justify-center max-h-max  focus:outline-none  focus:ring  ounded max-w-max text-gray-900 bg-amber-300 hover:bg-amber-400 px-4 py-1 flex items-center"disabled={loading || !photo} onClick={handleClick}>Upload</button>
                 <input type="file" class="form-control
                     w-full
@@ -64,7 +65,7 @@ export default function ProfilePic() {
                     ease-in-out
                     focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" 
                     onChange={handleChange} accept=".png,.jpg,.jpeg"/>                   
-              </div>
+              </div>:null}
               </div>
 
 				</div>
@@ -74,3 +75,5 @@ export default function ProfilePic() {
 		</div>
   );
 }
+
+export default ProfilePic

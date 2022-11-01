@@ -1,6 +1,6 @@
 import React from 'react'
 import EventCard from '../components/EventCard'
-import {query,collection,orderBy,onSnapshot,doc,setDoc,addDoc, serverTimestamp, increment,updateDoc, FieldPath, getDoc} from 'firebase/firestore';
+import {query,where,collection,orderBy,onSnapshot,doc,setDoc,addDoc, serverTimestamp, increment,updateDoc, FieldPath, getDoc} from 'firebase/firestore';
 import { db } from '../../firebase-config';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -49,13 +49,16 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
 
   const navigate=useNavigate();
 
+  
+  const compDate=new Date()
+
   useEffect(()=>{
     if (eventRoom===''){
       console.log('Wait for event room state update')
       setLoading(true)
     }
     else{
-    const q = query(collection(db, 'aRooms/'+eventRoom+'/eRooms'),orderBy('time','asc'))
+    const q = query(collection(db, 'aRooms/'+eventRoom+'/eRooms'),orderBy('time','asc'),where('time','>',compDate))
     const unsubscribe = onSnapshot(q, (QuerySnapshot)=>{
       setPageTitle('Event Rooms')
       let eRooms=[]
@@ -96,7 +99,8 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
     });
     await setDoc(doc(db,'users/'+user.email+'/joinedRooms',docRef.id),{
       roomRef:docRef,
-      activity:eventRoom
+      activity:eventRoom,
+      time:time
     })
     await updateDoc(docRef,{
       pax: increment(1),
@@ -208,8 +212,8 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
     
     
     </div>
-    {(filterAvail===false)?<button class='h-fit w-36 rounded-md p-1 bg-white ml-8 mt-8 self-center justify-self-center md:mt-0' onClick={()=>{setFilterAvail(true)}}>❌ Available Only</button>:
-    <button class='h-fit w-36 rounded-md p-1 bg-orange-400 ml-8 mt-8 self-center justify-self-center md:mt-0 shadow-inner border-2 border-orange-600'  onClick={()=>{setFilterAvail(false)}}>✔️ Available Only</button>}
+    {(filterAvail===false)?<button class='h-fit w-40 rounded-md p-1 bg-white ml-8 mt-8 self-center justify-self-center md:mt-0' onClick={()=>{setFilterAvail(true)}}>❌ With Space Only</button>:
+    <button class='h-fit w-40 rounded-md p-1 bg-orange-400 ml-8 mt-8 self-center justify-self-center md:mt-0 shadow-inner border-2 border-orange-600'  onClick={()=>{setFilterAvail(false)}}>✔️ With Space Only</button>}
 
     
 

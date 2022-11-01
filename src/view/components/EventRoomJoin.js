@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack';
 
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import {query,collection,orderBy,onSnapshot,doc,setDoc,addDoc, serverTimestamp, increment,updateDoc, FieldPath, getDoc} from 'firebase/firestore';
+import {query,where,collection,orderBy,onSnapshot,doc,setDoc,addDoc, serverTimestamp, increment,updateDoc, FieldPath, getDoc} from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { db } from '../../firebase-config';
 import { useEffect,useState } from 'react';
@@ -32,6 +32,8 @@ export default function EventRoomJoin({openJoin,setOpenJoin,eventCard,setChatRoo
     const userSnap=await getDoc(doc(db,'users/',user.email))
     const userData=userSnap.data()
     const docSnap=await getDoc(userRef)
+    const roomSnap=await getDoc(roomRef)
+    const roomData=roomSnap.data()
     if (!docSnap.exists()){
     console.log(userData)
     await setDoc(doc(db, eventCard.path+'/users',user.email), { //use Reference?
@@ -41,7 +43,8 @@ export default function EventRoomJoin({openJoin,setOpenJoin,eventCard,setChatRoo
     });
     await setDoc(doc(db,'users/'+user.email+'/joinedRooms',roomRef.id),{
       roomRef:roomRef,
-      activity:eventRoom
+      activity:eventRoom,
+      time:roomData.time
     })
     await updateDoc(roomRef,{
       pax: increment(1),
@@ -56,7 +59,9 @@ export default function EventRoomJoin({openJoin,setOpenJoin,eventCard,setChatRoo
   useEffect(()=>{ 
     const unsubscribe = async ()=>{
       const user=JSON.parse(localStorage.getItem('user'))
-      onSnapshot(collection(db,'users/'+user.email+'/joinedRooms'),collectionSnap=>{
+      const compDate=new Date()
+      const q=query(collection(db,'users/'+user.email+'/joinedRooms'),where('time','>',compDate))
+      onSnapshot(q,collectionSnap=>{
         setJoinedRoomSize(collectionSnap.size)
         console.log(collectionSnap.size)
       })

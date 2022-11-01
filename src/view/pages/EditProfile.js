@@ -33,7 +33,7 @@ const EditProfile = ({setPageTitle}) => {
   //refer to registration for date picker/gender picker/year picker etc.
   
   let navigate = useNavigate();
-  let currentUser = useAuth()
+  let [user,setUser]=useState(null);
 
   //profile hashmap
   const [profileInfo,setProfileInfo]=useState({
@@ -53,20 +53,28 @@ const EditProfile = ({setPageTitle}) => {
   const [studyYear,setStudyYear]=useState(profileInfo.studyYear);
   const [username,setUsername]=useState(profileInfo.username);
 
-  const docRef = doc(db, "users", auth.currentUser.email);
   useEffect(()=>{
-    const unsub=()=>{getDoc(doc(db, "users", auth.currentUser.email)).then(docSnap => {
+    if (!user){
+      console.log('wait')
+      if (localStorage.getItem('userProfile')!=null){
+        setProfileInfo(JSON.parse(localStorage.getItem('userProfile')))
+      }
+      auth.onAuthStateChanged(user=>{
+        setUser(user)
+      })}
+    else{
+    getDoc(doc(db, "users", user.email)).then(docSnap => {
       if (docSnap.exists()) {
         console.log("Document data:", docSnap.data());
-        setProfileInfo({...docSnap.data(),email:auth.currentUser.email,password:'password123'})
+        setProfileInfo({...docSnap.data(),email:user.email,password:'password123'})
         console.log(docSnap.data().DOB.toString())
         setUsername(profileInfo.username)
       } else {
         console.log("No such document!");
       }
-    })}
-    return unsub
-  },[])
+    })
+  }
+  },[user])
 
   const handleLogout = () => {
       const auth=getAuth();
@@ -91,7 +99,7 @@ const EditProfile = ({setPageTitle}) => {
         }
     }
     
-    const userRef = doc(db,'users', currentUser.email);
+    const userRef = doc(db,'users', user.email);
     await updateDoc(userRef, {
       username: username?username:profileInfo.username,
       DOB: DOB?DOB:profileInfo.DOB,
@@ -120,7 +128,7 @@ const EditProfile = ({setPageTitle}) => {
                 </div>
 
       <ProfilePic />
-      <div class="bg-white bg-opacity-50 shadow rounded-lg max-w-lg mx-auto justify-items-center">
+      <div class="flex flex-col px-10 bg-white bg-opacity-50 shadow rounded-lg max-w-lg mx-auto justify-items-center">
       <h1 class=""><br></br></h1>
 
                         <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -268,9 +276,11 @@ const EditProfile = ({setPageTitle}) => {
                       </div>
                       <div class="mb-6 justify-center	">
                       <TextField
+                      disabled
                         id="outlined-read-only-input"
                         label="Email"
                         defaultValue={profileInfo.email}
+                        value={profileInfo.email}
                         InputProps={{
                         readOnly: true,
                         }}

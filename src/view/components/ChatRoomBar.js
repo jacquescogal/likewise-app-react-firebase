@@ -1,21 +1,22 @@
 import React from 'react';
-import {Link,useNavigate} from 'react-router-dom';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-
-import ExtensionIcon from '@mui/icons-material/Extension';
-import ForumIcon from '@mui/icons-material/Forum';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import Box from '@mui/material/Box';
+import {useNavigate} from 'react-router-dom';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import ChatRoomDrawer from './ChatRoomDrawer'
+import { useState } from 'react';
 
 const ChatRoomBar = ({roomUID,roomName,roomDate,roomTime,roomLocation,roomPlaceID,roomPax,roomCap,roomUsers}) => {
   const navigate = useNavigate();
+  const [drawerState, setDrawerState] = useState({
+    right: false
+  });
   return (
-    <div className="chatRoomBar" style={{backgroundColor:'#ffad01', display:'flex',alignItems:'center',height:'50px',width:'80%',position:'absolute',left:'20%',top:'0'}}>
-        <h2 style={{color:'white'}}>{roomName}</h2>
-        <div style={{position:'absolute',right:'0'}}>
+    <div>
+        <button class='text-left transition ease-in-out transform duration-500 absolute -right-12 hover:-translate-x-4 top-40 w-20 h-80 font-bold text-white  hover:shadow-inner hover:bg-orange-300 hover:shadow  bg-slate-300/50' onClick={()=>{setDrawerState({right:true})}}>
+          <MenuOpenIcon/>
+        </button>
         <ChatRoomDrawer style={{alignSelf:'end'}} 
+        drawerState={drawerState}
+        setDrawerState={setDrawerState}
         roomDate={roomDate} 
         roomTime={roomTime} 
         roomLocation={roomLocation}
@@ -23,7 +24,6 @@ const ChatRoomBar = ({roomUID,roomName,roomDate,roomTime,roomLocation,roomPlaceI
         roomCap={roomCap}
         roomPax={roomPax}
         roomUsers={roomUsers}/>
-        </div>
     </div>
   )
 }

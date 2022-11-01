@@ -71,7 +71,6 @@ const ActivityRoomHeader=()=>{
   return (
     <div class='flex justify-center'>
     <div class="relative w-fit h-fit overflow-hidden mx-2.5 mt-2 border border-gray-0 shadow-md group ">
-    <img class="transition ease-in-out object-cover h-96 w-full rounded-tr-lg rounded-bl-lg group-hover:scale-150" src ='https://www.ntu.edu.sg/images/default-source/premier-scholarships/rep/programme-thumbnail_rep_1.jpg?sfvrsn=4e16e392_0' alt = "" />
     <div class="absolute bg-black/50 text-white w-full h-full transform duration-500 top-[80%] bottom-[90%] content-center group-hover:-inset-y-0 ">
     <p class="text-white font-semibold">TESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT</p>
     <p class="font-sans">Description</p>

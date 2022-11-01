@@ -108,7 +108,6 @@ const Header=({setMobileOpen,pageTitle,isSmUp})=> {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
               

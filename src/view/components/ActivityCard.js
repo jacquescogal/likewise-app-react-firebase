@@ -12,8 +12,8 @@ import { useEffect, useState } from 'react';
 
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase-config';
-
-import {Link} from '@mui/material';
+import {query,where} from 'firebase/firestore';
+import dayjs from 'dayjs';
 
 const BasicCard = ({nameOfEvent,setEventRoom,imageOfEvent,timer}) =>{
 
@@ -27,8 +27,12 @@ const BasicCard = ({nameOfEvent,setEventRoom,imageOfEvent,timer}) =>{
     return ()=>clearTimeout(timeout)
   },[appear])
 
+  const compDate=new Date()
+
   useEffect(()=>{
-    const unsubscribe=()=>{onSnapshot(collection(db,'aRooms/'+nameOfEvent+'/eRooms'),collectionSnap=>{
+    console.log(compDate)
+    const q = query(collection(db,'aRooms/'+nameOfEvent+'/eRooms'),where('time','>',compDate))
+    const unsubscribe=()=>{onSnapshot(q,collectionSnap=>{
       console.log('aRooms/'+nameOfEvent+'/eRooms')
       setNumOfEvents(collectionSnap.size)
     })}

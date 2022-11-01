@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase-config';
 import { useState,useEffect } from 'react';
-import { collection, doc,getDoc } from 'firebase/firestore';
+import { collection, doc,getDoc, query,where } from 'firebase/firestore';
 import { db } from '../../firebase-config';
 import { onSnapshot } from 'firebase/firestore';
 import { CircularProgress } from '@mui/material';
@@ -16,6 +16,8 @@ const MyRooms = ({setChatRoom,setPageTitle}) => {
   const [user,setUser]=useState(null);
   const [joinedRooms,setJoinedRooms]=useState(null);
   
+  const compDate=new Date();
+
   useEffect(()=>{
     setPageTitle('My Rooms');
   },[])
@@ -27,7 +29,8 @@ const MyRooms = ({setChatRoom,setPageTitle}) => {
         setUser(user)
       })}
     else{
-    const unsubscribe=onSnapshot(collection(db,'users/'+user.email+'/joinedRooms'),(collectionSnapshot)=>{
+    const q=query(collection(db,'users/'+user.email+'/joinedRooms'),where('time','>',compDate))
+    const unsubscribe=onSnapshot(q,(collectionSnapshot)=>{
       console.log('still subscribed')
       let joinedRooms=[]
       collectionSnapshot.forEach((doc)=>{
@@ -41,15 +44,16 @@ const MyRooms = ({setChatRoom,setPageTitle}) => {
       console.log(joinedRooms.length)
       setJoinedRooms(joinedRooms)
     })
+    return unsubscribe
 
   }
   },[user])
 
 
   return (
-    <div class='relative h-full w-full overflow-hidden'> 
-    <img class='absolute top-0 object-fill blur-2 w-full' src='https://images.unsplash.com/photo-1567095761054-7a02e69e5c43?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'></img>
-    <div class='abolute top-0 h-full w-full md:py-10 bg-slate-100'> 
+    <div class='relative h-full w-full overflow-hidden '> 
+   
+    <div class='abolute top-0 h-full w-full md:py-10 bg-white'> 
     
       {(joinedRooms)?
       <div class="grid grid-cols-1 grid-rows-3 md:grid-cols-3 md:grid-rows-1 justify-around justify-items-center">
