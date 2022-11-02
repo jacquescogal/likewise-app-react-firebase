@@ -11,7 +11,7 @@ const ChatRoomBar = ({roomUID,roomName,roomDate,roomTime,roomLocation,roomPlaceI
   });
   return (
     <div>
-        <button class='text-left transition ease-in-out transform duration-500 absolute -right-12 hover:-translate-x-4 top-40 w-20 h-80 font-bold text-white  hover:shadow-inner hover:bg-orange-300 hover:shadow  bg-slate-300/50' onClick={()=>{setDrawerState({right:true})}}>
+        <button class='text-left transition ease-in-out transform duration-500 absolute -right-12 hover:-translate-x-4 top-40 w-20 h-80 font-bold text-white rounded-lg hover:shadow-inner hover:bg-orange-300 hover:shadow  bg-slate-300/50' onClick={()=>{setDrawerState({right:true})}}>
           <MenuOpenIcon/>
         </button>
         <ChatRoomDrawer style={{alignSelf:'end'}} 
