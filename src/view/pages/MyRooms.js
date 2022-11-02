@@ -56,11 +56,11 @@ const MyRooms = ({setChatRoom,setPageTitle}) => {
     <div class='abolute top-0 h-full w-full md:py-10 bg-white'> 
     
       {(joinedRooms)?
-      <div class="grid grid-cols-1 grid-rows-3 md:grid-cols-3 md:grid-rows-1 justify-around justify-items-center">
+      <div class="grid grid-cols-1 grid-rows-3 gap-8 mr-10 md:grid-cols-3 md:grid-rows-1 justify-around justify-items-center">
         {joinedRooms.map(joinRoomObject=>{
-          return (joinRoomObject===null)?<div class="grid h-96 w-full bg-slate-100 justify-items-center rounded-md border-solid border content-center my-2">
-             <span>Empty</span>
-             </div>:
+          return (joinRoomObject===null)?<div>
+          <JoinRoomCard empty={true}/>
+          </div>:
           <div key={joinRoomObject.id}>
           <JoinRoomCard key={joinRoomObject.id} chatRoomRef={joinRoomObject.roomRef} setChatRoom={setChatRoom} eActivity={joinRoomObject.activity}/>
           </div>

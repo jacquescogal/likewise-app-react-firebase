@@ -166,10 +166,10 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
   return (
     <>
       <AppBar position="static">
-        <div class='md:flex md:justify-start grid pb-2 bg-orange-300'>
+        <div class='justify-items-center md:flex  grid pb-3 pt-3 bg-gradient-to-r from-teal-500 to-white' >
           <p class='ml-8 text-white text-5xl font-semibold'>{eventRoom} 
         </p>
-        <div class='grid grid-rows-2 grid-cols-1 h-12 justify-items-center'>
+        <div class='grid grid-rows-2 grid-cols-1 h-12 font-semibold justify-items-center'>
           <span>Start Date</span>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
          
@@ -191,7 +191,7 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
       />
     </LocalizationProvider>
     </div>
-    <div class='grid grid-rows-2 grid-cols-1 h-12 justify-items-center'>
+    <div class='grid grid-rows-2 grid-cols-1 h-12 font-semibold justify-items-center'>
           <span >End Date</span>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
@@ -212,8 +212,8 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
     
     
     </div>
-    {(filterAvail===false)?<button class='h-fit w-40 rounded-md p-1 bg-white ml-8 mt-8 self-center justify-self-center md:mt-0' onClick={()=>{setFilterAvail(true)}}>❌ With Space Only</button>:
-    <button class='h-fit w-40 rounded-md p-1 bg-orange-400 ml-8 mt-8 self-center justify-self-center md:mt-0 shadow-inner border-2 border-orange-600'  onClick={()=>{setFilterAvail(false)}}>✔️ With Space Only</button>}
+    {(filterAvail===false)?<button class='font-semibold h-fit w-40 rounded-md p-1 bg-white ml-8 mt-8 self-center justify-self-center md:mt-0' onClick={()=>{setFilterAvail(true)}}>❌ With Space Only</button>:
+    <button class='font-semibold h-fit w-40 rounded-md p-1 bg-orange-400 ml-8 mt-8 self-center justify-self-center md:mt-0 shadow-inner border-2 border-orange-600'  onClick={()=>{setFilterAvail(false)}}>✔️ With Space Only</button>}
 
     
 
@@ -242,7 +242,7 @@ const EventRooms = ({eventRoom,setChatRoom,isLoaded,setLoading,setPageTitle}) =>
 :<div>
 </div>}
 </div>
-<button class='bg-orange-300 hover:bg-orange-400 p-1 text-black h-fit w-full font-semibold text-center text-2xl hover:shadow-inner' onClick={()=>{handleClickOpen();console.log(window.google)}}>
+<button class=' p-2 text-gray-900 bg-amber-200	mb-20 hover:bg-amber-300  font-semibold focus:ring-4 focus:outline-none font-lg rounded-lg text-lg w-full sm:w-auto px-5 py-2.5 ' onClick={()=>{handleClickOpen();console.log(window.google)}}>
           Add Room
           </button>
 </>

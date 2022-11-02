@@ -30,7 +30,7 @@ import CardActionArea from "@mui/material/CardActionArea";
 
 
 
-const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity}) => {
+const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity,empty=false}) => {
     const navigate=useNavigate();
     const [appear,setAppear]=useState(false);
     const [chatRoomData,setChatRoomData]=useState(null);
@@ -38,24 +38,29 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity}) => {
     const [aRoom, setARoom] = useState(null);
 
     useEffect(()=>{
+      if (empty===false) {
         const timeout=setTimeout(()=>{
           setAppear(true);
         },timer)
         return ()=>clearTimeout(timeout)
+      }
       },[appear])
     
     useEffect(()=>{
+      if (empty===false){
         const unsubscribe=async()=>{
             let docData= await getDoc(chatRoomRef);
         setChatRoomData({...docData.data()});
         setChatRoomPath(chatRoomRef._key.path.segments.splice(5).join('/'));
         }
         return unsubscribe
+      }
     },[])
     
 
 
     useEffect(()=>{
+      if (empty===false){
       getDoc(doc(db, "aRooms", eActivity)).then(docSnap => {
         if (docSnap.exists()) {
           console.log("Document data:", docSnap.data());
@@ -65,6 +70,7 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity}) => {
           console.log("No such document!");
         }
       })
+    }
     },[])
 
     const handleCardClick=()=>{
@@ -104,20 +110,60 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity}) => {
 
   return (
     <div>
-    {(chatRoomData)?
+      {(empty===true)?
+      
+      <div class="relative group w-full h-96 overflow-hidden bg-black m-auto rounded-xl border-solid border group">
+  <img class="object-cover w-full h-full transform duration-700 backdrop-opacity-100 group-hover:scale-150 group-hover:blur" src={(empty===true)?'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80':`${process.env.PUBLIC_URL}/logo.png`} />
+  <div class="absolute w-full h-full shadow-2xl opacity-20 transform duration-500 inset-y-full group-hover:-inset-y-0"></div>
+  <div class="absolute bg-gradient-to-t from-gray-900 w-full h-full transform duration-500 inset-y-1/4 content-center group-hover:-inset-y-0">
+    <div class="absolute w-full flex place-content-center">
+      <p class="transition ease-in-out delay-150 group-hover:-translate-y-1 group-hover:scale-150 font-bold text-4xl text-center text-white mt-10">Empty</p>
+    </div>
+    <div class="absolute w-full flex place-content-center mt-12">
+      <p class="scale-110 font-bold text-center w-4/5 text-white mt-5"></p>
+    </div>
+    <div class="absolute w-full flex place-content-center mt-24">
+      <p class="scale-110 font-bold text-center w-4/5 text-white mt-5">Join a Room to fill this slot!
+      <div>
+        
+      <span ></span>
+      </div>
+      </p>
+    </div>
+
+    <div class="absolute w-full flex place-content-center mt-40">
+      <p class="scale-110 text-center w-4/5 text-white mt-5">
+      </p>
+    </div>
+
+
+
+    <div class="absolute w-full flex place-content-center mt-52">
+    <p class="scale-110  text-center w-4/5 text-white mt-5"></p>
+    <p class="scale-110 text-center w-4/5 text-white mt-5"></p>
+    <div class="absolute w-full flex place-content-center bottom-4">
+      
+      
+      </div>
+    <button class="invisible transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 absolute -bottom-12 bg-slate-100 text-black font-bold rounded-lg h-10 w-48 bg-orange-200 hover:bg-orange-400" >Enter</button>
+    </div>
+  </div>
+</div>
+      :
+    (chatRoomData)?
       
       <div class="relative group w-full h-96 overflow-hidden bg-black m-auto rounded-xl border-solid border group">
   <img class="object-cover w-full h-full transform duration-700 backdrop-opacity-100 group-hover:scale-150 group-hover:blur" src={(aRoom)?aRoom.imageUrl:`${process.env.PUBLIC_URL}/logo.png`} />
   <div class="absolute w-full h-full shadow-2xl opacity-20 transform duration-500 inset-y-full group-hover:-inset-y-0"></div>
   <div class="absolute bg-gradient-to-t from-gray-900 w-full h-full transform duration-500 inset-y-1/4 content-center group-hover:-inset-y-0">
     <div class="absolute w-full flex place-content-center">
-      <p class="transition ease-in-out delay-150 group-hover:-translate-y-1 group-hover:scale-150 font-serif font-bold text-3xl text-center text-white mt-10">{chatRoomData.name}</p>
+      <p class="transition ease-in-out delay-150 group-hover:-translate-y-1 group-hover:scale-150 font-bold text-4xl text-center text-white mt-10">{chatRoomData.name}</p>
     </div>
     <div class="absolute w-full flex place-content-center mt-12">
-      <p class="scale-110 font-sans text-center w-4/5 text-white mt-5">{chatRoomData.activity}</p>
+      <p class="scale-110 font-bold text-center w-4/5 text-white mt-5">{chatRoomData.activity}</p>
     </div>
     <div class="absolute w-full flex place-content-center mt-24">
-      <p class="scale-110 font-sans text-center w-4/5 text-white mt-5">Joined:{chatRoomData.pax}/{chatRoomData.cap}
+      <p class="scale-110 font-bold text-center w-4/5 text-white mt-5">Joined:{chatRoomData.pax}/{chatRoomData.cap}
       <div>
         
       <span >🙂</span>
@@ -128,15 +174,15 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity}) => {
     </div>
 
     <div class="absolute w-full flex place-content-center mt-40">
-      <p class="scale-110 font-sans text-center w-4/5 text-white mt-5">{chatRoomData.location}
+      <p class="scale-110 text-center w-4/5 text-white mt-5">{chatRoomData.location}
       </p>
     </div>
 
 
 
     <div class="absolute w-full flex place-content-center mt-52">
-    <p class="scale-110 font-sans text-center w-4/5 text-white mt-5">📅:{dayjs.unix(chatRoomData.time.seconds).format('DD/MM/YYYY')}</p>
-    <p class="scale-110 font-sans text-center w-4/5 text-white mt-5">⌛:{dayjs.unix(chatRoomData.time.seconds).format('hh:mm A')}</p>
+    <p class="scale-110  text-center w-4/5 text-white mt-5">📅:{dayjs.unix(chatRoomData.time.seconds).format('DD/MM/YYYY')}</p>
+    <p class="scale-110 text-center w-4/5 text-white mt-5">⌛:{dayjs.unix(chatRoomData.time.seconds).format('hh:mm A')}</p>
     <div class="absolute w-full flex place-content-center bottom-4">
       
       

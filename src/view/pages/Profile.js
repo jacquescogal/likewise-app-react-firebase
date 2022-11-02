@@ -71,7 +71,7 @@ const Profile = ({setPageTitle}) => {
       {(user)?
     <div>
 {/* <body class="absolute top-20 w-full h-full bg-center bg-cover"> */}
-<body class="bg-center bg-cover w-full h-full pt-20 pb-20 bg-[url('https://images.unsplash.com/photo-1585477281005-b83d4b47eba4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80')]">
+<body class="bg-center bg-cover w-full h-full pt-20 pb-60 bg-[url('https://images.unsplash.com/photo-1613064314228-983de855f228?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80')]">
     <div class="container mx-auto=">
         <div>
                 <div class="flex justify-center">

@@ -136,9 +136,6 @@ const ChatRoom = ({chatRoom,setLoading,setPageTitle}) => {
         setUserArr(userArr)
 
       })
-      
-      setUserArr(userArr)
-    })
     return unsubscribeUsers
   }
   },[chatRoom]);

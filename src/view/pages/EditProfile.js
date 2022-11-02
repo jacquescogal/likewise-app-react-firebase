@@ -121,7 +121,7 @@ const EditProfile = ({setPageTitle}) => {
 
   return (
       
-    <body class="bg-center bg-cover w-full h-full pt-20 pb-20 )]">
+    <body class="bg-center bg-cover w-full h-full pt-20 pb-20 bg-orange-100 )]">
     <div class="container mx-auto=">
         <div>
                 <div class="flex justify-center">

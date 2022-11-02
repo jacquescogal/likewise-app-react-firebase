@@ -47,7 +47,7 @@ const BasicCard = ({eventID,nameOfEvent,date,time,location,pax,cap,numOfJoiners,
 
   const ButtonState=()=>{
     if (joined===true){
-      return <button class='w-24 h-fit rounded-md bg-gray-300 border-1' disabled >Already In</button>
+      return <button class='w-24 h-fit rounded-md bg-teal-400 border-1' disabled >Already In</button>
     }
     
     else if (cap-pax===0){
@@ -59,22 +59,22 @@ const BasicCard = ({eventID,nameOfEvent,date,time,location,pax,cap,numOfJoiners,
   }
 
   return (
-    <div class={(cap-pax!==0)?'overflow-hidden w-full p-1 bg-green-50 border border-green-100 h-fit xl:h-24 rounded-md grid grid-rows-10 grid-cols-1 xl:grid-cols-5 xl:grid-rows-1 items-center m-1':'overflow-hidden w-full p-1 bg-red-50 border border-red-100 h-fit xl:h-24 rounded-md grid grid-rows-10 grid-cols-1 xl:grid-cols-5 xl:grid-rows-1 items-center m-1'}>
+    <div class={(cap-pax!==0)?'overflow-hidden w-full p-1 bg-teal-50 border-b-4 border-teal-500 h-fit xl:h-24 rounded-md grid grid-rows-10 grid-cols-1 xl:grid-cols-5 xl:grid-rows-1 items-center m-1':'overflow-hidden w-full p-1 bg-orange-50 border-b-4 border-orange-500	 h-fit xl:h-24 rounded-md grid grid-rows-10 grid-cols-1 xl:grid-cols-5 xl:grid-rows-1 items-center m-1'}>
       <div class='grid xl:h-24 grid-rows-3 grid-cols-1 col-span-2'>
-      <span class='font-bold text-3xl row-span-2'>{nameOfEvent}</span>
-      <span class='font-bold text-xs row-span-1'>{location}</span>
+      <span class='font-bold mt-3 ml-3 text-3xl row-span-2'>{nameOfEvent}</span>
+      <span class='ml-3 text-xs row-span-1'>{location}</span>
       </div>
-      <div class='flex item-start flex-col'>
+      <div class='font-semibold flex item-start flex-col'>
       <p class='-mb-1'>{numOfJoiners}/{capacity} Joiners</p>
       <div >
-      <span >🙂</span>
+      <span >😀</span>
       {paxViz()}
       {remViz()}
       </div>
       </div>
       <div class='flex item-start flex-col'>
-      <p class='-mb-1'>📅: {date}</p>
-      <p class='-mb-1'>⌛: {time}</p>
+      <p class='font-semibold -mb-1'>📅: {date}</p>
+      <p class='font-semibold -mb-1'>⌛: {time}</p>
       </div>
       
       <ButtonState/>
