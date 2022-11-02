@@ -25,13 +25,13 @@ const ActivityRooms = ({setEventRoom,setLoading,setPageTitle}) => {
   useEffect(()=>{
     setLoading(true)
     const q = query(collection(db, 'aRooms'),orderBy('cap','desc'))
-    let t=0
+    let t=50
     const unsubscribe = onSnapshot(q, (QuerySnapshot)=>{
       setPageTitle('Activity Rooms')
       let aRooms=[]
       QuerySnapshot.forEach((doc)=>{
-        aRooms.push({...doc.data(),id:doc.id,timer:t*500})
-        t+=0.25;
+        aRooms.push({...doc.data(),id:doc.id,timer:t})
+        t+=50;
       })
       console.log(aRooms);
       setLoading(false)

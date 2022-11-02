@@ -16,6 +16,7 @@ import dayjs from 'dayjs';
 // --- Material Ui Imports --- //
 import Container from "@mui/material/Container";
 import CardActionArea from "@mui/material/CardActionArea";
+import { toast } from 'react-toastify';
 //import makeStyles from "@mui/material/makeStyles";
 
 // --- Fill Image Card Component Imports --- //
@@ -30,21 +31,59 @@ import CardActionArea from "@mui/material/CardActionArea";
 
 
 
-const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity,empty=false}) => {
+const JoinRoomCard = ({chatRoomRef,setChatRoom,timer=50,eActivity,empty=false}) => {
+
+  const [countdown,setCountdown]=useState(true);
+  const [dayCount,setDayCount]=useState(0);
+  const [hourCount,setHourCount]=useState(0);
+  const [minuteCount,setMinuteCount]=useState(0);
+  const [secondCount,setSecondCount]=useState(null);
     const navigate=useNavigate();
     const [appear,setAppear]=useState(false);
     const [chatRoomData,setChatRoomData]=useState(null);
     const [chatRoomPath,setChatRoomPath]=useState(null);
     const [aRoom, setARoom] = useState(null);
-
+    
     useEffect(()=>{
-      if (empty===false) {
         const timeout=setTimeout(()=>{
           setAppear(true);
         },timer)
+        
         return ()=>clearTimeout(timeout)
-      }
+      
       },[appear])
+
+    useEffect(()=>{
+      if (secondCount!==null && countdown==true){
+      const timeout=setTimeout(()=>{
+        if (secondCount>0){
+        setSecondCount(secondCount-1);
+        }
+        else if (minuteCount>0 && secondCount===0){
+          setMinuteCount(minuteCount-1)
+          setSecondCount(59)
+        }
+        else if (hourCount>0 && minuteCount===0 && secondCount===0){
+          setHourCount(hourCount-1)
+          setMinuteCount(59)
+          setSecondCount(59)
+        }
+        else if (dayCount>0 && hourCount===0 && minuteCount===0 && secondCount===0){
+          setDayCount(dayCount-1)
+          setHourCount(23)
+          setMinuteCount(59)
+          setSecondCount(59)
+        }
+        else if (dayCount===0 && hourCount===0 && minuteCount===0 && secondCount===0){
+          setCountdown(false)
+        }
+      },1000)
+      
+      return ()=>clearTimeout(timeout)
+      }
+    },[secondCount])
+
+      
     
     useEffect(()=>{
       if (empty===false){
@@ -52,6 +91,15 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity,empty=false}) => 
             let docData= await getDoc(chatRoomRef);
         setChatRoomData({...docData.data()});
         setChatRoomPath(chatRoomRef._key.path.segments.splice(5).join('/'));
+        const tempDayCount=dayjs.unix(docData.data().time.seconds).diff(dayjs(),'day')
+        setDayCount(tempDayCount);
+        const tempHourCount=dayjs.unix(docData.data().time.seconds).subtract(tempDayCount,'day').diff(dayjs(),'hour')
+        setHourCount(tempHourCount)
+        const tempMinuteCount=dayjs.unix(docData.data().time.seconds).subtract(tempDayCount,'day').subtract(tempHourCount,'hour').diff(dayjs(),'minute')
+        setMinuteCount(tempMinuteCount)
+        const tempSecondCount=dayjs.unix(docData.data().time.seconds).subtract(tempDayCount,'day').subtract(tempHourCount,'hour').subtract(tempMinuteCount,'minute').diff(dayjs(),'second')
+        setSecondCount(tempSecondCount)
+        console.log(tempDayCount,tempHourCount,tempMinuteCount,tempSecondCount)
         }
         return unsubscribe
       }
@@ -109,6 +157,7 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity,empty=false}) => 
     }
 
   return (
+    <Grow in={appear}>
     <div>
       {(empty===true)?
       
@@ -153,9 +202,17 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity,empty=false}) => 
     (chatRoomData)?
       
       <div class="relative group w-full h-96 overflow-hidden bg-black m-auto rounded-xl border-solid border group">
+        
   <img class="object-cover w-full h-full transform duration-700 backdrop-opacity-100 group-hover:scale-150 group-hover:blur" src={(aRoom)?aRoom.imageUrl:`${process.env.PUBLIC_URL}/logo.png`} />
   <div class="absolute w-full h-full shadow-2xl opacity-20 transform duration-500 inset-y-full group-hover:-inset-y-0"></div>
+  <p class="absolute top-0 font-semibold text-lg bg-gray-100/80 w-full h-fit pl-2">
+    
+    <span class='text-orange-800'>{dayCount} {(dayCount>1)?"Days ":"Day "}</span>
+    <span class='text-orange-700'>{hourCount} {(hourCount>1)?"Hours ":"Hour "}</span>
+    <span class='text-orange-600'>{minuteCount} {(minuteCount>1)?"Minutes ":"Minute "}</span>
+    <span class='text-orange-500'>{secondCount} {(secondCount>1)?"Seconds ":"Second "}</span></p>
   <div class="absolute bg-gradient-to-t from-gray-900 w-full h-full transform duration-500 inset-y-1/4 content-center group-hover:-inset-y-0">
+  
     <div class="absolute w-full flex place-content-center">
       <p class="transition ease-in-out delay-150 group-hover:-translate-y-1 group-hover:scale-150 font-bold text-4xl text-center text-white mt-10">{chatRoomData.name}</p>
     </div>
@@ -193,6 +250,7 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer,eActivity,empty=false}) => 
 </div>:null
     }
     </div>
+    </Grow>
   )
 }
 

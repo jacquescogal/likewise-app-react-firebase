@@ -67,7 +67,7 @@ const BasicCard = ({eventID,nameOfEvent,date,time,location,pax,cap,numOfJoiners,
       <div class='font-semibold flex item-start flex-col'>
       <p class='-mb-1'>{numOfJoiners}/{capacity} Joiners</p>
       <div >
-      <span >😀</span>
+      <span >🙂</span>
       {paxViz()}
       {remViz()}
       </div>

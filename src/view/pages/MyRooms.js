@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase-config';
 import { useState,useEffect } from 'react';
-import { collection, doc,getDoc, query,where } from 'firebase/firestore';
+import { collection, doc,getDoc, query,where,orderBy } from 'firebase/firestore';
 import { db } from '../../firebase-config';
 import { onSnapshot } from 'firebase/firestore';
 import { CircularProgress } from '@mui/material';
@@ -29,16 +29,19 @@ const MyRooms = ({setChatRoom,setPageTitle}) => {
         setUser(user)
       })}
     else{
-    const q=query(collection(db,'users/'+user.email+'/joinedRooms'),where('time','>',compDate))
+    const q=query(collection(db,'users/'+user.email+'/joinedRooms'),orderBy('time','asc'),where('time','>',compDate))
     const unsubscribe=onSnapshot(q,(collectionSnapshot)=>{
       console.log('still subscribed')
       let joinedRooms=[]
+      let timer=50
       collectionSnapshot.forEach((doc)=>{
-        joinedRooms.push({...doc.data(),id:doc.id})
+        joinedRooms.push({...doc.data(),id:doc.id,isRoom:true,timer:timer})
+        timer+=50;
       })
       console.log(joinedRooms.length)
       while (joinedRooms.length<3){
-        joinedRooms.push(null)
+        joinedRooms.push({isRoom:false,timer:timer})
+        timer+=50
         console.log(joinedRooms.length)
       }
       console.log(joinedRooms.length)
@@ -58,11 +61,11 @@ const MyRooms = ({setChatRoom,setPageTitle}) => {
       {(joinedRooms)?
       <div class="grid grid-cols-1 grid-rows-3 gap-8 mr-10 md:grid-cols-3 md:grid-rows-1 justify-around justify-items-center">
         {joinedRooms.map(joinRoomObject=>{
-          return (joinRoomObject===null)?<div>
-          <JoinRoomCard empty={true}/>
+          return (joinRoomObject.isRoom===false)?<div>
+          <JoinRoomCard empty={true} timer={joinRoomObject.timer}/>
           </div>:
           <div key={joinRoomObject.id}>
-          <JoinRoomCard key={joinRoomObject.id} chatRoomRef={joinRoomObject.roomRef} setChatRoom={setChatRoom} eActivity={joinRoomObject.activity}/>
+          <JoinRoomCard key={joinRoomObject.id} chatRoomRef={joinRoomObject.roomRef} setChatRoom={setChatRoom} eActivity={joinRoomObject.activity} timer={joinRoomObject.timer}/>
           </div>
 })}
       </div>:<div
