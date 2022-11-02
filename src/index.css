@@ -20,9 +20,10 @@
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  border-width: 5px;
-  border-color: gray;
-  border-style: outset;
+  border-width: 2px;
+  background: linear-gradient(rgb(212, 116, 207), rgb(235, 88, 157)) padding-box,
+              linear-gradient(to right, rgba(251,172,193,1), rgba(252,211,77,1)) border-box;
+  border: 4px solid transparent;
 }
 
 .avatar_sidebar {

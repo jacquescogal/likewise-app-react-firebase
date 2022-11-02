@@ -162,7 +162,7 @@ setUsername,setImageUrl,gender,setGender,DOB,setDOB,course,setCourse,studyYear,s
         </Select>
       </FormControl>
       <div class='grid grid-cols-1 grid-rows-10 gap-2 justify-items-center'>
-      <img class='row-span-4 w-40 h-40 rounded-full border-0' src={(photo)?URL.createObjectURL(photo):`${process.env.PUBLIC_URL}/Images/basicProfile.png`} alt="Avatar" className="avatar" />
+      <img class='row-span-4 w-40 h-40 rounded-full' src={(photo)?URL.createObjectURL(photo):`${process.env.PUBLIC_URL}/Images/basicProfile.png`} alt="Avatar" className="avatar" />
       <input type="file" onChange={handleChangePhoto} accept=".png,.jpg,.jpeg"/>
       <Button class='mb-4' label="Confirm Register" style={{alignSelf:'center'}} handleAction={e=>{e.preventDefault();handleAction()}} />
     </div>
