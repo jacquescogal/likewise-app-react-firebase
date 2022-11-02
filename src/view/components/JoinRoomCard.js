@@ -206,11 +206,14 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer=50,eActivity,empty=false}) 
   <img class="object-cover w-full h-full transform duration-700 backdrop-opacity-100 group-hover:scale-150 group-hover:blur" src={(aRoom)?aRoom.imageUrl:`${process.env.PUBLIC_URL}/logo.png`} />
   <div class="absolute w-full h-full shadow-2xl opacity-20 transform duration-500 inset-y-full group-hover:-inset-y-0"></div>
   <p class="absolute top-0 font-semibold text-lg bg-gray-100/80 w-full h-fit pl-2">
-    
+    {(countdown===false)?<span>Let the games begin!</span>:
+    <>
     <span class='text-orange-800'>{dayCount} {(dayCount>1)?"Days ":"Day "}</span>
     <span class='text-orange-700'>{hourCount} {(hourCount>1)?"Hours ":"Hour "}</span>
     <span class='text-orange-600'>{minuteCount} {(minuteCount>1)?"Minutes ":"Minute "}</span>
-    <span class='text-orange-500'>{secondCount} {(secondCount>1)?"Seconds ":"Second "}</span></p>
+    <span class='text-orange-500'>{secondCount} {(secondCount>1)?"Seconds ":"Second "}</span>
+    </>}
+    </p>
   <div class="absolute bg-gradient-to-t from-gray-900 w-full h-full transform duration-500 inset-y-1/4 content-center group-hover:-inset-y-0">
   
     <div class="absolute w-full flex place-content-center">
