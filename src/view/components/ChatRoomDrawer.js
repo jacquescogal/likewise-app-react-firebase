@@ -106,7 +106,7 @@ const TemporaryDrawer=({drawerState,setDrawerState,roomDate,roomTime,roomLocatio
     }
     else if (ownerStatus==true){
       return <Button  variant="outlined" sx={{
-        bgcolor:'#E22727',
+        bgcolor:'orange',
         color:'white',
                     ':hover': {
                       bgcolor: '#D50000', // theme.palette.primary.main
@@ -124,7 +124,7 @@ const TemporaryDrawer=({drawerState,setDrawerState,roomDate,roomTime,roomLocatio
       onClose={toggleDrawer(anchor, false)}
     >
       <List>
-      <ListItemText primary='Event Details:' sx={{marginLeft:'10px'}}/>
+      <ListItemText primary='👉 Event Details:' sx={{marginLeft:'10px', marginTop:'20px'}}/>
         <ListItem key='Date'>
             <ListItemIcon>
                 <CalendarMonthIcon/>
@@ -147,7 +147,7 @@ const TemporaryDrawer=({drawerState,setDrawerState,roomDate,roomTime,roomLocatio
       <MapWidget placeID={roomPlaceID}/>
       <Divider />
       <List>
-      <ListItemText sx={{marginLeft:'10px'}}>Attendees ({roomUsers.length}/{roomCap}) :</ListItemText>
+      <ListItemText sx={{marginLeft:'10px'}}>👉 Attendees ({roomUsers.length}/{roomCap}) :</ListItemText>
       {(roomUsers)?roomUsers.map(userObject=>{
         return <ListItem key={userObject.id}>
         <ListItemIcon>

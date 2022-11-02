@@ -21,10 +21,10 @@ const ChatMessage = ({message,messageScroll}) => {
 
   const messageNameShow=()=>{
     if (message.showText===true && uid!=message.uid){
-      return <p class='self-start mb-0.5 font-semibold' >{message.name}</p>
+      return <p class='self-start mb-0.5 mt-1 font-semibold' >{message.name}</p>
     }
     else if (uid===message.uid && message.showText===true){
-      return <p class='self-end mb-0.5 font-semibold' >Me</p>
+      return <p class='self-end mb-0.5 mt-1 font-semibold' >Me</p>
     }
   }
 
@@ -35,7 +35,9 @@ const ChatMessage = ({message,messageScroll}) => {
         {(uid===message.uid)?
         // User side
         <div  class='flex flex-row-reverse items-start w-full'>
-        <div  class='flex flex-col max-w-md px-2 bg-green-400 rounded-md my-0.5 mr-8'>
+        <div  class='flex text-lg flex-col max-w-md px-2 bg-orange-400 rounded-md my-0.5 mr-8'>
+
+        //<div  class='flex flex-col max-w-md px-2 bg-green-400 rounded-md my-0.5 mr-8'>
           {messageNameShow()}
             <p class='break-words text-white' >{theMessage}</p>
         </div>
