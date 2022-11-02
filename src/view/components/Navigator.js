@@ -14,6 +14,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import RateReviewIcon from '@mui/icons-material/RateReview';
 
 const categories = [
   {
@@ -24,6 +25,7 @@ const categories = [
         icon: <GroupsIcon />
       },
       { id: 'My Rooms', icon: <MeetingRoomIcon /> },
+      { id: 'Feedback', icon: <RateReviewIcon /> },
       { id: 'Profile', icon: <AccountBoxIcon /> }
     ],
   },
@@ -50,7 +52,8 @@ export default function Navigator(props) {
     'Home':false,
     'Activity Rooms':true,
     'My Rooms':false,
-    'My Profile':false
+    'My Profile':false,
+    'Feedback':false,
   })
   const { ...other } = props;
 

@@ -211,7 +211,7 @@ const JoinRoomCard = ({chatRoomRef,setChatRoom,timer=50,eActivity,empty=false}) 
     <span class='text-orange-800'>{dayCount} {(dayCount>1)?"Days ":"Day "}</span>
     <span class='text-orange-700'>{hourCount} {(hourCount>1)?"Hours ":"Hour "}</span>
     <span class='text-orange-600'>{minuteCount} {(minuteCount>1)?"Minutes ":"Minute "}</span>
-    <span class='text-orange-500'>{secondCount} {(secondCount>1)?"Seconds ":"Second "}</span>
+    {/* <span class='text-orange-500'>{secondCount} {(secondCount>1)?"Seconds ":"Second "}</span> */}
     </>}
     </p>
   <div class="absolute bg-gradient-to-t from-gray-900 w-full h-full transform duration-500 inset-y-1/4 content-center group-hover:-inset-y-0">

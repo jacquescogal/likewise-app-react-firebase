@@ -17,13 +17,7 @@ const Login = ({setEmail, setPassword, handleAction, handleReset}) => {
   let navigate=useNavigate()
 
   return (
-    <div style={{
-      margin: 'auto',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingTop: 0
-    }} >
+    <div class='grid justify-center w-full' >
       <Stack spacing={2}>
       <b style={{alignSelf:'center', fontSize:40}}>Login</b>
       <TextField  sx={{ m: 1, minWidth: 120 ,maxWidth:300}} label="E-mail" onChange={e=>setEmail(e.target.value)}/>

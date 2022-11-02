@@ -47,6 +47,7 @@ import { useLoadScript } from '@react-google-maps/api';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { async } from '@firebase/util';
+import Feedback from './view/pages/Feedback';
 
 const App = () =>{
 
@@ -260,6 +261,7 @@ const App = () =>{
                 <Route path="ActivityRooms" element={<ActivityRooms setPageTitle={setPageTitle}  setEventRoom={setEventRoom} setLoading={setLoading}/>}/>
                 <Route path="EventRooms" element={<EventRooms setPageTitle={setPageTitle}  setChatRoom={setChatRoom} eventRoom={eventRoom} chatRoom={chatRoom} isLoaded={isLoaded} setLoading={setLoading}/>}/>
                 <Route path="MyRooms" element={<MyRooms setPageTitle={setPageTitle}  setChatRoom={setChatRoom}/>}/>
+                <Route path="Feedback" element={<Feedback setPageTitle={setPageTitle} />}/>
                 <Route path="Profile" element={<Profile setPageTitle={setPageTitle}  />}/>
                 <Route path="ChatRoom" element={<ChatRoom setPageTitle={setPageTitle}  chatRoom={chatRoom} setLoading={setLoading}/>}/>
                 <Route path="Profile/EditProfile" element={<EditProfile setPageTitle={setPageTitle} />}/>

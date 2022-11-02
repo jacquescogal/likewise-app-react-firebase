@@ -40,28 +40,13 @@ const Onboard = () => {
       }} className="onboardingFloat">
         <Stack spacing={0}>
             <img className="img-fluid" style={{alignSelf:'center'}}src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo" height={200} width={200}/>
-            <ButtonGroup variant="outlined" aria-label="outlined button group">
-                <Button onClick={()=>
-                    {navigate('Login');
-                    }} variant="outlined"
-                    sx={{
-                      ':hover': {
-                        bgcolor: 'primary.main', // theme.palette.primary.main
-                        color: 'white',
-                      },
-                    }}>Login</Button>
-                <Button onClick={()=>
-                    {navigate('Register');
-                    }} variant="outlined"sx={{
-                      ':hover': {
-                        bgcolor: 'primary.main', // theme.palette.primary.main
-                        color: 'white',
-                      },
-                    }}>Register</Button>
-            </ButtonGroup>
+            <div class='grid grid-cols-2 grid-rows-1'>
+              <button class='bg-oragne-0 rounded-tl-lg rounded-bl-lg border font-semibold hover:bg-orange-300' onClick={()=>{navigate('Login');}}>Login</button>
+              <button class='bg-oragne-0 rounded-tr-lg rounded-br-lg border font-semibold hover:bg-orange-300' onClick={()=>{navigate('Register');}}>Register</button>
+            </div>
       </Stack>
       </div>
-      <div className="onboardContent">
+      <div className="flex justify-center">
         <Outlet />
       </div>
     </div>

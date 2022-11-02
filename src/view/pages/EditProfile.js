@@ -128,7 +128,7 @@ const EditProfile = ({setPageTitle}) => {
                 </div>
 
       <ProfilePic />
-      <div class="flex flex-col px-10 bg-white bg-opacity-50 shadow rounded-lg max-w-lg mx-auto justify-items-center">
+      <div class="flex flex-col px-10 bg-white shadow rounded-lg max-w-lg mx-auto justify-items-center">
       <h1 class=""><br></br></h1>
 
                         <div class="grid gap-6 mb-6 md:grid-cols-2">
