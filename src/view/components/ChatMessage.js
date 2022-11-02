@@ -36,6 +36,8 @@ const ChatMessage = ({message,messageScroll}) => {
         // User side
         <div  class='flex flex-row-reverse items-start w-full'>
         <div  class='flex text-lg flex-col max-w-md px-2 bg-orange-400 rounded-md my-0.5 mr-8'>
+
+        //<div  class='flex flex-col max-w-md px-2 bg-green-400 rounded-md my-0.5 mr-8'>
           {messageNameShow()}
             <p class='break-words text-white' >{theMessage}</p>
         </div>

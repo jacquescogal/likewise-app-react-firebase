@@ -208,11 +208,13 @@ const ChatRoom = ({chatRoom,setLoading,setPageTitle}) => {
       ))}
       <span ref={messageScroll}></span>
       </div>
+      <div class='h-8 w-full flex justify-content-center'>
       {smartReplies.map(
                   reply => (
                     <Button label={reply} handleAction={() => replaceSendMessageText(reply)}></Button>
                   )
                 )}
+      </div>
       <SendMessage scroll={scroll} messageScroll={messageScroll} chatRoom={chatRoom+'/messages'} currentUserName={currentUserName} currentImageUrl={currentImageUrl} toSend={toSend}/>
       </div>
       <span ref={scroll}></span>
