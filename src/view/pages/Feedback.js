@@ -67,7 +67,7 @@ const Feedback = ({setPageTitle}) => {
               <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Your message</label>
               <textarea id="message" value={feedbackBody} onChange={e=>{setFeedbackBody(e.target.value)}} rows="6" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Leave a comment..." required></textarea>
           </div>
-          <button type="submit" onClick={()=>{handleSubmit()}} class="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-orange-300 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300">Send Feedback</button>
+          <button type="submit" onClick={()=>{handleSubmit()}} class="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-orange-300 sm:w-fit hover:bg-orange-400 focus:ring-4 focus:outline-none focus:ring-primary-300">Send Feedback</button>
       </form>
   </div>
 </section>
