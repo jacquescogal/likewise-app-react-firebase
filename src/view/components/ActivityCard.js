@@ -14,11 +14,13 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase-config';
 import {query,where} from 'firebase/firestore';
 import dayjs from 'dayjs';
+import { toast } from 'react-toastify';
 
 const BasicCard = ({nameOfEvent,setEventRoom,imageOfEvent,timer}) =>{
 
   const [appear,setAppear]=useState(false);
   const [numOfEvents,setNumOfEvents]=useState(null);
+  const [bgAppear,setBgAppear]=useState(false);
 
   useEffect(()=>{
     const timeout=setTimeout(()=>{
@@ -43,8 +45,10 @@ const BasicCard = ({nameOfEvent,setEventRoom,imageOfEvent,timer}) =>{
  
   let navigate=useNavigate();
   return (
-  <Grow in={appear}>
-    <div class="m-2 mt-2 w-full h-fit bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 marginTop: 2 "onClick={()=>{setEventRoom(nameOfEvent);localStorage.setItem('eventRoom',nameOfEvent);navigate('/home/eventrooms')}}>
+    <div class={(bgAppear===true)?'w-fit h-fit bg-black rounded-lg bg-gradient-to-t from-pink-100 to-orange-300':'w-fit h-fit bg-transparent'}>
+    <div class='transition ease-in-out hover:scale-90'>
+  <Grow in={appear} onEntered={()=>{setBgAppear(true)}}>
+    <div class=" cursor-pointerw-full h-fit bg-white rounded-lg border border-gray-200 shadow-md  "onClick={()=>{setEventRoom(nameOfEvent);localStorage.setItem('eventRoom',nameOfEvent);navigate('/home/eventrooms')}}>
         <a href="#">
             <img class="rounded-t-lg" src = {imageOfEvent} alt="" />
         </a>
@@ -56,6 +60,8 @@ const BasicCard = ({nameOfEvent,setEventRoom,imageOfEvent,timer}) =>{
         </div>
     </div>
   </Grow>
+  </div>
+  </div>
 
 
     // <Grow in={appear}>
