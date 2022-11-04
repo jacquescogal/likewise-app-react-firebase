@@ -63,7 +63,7 @@ const ChangePassword = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: 0
+        paddingTop: 150
       }} >
         <Stack spacing={2}>
         <b style={{alignSelf:'center', fontSize:20}}>Change Password</b>
