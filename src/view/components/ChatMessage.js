@@ -8,6 +8,10 @@ const ChatMessage = ({message,messageScroll}) => {
   const [theMessage,setTheMessage]=useState(message.text)
   const uid=auth.currentUser.uid
 
+  useEffect(()=>{
+    messageScroll.current.scrollIntoView({behavior:'smooth'})
+  },[])
+
   // useEffect(()=>{//Implement soft hyphen for exceedingly long words (Delete if slow down is major)
   //   let messageSize=message.text.length
   //   let newMessage=message.text
