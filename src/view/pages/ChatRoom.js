@@ -1,5 +1,6 @@
 import React, { useEffect, useState ,useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
+import LinearProgress from '@mui/material/LinearProgress';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -41,6 +42,7 @@ const ChatRoom = ({chatRoom,setLoading,setPageTitle}) => {
   const [latestMessage,setLatestMessage]=useState('');
   const [smartReplies,setSmartReplies] = useState([]);
   const [toSend, setToSend] = useState('');
+  const uid=JSON.parse(localStorage.getItem('user')).uid
 
   useEffect(()=>{
     const unsubscribe = async ()=>{
@@ -162,19 +164,28 @@ const ChatRoom = ({chatRoom,setLoading,setPageTitle}) => {
         }
       );
   }
+  const getSmartReplies = async() => {
+    const smartrep = await fetchSmartReplies();
+  }
+
+
 
   //Gets smart replies every time there is a new message in the chat
   useEffect(() => {
-    const getSmartReplies = async() => {
-      const smartrep = await fetchSmartReplies();
-    }
+    
 
     let lm = messages.slice(-1)[0];
     if (lm) {
       let latestMessage = lm.text;
       console.log("latestmessage", latestMessage);
       setLatestMessage(latestMessage);
-      getSmartReplies();
+      if (uid===lm.uid){
+        setSmartReplies([])
+      }
+      else{
+        getSmartReplies();
+      }
+      
     }
   },[messages]);
 
@@ -209,11 +220,17 @@ const ChatRoom = ({chatRoom,setLoading,setPageTitle}) => {
       <span ref={messageScroll}></span>
       </div>
       <div class='h-8 w-full flex justify-content-center'>
-      {smartReplies.map(
+        {(smartReplies.length===0)?
+        <>
+      <div class='bg-gray-400 w-4 h-4 rounded-full animate-bounce m-2'/>
+      <div class='bg-gray-400 w-4 h-4 rounded-full animate-bounce m-2'/>
+      <div class='bg-gray-400 w-4 h-4 rounded-full animate-bounce m-2'/></>:
+      smartReplies.map(
                   reply => (
                     <Button label={reply} handleAction={() => replaceSendMessageText(reply)}></Button>
                   )
-                )}
+                )
+                }
       </div>
       <SendMessage scroll={scroll} messageScroll={messageScroll} chatRoom={chatRoom+'/messages'} currentUserName={currentUserName} currentImageUrl={currentImageUrl} toSend={toSend}/>
       </div>
