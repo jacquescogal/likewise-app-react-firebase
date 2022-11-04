@@ -170,6 +170,8 @@ const ChatRoom = ({chatRoom,setLoading,setPageTitle}) => {
 
 
 
+
+
   //Gets smart replies every time there is a new message in the chat
   useEffect(() => {
     
@@ -227,7 +229,7 @@ const ChatRoom = ({chatRoom,setLoading,setPageTitle}) => {
       <div class='bg-gray-400 w-4 h-4 rounded-full animate-bounce m-2'/></>:
       smartReplies.map(
                   reply => (
-                    <Button label={reply} handleAction={() => replaceSendMessageText(reply)}></Button>
+                    <button class='h-8 w-fit bg-black text-black border font-semibold m-1 rounded-lg p-1 bg-gradient-to-t from-teal-100 to-orange-200' onClick={e => replaceSendMessageText(reply)}>{reply}</button>
                   )
                 )
                 }
