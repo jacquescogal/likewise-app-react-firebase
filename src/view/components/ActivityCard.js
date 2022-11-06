@@ -45,7 +45,7 @@ const BasicCard = ({nameOfEvent,setEventRoom,imageOfEvent,timer}) =>{
  
   let navigate=useNavigate();
   return (
-    <div class={(bgAppear===true)?'w-fit h-fit bg-black rounded-lg bg-gradient-to-t from-teal-100 to-orange-300':'w-fit h-fit bg-transparent'}>
+    <div class={(bgAppear===true)?'w-fit h-fit bg-black rounded-lg bg-gradient-to-t from-pink-100 to-orange-300':'w-fit h-fit bg-transparent'}>
     <div class='transition ease-in-out hover:scale-90'>
   <Grow in={appear} onEntered={()=>{setBgAppear(true)}}>
     <div class=" cursor-pointerw-full h-fit bg-white rounded-lg border border-gray-200 shadow-md  "onClick={()=>{setEventRoom(nameOfEvent);localStorage.setItem('eventRoom',nameOfEvent);navigate('/home/eventrooms')}}>
